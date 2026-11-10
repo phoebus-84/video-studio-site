@@ -71,7 +71,12 @@ try {
   const href = await link.getAttribute('href');
   assert.ok(Object.values(publication.items).some(item => item.download && releaseUrl + item.download.asset === href));
  }
- await expect(page.locator('#sonnet .project-download')).toContainText('original audio omitted');
+ await expect(page.locator('#sonnet .project-download')).toContainText('original sound');
+ await page.locator('#sonnet .play-button').click();
+ await page.waitForFunction(()=>{const v=document.querySelector('#sonnet video');return v.currentTime>0.5 && v.textTracks[0]?.cues?.length>0;});
+ assert.equal(await page.locator('#sonnet video').evaluate(v=>v.muted),false);
+ await expect(page.locator('#sonnet video track')).toHaveAttribute('kind','captions');
+ await page.locator('#sonnet video').evaluate(v=>v.pause());
  results.push('Gallery: filters, counts, playback, English captions, six full-film download links and confirmed soundtrack credits');
  await go('recipes/');
  await page.getByRole('searchbox',{name:'Find a recipe'}).fill('blender');

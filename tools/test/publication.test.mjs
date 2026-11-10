@@ -24,9 +24,13 @@ test('public selection records soundtrack permission and pins every full downloa
     assert.match(item.download.sha256, /^[a-f0-9]{64}$/);
     assert.ok(item.download.bytes > 0 && item.download.bytes < 2 ** 31);
     assert.ok(item.download.duration >= showcase.find(p => p.id === id).duration);
+    assert.equal(item.download.hasAudio, showcase.find(p => p.id === id).hasAudio);
   }
   assert.ok(policy.items['ambient-kowloon'].download.duration >= 3600);
-  assert.match(policy.items.sonnet.download.edition, /original audio omitted/);
+  assert.equal(policy.items.sonnet.download.asset, 'sonnet-full.mp4');
+  assert.match(policy.items.sonnet.download.edition, /original sound/);
+  assert.equal(policy.items.sonnet.soundtrack.license, 'CC BY 3.0');
+  assert.equal(policy.items.sonnet.soundtrack.creator, '_ghost');
 });
 
 test('Pages deploy restores pinned media, uses the repository base and least-privilege deployment', async () => {

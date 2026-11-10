@@ -47,13 +47,13 @@ Preparation/checking requires FFmpeg and ffprobe. No uploads or paid generation 
 
 ## Published media
 
-`data/public-media.json` pins the public selection, release URLs, sizes, durations and SHA-256 hashes. Preview derivatives and full films remain outside Git. The gallery offers six full-length downloads from the `showcase-v2` GitHub Release, with a separate credits file:
+`data/public-media.json` pins the public selection, release URLs, sizes, durations and SHA-256 hashes. Preview derivatives and full films remain outside Git. The gallery offers six full-length downloads from the `showcase-v3` GitHub Release, with a separate credits file:
 
 - Lontano v03 and JaroMail pixel v4: 1080p, original audio; JaroMail retains embedded captions.
 - Kowloon: the complete hour at 720p, original audio. The 3.4 GB original exceeds GitHub’s per-asset limit; the web derivative stays below 2 GB. Full soundtrack and embedded-footage attributions accompany it.
 - Nothing Is Only One Thing V006: complete 1080p review candidate, original audio and embedded English/Italian captions. Music: Simio Sakrecoer, “Acid In My Lounge” — CC BY-NC-SA, version unspecified; publication permission confirmed by the operator. This soundtrack licence does not automatically license the whole film.
 - Underwater: the complete 15-second silent study.
-- Sonnet 18: the complete 54-second visual edition, deliberately silent as in the excerpt. This is not a download of its original audio edition.
+- Sonnet 18: the complete 54-second vertical film with the original English recital, music and effects, plus embedded English captions. Its excerpt also retains audio. Music: “Reverie (small theme)” by _ghost, CC BY 3.0; archive effects are declared CC0. Credits and links are in the gallery and release credits. The earlier silent derivative is superseded, not the source original.
 
 To restore only public excerpts (no FFmpeg or production sources needed):
 

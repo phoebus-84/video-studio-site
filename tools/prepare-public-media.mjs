@@ -44,27 +44,33 @@ for (const item of showcase) {
   const inputHash = await hashFile(input);
   const before = probe(input);
   const output = join(staging, selection.download.asset);
-  const silent = item.id === 'sonnet';
+  const silent = !item.hasAudio;
   const encode = item.id === 'ambient-kowloon';
+  const captionInput = source.siteCaptions ? ['-i', join(root, source.siteCaptions)] : [];
+  const captionOutput = source.siteCaptions ? ['-map', '1:0', '-c:s', 'mov_text'] : [];
   console.log('Preparing ' + item.id);
-  if (!verifyStaged) run('ffmpeg', ['-hide_banner', '-loglevel', 'error', '-nostdin', '-y', '-i', input,
-    '-map', '0:v:0', ...(silent ? ['-an', '-sn'] : ['-map', '0:a:0?', '-map', '0:s?']),
+  if (!verifyStaged) run('ffmpeg', ['-hide_banner', '-loglevel', 'error', '-nostdin', '-y', '-i', input, ...captionInput,
+    '-map', '0:v:0', ...(silent ? ['-an', '-sn'] : ['-map', '0:a:0', '-map', '0:s?']),
     ...(encode ? ['-vf', 'scale=1280:720', '-c:v', 'libx264', '-threads', '6', '-preset', 'veryfast', '-crf', '26', '-c:a', 'copy'] : ['-c', 'copy']),
-    '-map_metadata', '-1', '-map_chapters', '-1', '-movflags', '+faststart', output]);
+    ...captionOutput, '-map_metadata', '-1', '-map_chapters', '-1',
+    ...(source.siteCaptions ? ['-metadata:s:s:0', 'language=eng'] : []), '-movflags', '+faststart', output]);
   const after = probe(output);
   const sourceVideo = before.streams.find(s => s.codec_type === 'video');
   const outputVideo = after.streams.find(s => s.codec_type === 'video');
   const expectedDuration = silent ? sourceVideo.duration : before.format.duration;
   if (Math.abs(Number(after.format.duration) - Number(expectedDuration)) > 0.1) throw new Error('Full duration changed: ' + item.id);
   if (sourceVideo.nb_frames !== outputVideo.nb_frames) throw new Error('Video frame count changed: ' + item.id);
-  if (silent && after.streams.some(s => s.codec_type === 'audio')) throw new Error('Silent edition has audio');
+  const hasAudio = after.streams.some(s => s.codec_type === 'audio');
+  if (hasAudio !== item.hasAudio) throw new Error('Full-film audio does not match the editorial selection: ' + item.id);
+  if (source.siteCaptions && !after.streams.some(s => s.codec_type === 'subtitle')) throw new Error('Missing full-film captions: ' + item.id);
   const bytes = (await stat(output)).size;
   if (bytes >= 2 ** 31) throw new Error('Exceeds GitHub release asset limit: ' + item.id);
-  // Decode the complete derivative, not just its first frame.
-  run('ffmpeg', ['-v', 'error', '-xerror', '-i', output, '-f', 'null', '-']);
-  if (await hashFile(input) !== inputHash) throw new Error('Original changed: ' + item.id);
   const sha256 = await hashFile(output);
-  Object.assign(selection.download, { bytes, sha256, sourceSha256: inputHash, duration: Number(after.format.duration) });
+  // Reuse a previous full-decode receipt only when both exact files still match.
+  const alreadyVerified = verifyStaged && selection.download.sha256 === sha256 && selection.download.sourceSha256 === inputHash;
+  if (!alreadyVerified) run('ffmpeg', ['-v', 'error', '-xerror', '-i', output, '-f', 'null', '-']);
+  if (await hashFile(input) !== inputHash) throw new Error('Original changed: ' + item.id);
+  Object.assign(selection.download, { bytes, sha256, sourceSha256: inputHash, duration: Number(after.format.duration), hasAudio });
   checksums.push(sha256 + '  ' + selection.download.asset);
   credits.push('Download: ' + selection.download.asset, selection.download.edition, '');
   if (item.id === 'ambient-kowloon') {

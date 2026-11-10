@@ -74,13 +74,20 @@ export const showcase = [
   },
   {
     id: 'sonnet', title: 'A poem becomes a place', category: 'Learning & poetry',
-    format: '9:16', duration: 12, start: 14, posterAt: 6, hasAudio: false, recipe: '/recipes/poetry-lesson',
-    sourceVersion: 'Sonnet 18 · vertical edition',
+    format: '9:16', duration: 12, start: 14, posterAt: 6, hasAudio: true, narration: true, recipe: '/recipes/poetry-lesson',
+    sourceVersion: 'Sonnet 18 · vertical edition', sourceDuration: '54 sec',
     description: 'Shakespeare’s Sonnet 18 becomes a visual lesson: verse, interpretation and a small on-screen guide share a carefully composed vertical frame.',
     visual: 'A luminous museum room with a golden landscape, English verses and explanations, and an illustrated presenter.',
     technique: 'Series design · layered composition · vertical delivery',
-    note: 'A library production in its own channel format. The application does not ship this channel’s theme or templates. Silent visual excerpt.',
+    note: 'A library production in its own channel format. The application does not ship this channel’s theme or templates. The excerpt retains the original English recital, music and effects.',
     source: 'Library / poesie-al-museo / sala-shakespeare',
-    credit: 'Sonnet 18 by William Shakespeare (public-domain text). Generated visual treatment from the Poesie al museo library. Original audio omitted.'
+    credit: 'Sonnet 18 by William Shakespeare (public-domain text, checked against Project Gutenberg ebook 1041). Generated visual treatment and locally synthesised English recital from Poesie al museo; operator-authorised voices. Music: “Reverie (small theme)” by _ghost, ccMixter, CC BY 3.0, looped and mixed in the source production. Wind and applause are declared CC0 in the channel’s source catalogue. Leaf rustle: nmscher (Freesound 85570), CC0; page turns: SpaceJoe (Freesound 484959), CC0. Shimmer and shadow-whoosh effects are locally synthesised. Original audio retained; the web excerpt adds short edge fades. English captions are derived from the source word timings and final edit offset.',
+    credits: [
+      { title: '“Reverie (small theme)” — _ghost', url: 'https://ccmixter.org/files/_ghost/25389', license: 'CC BY 3.0', licenseUrl: 'https://creativecommons.org/licenses/by/3.0/' },
+      { title: '“Ext-amb_Leaves-Rustle-in-tree.aif” — nmscher', url: 'https://freesound.org/people/nmscher/sounds/85570/', license: 'CC0 1.0', licenseUrl: 'https://creativecommons.org/publicdomain/zero/1.0/' },
+      { title: '“Page Turns - 4” — SpaceJoe', url: 'https://freesound.org/people/SpaceJoe/sounds/484959/', license: 'CC0 1.0', licenseUrl: 'https://creativecommons.org/publicdomain/zero/1.0/' }
+    ],
+    audioDescription: 'English recital of Sonnet 18 over the original music and effects. English captions are available.',
+    transcript: "lease hath all too short a date: Sometime too hot the eye of heaven shines, And often is his gold complexion dimm'd, And every fair from fair sometime declines, By chance, or nature's changing"
   }
 ];

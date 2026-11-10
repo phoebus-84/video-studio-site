@@ -53,8 +53,8 @@ npm run build
 
 The tool prepares bounded H.264 excerpts at no more than 1280×720, preserves
 aspect ratio, strips embedded metadata and verifies full decoding, codecs,
-dimensions and duration. Four films retain audio with short edge fades;
-Blender and Sonnet remain silent. Narrated excerpts get retimed English
+dimensions and duration. Five films retain audio with short edge fades;
+only the naturally silent Blender study has no audio. Narrated excerpts get retimed English
 captions; instrumental excerpts get non-speech captions. Posters, credit files
 and SHA-256 receipts accompany the videos. Originals are never overwritten.
 
@@ -150,13 +150,20 @@ restore the public media archive, build for `/video-studio-site/`, then deploy
 only `docs/.vitepress/dist/`. Pull requests cannot deploy. Pages uses the
 workflow's short-lived token, not a committed credential.
 
-Full-length files are hosted separately in the `showcase-v2` GitHub Release,
+Full-length files are hosted separately in the `showcase-v3` GitHub Release,
 not in Git or the Pages artifact. `data/public-media.json` pins their URLs,
 sizes, durations and hashes. The gallery provides download buttons and a
 credits/licences download. Lontano and JaroMail retain audio; the hour-long
 Kowloon web edition is 720p to stay below GitHub’s 2 GB asset limit. Blender
-is silent. Sonnet 18 is a full-length **silent visual edition**, not its
-original sound edition. V006 has a sound-enabled excerpt with English captions
+is silent. Sonnet 18 retains its **original recital, music and effects** in both
+the excerpt and complete film. Its declared music is “Reverie (small theme)”
+by _ghost ([CC BY 3.0](https://creativecommons.org/licenses/by/3.0/),
+[source](https://ccmixter.org/files/_ghost/25389)); archive effects are declared
+CC0. Source-owned captions in `data/sonnet-18.en.srt` follow the source word
+timings plus the final timeline’s 16/30-second audio offset. They are retimed
+for the excerpt and embedded in the complete download. No audio is regenerated.
+These are component licences, not a blanket licence for the entire film.
+V006 has a sound-enabled excerpt with English captions
 and a complete 1080p download retaining audio and embedded English/Italian
 captions. Its soundtrack permission and CC BY-NC-SA attribution are recorded
 in `data/public-media.json`, the gallery and the downloadable credits.

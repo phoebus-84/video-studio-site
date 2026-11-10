@@ -1,9 +1,9 @@
 {
   "repository": "phoebus-84/video-studio-site",
-  "release": "showcase-v2",
+  "release": "showcase-v3",
   "previews": {
     "asset": "showcase-previews.tar.gz",
-    "sha256": "a2b07ff7f4801c99fdf700f148beba3e8a587d8c53124f797467faf473da5ccc"
+    "sha256": "c76fd3f30ed4f9e5fef725ec50c6cb9977aa19288742df3e45f504d8a2bde59e"
   },
   "items": {
     "lontano": {
@@ -15,7 +15,8 @@
         "bytes": 35797410,
         "sha256": "1825f6e7e40c80e3992ec9a47c4d15d9fc80c44432bdff470458a435f7bc44f1",
         "sourceSha256": "79b01d92788bb968cbaf94b6f09d61ad600456f88cb2982ab0d0b2bb8f837684",
-        "duration": 254.545396
+        "duration": 254.545396,
+        "hasAudio": true
       }
     },
     "ambient-kowloon": {
@@ -27,7 +28,8 @@
         "bytes": 244879768,
         "sha256": "a4d1d511cd7e2cf2c84125bf7693f8d7c6ab844da4d3b56d68b004bb6ecbd193",
         "sourceSha256": "4c074a4b137a5278f3e681cfdf4d2881d4a4effea8a3630f0bbb780b0e24e642",
-        "duration": 3600.033333
+        "duration": 3600.033333,
+        "hasAudio": true
       }
     },
     "jaromail": {
@@ -39,7 +41,8 @@
         "bytes": 31026119,
         "sha256": "7c74ed3b2e740964e6cab0bf72d66fe87960059dc8b6c8c94f625aab00592edb",
         "sourceSha256": "6c813d648c73c9dfb88013f39c904ab4c1598fb2702fdc60d646c213e68db840",
-        "duration": 227.1
+        "duration": 227.1,
+        "hasAudio": true
       }
     },
     "nothing-is-only-one-thing": {
@@ -59,7 +62,8 @@
         "bytes": 281404872,
         "sha256": "06bf64968e16260f9459a49db8968e47987fc2f0a8c6152cf5d69cfd6dba3a50",
         "sourceSha256": "29fd6f097078e03b99ce337385a711780e3bdb0a06ee89aed8c92cc395a717ae",
-        "duration": 184.25
+        "duration": 184.25,
+        "hasAudio": true
       }
     },
     "underwater": {
@@ -71,19 +75,33 @@
         "bytes": 9050967,
         "sha256": "9a011c491d8edb0d0da286ea59cce170ba36d340edade1733ae68e442bba2c93",
         "sourceSha256": "78e5bcda1fa19acc34e968815b1e6ce63d17f5cd89b79bdcf5299265cada72ba",
-        "duration": 15
+        "duration": 15,
+        "hasAudio": false
       }
     },
     "sonnet": {
       "preview": true,
+      "soundtrack": {
+        "title": "Reverie (small theme)",
+        "creator": "_ghost",
+        "license": "CC BY 3.0",
+        "url": "https://ccmixter.org/files/_ghost/25389",
+        "licenseUrl": "https://creativecommons.org/licenses/by/3.0/",
+        "evidence": [
+          "poesie-al-museo/sources/sonnet-18/README.md",
+          "poesie-al-museo/sources/pianto-antico/ATTRIBUTIONS.md",
+          "poesie-al-museo/publish/make_pacchetti.py"
+        ]
+      },
       "download": {
-        "asset": "sonnet-full-silent.mp4",
-        "label": "Download full silent film",
-        "edition": "1080 × 1920 · 54 seconds · original audio omitted",
-        "bytes": 61583313,
-        "sha256": "eabec7953d8c147e224cb2e19cba868ada2784173396578c37d8e9ff6a250678",
+        "asset": "sonnet-full.mp4",
+        "label": "Download full film",
+        "edition": "1080 × 1920 · 54 seconds · original sound · English captions",
+        "bytes": 62973428,
+        "sha256": "cfb3a21c2f5df2ccabfdbec447d4982ecdbdaaa1ed7da4e8713e14f29b32090b",
         "sourceSha256": "bcd3d548fff298fa45124c8e6d89170ddb20b9b82f81d4e3e8fcc0b9605ad5d6",
-        "duration": 54.1
+        "duration": 54.2,
+        "hasAudio": true
       }
     }
   }

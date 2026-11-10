@@ -15,7 +15,7 @@ export const sources = {
   jaromail: { root: 'library', path: 'dyne/series/software/episodes/jaromail/output/jaromail-pixel-v4.mp4', captions: 'dyne/series/software/episodes/jaromail/output/jaromail-pixel-v4.srt' },
   'nothing-is-only-one-thing': { root: 'library', path: 'dyne/series/open-culture/episodes/nothing-is-only-one-thing/output/v006/nothing-is-only-one-thing-v006.mp4', captions: 'dyne/series/open-culture/episodes/nothing-is-only-one-thing/output/v006/nothing-is-only-one-thing-v006.en.srt' },
   underwater: { root: 'tests', path: 'blender-tutorial-OeQfq-Sc-lM/renders/underwater-15s.mp4' },
-  sonnet: { root: 'library', path: 'poesie-al-museo/consegna/sala-shakespeare/10-video-finali/short-sonnet-18.mp4' },
+  sonnet: { root: 'library', path: 'poesie-al-museo/consegna/sala-shakespeare/10-video-finali/short-sonnet-18.mp4', siteCaptions: 'data/sonnet-18.en.srt' },
 };
 const output = join(root, 'docs/public/showcase');
 const extensions = item => ['jpg', 'mp4', 'credits.txt', ...(item.hasAudio ? ['vtt'] : [])];
@@ -108,8 +108,9 @@ async function main() {
     if (item.hasAudio && !info.streams.some(s => s.codec_type === 'audio')) throw new Error(`Missing source audio: ${item.id}`);
     let captions;
     let captionsSha256;
-    if (source.captions) {
-      const srt = await readFile(join(roots[source.root], source.captions), 'utf8');
+    if (source.captions || source.siteCaptions) {
+      const captionFile = source.captions ? join(roots[source.root], source.captions) : join(root, source.siteCaptions);
+      const srt = await readFile(captionFile, 'utf8');
       captionsSha256 = createHash('sha256').update(srt).digest('hex');
       captions = excerptCaptions(srt, item.start, item.duration);
     } else if (item.hasAudio) {
