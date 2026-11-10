@@ -60,17 +60,21 @@ and SHA-256 receipts accompany the videos. Originals are never overwritten.
 
 For the published selection, run `npm run media:restore-public` instead of
 supplying production sources. It verifies the SHA-256-pinned release archive,
-checks the filename allowlist and replaces the preview folder. It deliberately
-excludes Nothing Is Only One Thing V006. This public bundle is distinct from
-the six-item local review bundle checked by `media:check`. Never make the whole
+checks the filename allowlist and replaces the preview folder. All six selected
+films, including Nothing Is Only One Thing V006, have public excerpts. The
+public archive omits the local review receipts checked by `media:check`. Never make the whole
 library a public folder.
 
 ::: warning Publication remains a separate decision
 A local preview or a Git commit does not grant publication rights. Retain
-soundtrack/footage credits and applicable CC BY / CC BY-SA terms. Nothing Is
-Only One Thing uses the operator-supplied “Acid In My Lounge” by Simio
-Sakrecoer; its public redistribution licence has not been established. Clear
-those rights before public hosting. Silent excerpts also require a rights check.
+soundtrack/footage credits and applicable licence terms. For Nothing Is Only
+One Thing, the operator confirmed permission for public playback and full-film
+downloads with “Acid In My Lounge” by Simio Sakrecoer, identified as **CC BY-NC-SA**.
+The licence version has not been specified; do not invent a version or licence
+URL. Retain attribution, non-commercial and share-alike terms, and identify
+soundtrack edits. This licence applies to the soundtrack, not automatically to
+the entire film. Distribution does not change V006’s review-candidate status.
+Future selections, including silent excerpts, still require a rights check.
 :::
 
 ## Technical reference snapshot
@@ -146,13 +150,16 @@ restore the public media archive, build for `/video-studio-site/`, then deploy
 only `docs/.vitepress/dist/`. Pull requests cannot deploy. Pages uses the
 workflow's short-lived token, not a committed credential.
 
-Full-length files are hosted separately in the `showcase-v1` GitHub Release,
+Full-length files are hosted separately in the `showcase-v2` GitHub Release,
 not in Git or the Pages artifact. `data/public-media.json` pins their URLs,
 sizes, durations and hashes. The gallery provides download buttons and a
 credits/licences download. Lontano and JaroMail retain audio; the hour-long
 Kowloon web edition is 720p to stay below GitHub’s 2 GB asset limit. Blender
 is silent. Sonnet 18 is a full-length **silent visual edition**, not its
-original sound edition. V006 has neither public media nor a download button.
+original sound edition. V006 has a sound-enabled excerpt with English captions
+and a complete 1080p download retaining audio and embedded English/Italian
+captions. Its soundtrack permission and CC BY-NC-SA attribution are recorded
+in `data/public-media.json`, the gallery and the downloadable credits.
 
 The explicit `media:stage-public` command prepares future release derivatives
 from the named sources with both source-root variables set. It writes only

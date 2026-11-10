@@ -1,9 +1,9 @@
 {
   "repository": "phoebus-84/video-studio-site",
-  "release": "showcase-v1",
+  "release": "showcase-v2",
   "previews": {
     "asset": "showcase-previews.tar.gz",
-    "sha256": "514b0abc3bc3be2faff33e3b5f23401b43233a2731d4dea03597ca1a38ced30f"
+    "sha256": "a2b07ff7f4801c99fdf700f148beba3e8a587d8c53124f797467faf473da5ccc"
   },
   "items": {
     "lontano": {
@@ -43,8 +43,24 @@
       }
     },
     "nothing-is-only-one-thing": {
-      "preview": false,
-      "reason": "Public playback and download are withheld pending soundtrack redistribution permission."
+      "preview": true,
+      "soundtrack": {
+        "title": "Acid In My Lounge",
+        "creator": "Simio Sakrecoer",
+        "license": "CC BY-NC-SA",
+        "version": null,
+        "permission": "The operator confirmed permission for website publication and full-film downloads.",
+        "scope": "Soundtrack only; not a blanket licence for the entire film."
+      },
+      "download": {
+        "asset": "nothing-is-only-one-thing-v006-full.mp4",
+        "label": "Download full film",
+        "edition": "1080p · V006 review candidate · original sound · embedded captions",
+        "bytes": 281404872,
+        "sha256": "06bf64968e16260f9459a49db8968e47987fc2f0a8c6152cf5d69cfd6dba3a50",
+        "sourceSha256": "29fd6f097078e03b99ce337385a711780e3bdb0a06ee89aed8c92cc395a717ae",
+        "duration": 184.25
+      }
     },
     "underwater": {
       "preview": true,

@@ -43,14 +43,15 @@ npm run media:check
 npm run build
 ```
 
-Preparation/checking requires FFmpeg and ffprobe. No uploads or paid generation occur. This six-item local review bundle is not the public bundle. In particular, V006 has no established soundtrack redistribution licence and its media is excluded from public hosting and downloads.
+Preparation/checking requires FFmpeg and ffprobe. No uploads or paid generation occur. The local review bundle includes receipts that are not part of the public archive. All six selected films now have public excerpts and full-length download editions. The operator confirmed permission to publish the V006 soundtrack, identified as CC BY-NC-SA (version unspecified); retain its attribution, non-commercial and share-alike terms.
 
 ## Published media
 
-`data/public-media.json` pins the public selection, release URLs, sizes, durations and SHA-256 hashes. Preview derivatives and full films remain outside Git. The gallery offers five full-length downloads from the `showcase-v1` GitHub Release, with a separate credits file:
+`data/public-media.json` pins the public selection, release URLs, sizes, durations and SHA-256 hashes. Preview derivatives and full films remain outside Git. The gallery offers six full-length downloads from the `showcase-v2` GitHub Release, with a separate credits file:
 
 - Lontano v03 and JaroMail pixel v4: 1080p, original audio; JaroMail retains embedded captions.
 - Kowloon: the complete hour at 720p, original audio. The 3.4 GB original exceeds GitHub’s per-asset limit; the web derivative stays below 2 GB. Full soundtrack and embedded-footage attributions accompany it.
+- Nothing Is Only One Thing V006: complete 1080p review candidate, original audio and embedded English/Italian captions. Music: Simio Sakrecoer, “Acid In My Lounge” — CC BY-NC-SA, version unspecified; publication permission confirmed by the operator. This soundtrack licence does not automatically license the whole film.
 - Underwater: the complete 15-second silent study.
 - Sonnet 18: the complete 54-second visual edition, deliberately silent as in the excerpt. This is not a download of its original audio edition.
 
@@ -63,7 +64,7 @@ DOCS_BASE=/video-studio-site/ npm run preview
 SITE_URL=http://127.0.0.1:4173/video-studio-site/ npm run test:browser
 ```
 
-The restore verifies the archive checksum and filename allowlist, and replaces the local preview folder so withheld media cannot leak into a deployment. A build itself never fetches or refreshes media.
+The restore verifies the archive checksum and filename allowlist, and replaces the local preview folder so only the explicit public selection can enter a deployment. A build itself never fetches or refreshes media.
 
 For a future media release, explicitly prepare the local excerpts, review the selection and rights, then stage derivatives:
 
@@ -75,7 +76,7 @@ npm run media:stage-public
 
 This website utility reads only named sources, strips container metadata, checks complete duration and decoding, confirms source hashes are unchanged, and writes ignored `.site-media/` files plus updated receipts. It does **not** upload. Review the files and credits before explicitly uploading to a new GitHub Release and committing the matching policy. Do not silently replace existing release assets: the Pages workflow intentionally rejects checksum mismatches.
 
-Public distribution is not production approval. V006 remains a review candidate and is withheld pending rights clearance. The initial public commit is a clean snapshot; pre-publication local history containing the removed internal review is not pushed.
+Public distribution is not production approval. V006 remains a review candidate even though the operator has permitted its website distribution. The initial public commit is a clean snapshot; pre-publication local history containing the removed internal review is not pushed.
 
 ## Technical reference snapshot
 

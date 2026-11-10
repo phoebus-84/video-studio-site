@@ -4,13 +4,19 @@ import { readFile } from 'node:fs/promises';
 import { showcase } from '../../docs/showcase.mjs';
 const read = path => readFile(new URL('../../' + path, import.meta.url), 'utf8');
 
-test('public selection excludes unlicensed audio and pins every full download', async () => {
+test('public selection records soundtrack permission and pins every full download', async () => {
   const policy = JSON.parse(await read('data/public-media.json'));
   assert.equal(policy.repository, 'phoebus-84/video-studio-site');
   assert.match(policy.previews.sha256, /^[a-f0-9]{64}$/);
   assert.deepEqual(Object.keys(policy.items).sort(), showcase.map(p => p.id).sort());
-  assert.equal(policy.items['nothing-is-only-one-thing'].preview, false);
-  assert.equal(policy.items['nothing-is-only-one-thing'].download, undefined);
+  const essay = policy.items['nothing-is-only-one-thing'];
+  assert.equal(essay.preview, true);
+  assert.match(essay.download.asset, /v006-full\.mp4$/);
+  assert.equal(essay.soundtrack.license, 'CC BY-NC-SA');
+  assert.equal(essay.soundtrack.version, null, 'Do not invent an unspecified licence version');
+  assert.match(essay.soundtrack.permission, /operator confirmed permission/);
+  assert.match(essay.soundtrack.scope, /Soundtrack only/);
+  assert.equal(Object.values(policy.items).filter(item => item.download).length, 6);
   for (const [id, item] of Object.entries(policy.items)) {
     if (!item.download) continue;
     assert.equal(item.preview, true);

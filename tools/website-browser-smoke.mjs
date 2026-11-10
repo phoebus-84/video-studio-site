@@ -3,6 +3,8 @@ import {mkdir,writeFile} from 'node:fs/promises';
 import assert from 'node:assert/strict';
 import { showcase } from '../docs/showcase.mjs';
 import { recipes, recipePhases } from '../docs/.vitepress/theme/recipes.mjs';
+import publication from '../data/public-media.json' with { type: 'json' };
+const releaseUrl = `https://github.com/${publication.repository}/releases/download/${publication.release}/`;
 const featured = showcase.filter(p => p.featured);
 const base=process.env.SITE_URL || 'http://127.0.0.1:4173/';
 const folder=process.cwd()+'/.impeccable/review';
@@ -54,17 +56,23 @@ try {
  assert.equal(await page.locator('#jaromail video').evaluate(v=>v.muted),false);
  await page.getByRole('button',{name:'Visual essays',exact:true}).click();
  assert.equal(await page.locator('.project-feature').count(),1);
- await expect(page.locator('#nothing-is-only-one-thing video')).toHaveCount(0);
- await expect(page.locator('#nothing-is-only-one-thing .publication-note')).toContainText('soundtrack redistribution permission');
- await expect(page.locator('#nothing-is-only-one-thing .project-download')).toHaveCount(0);
+ await page.locator('#nothing-is-only-one-thing .play-button').click();
+ await page.waitForFunction(()=>{const v=document.querySelector('#nothing-is-only-one-thing video');return v.currentTime>1 && v.textTracks[0]?.cues?.length===6;});
+ assert.equal(await page.locator('#nothing-is-only-one-thing video').evaluate(v=>v.muted),false);
+ await page.locator('#nothing-is-only-one-thing video').evaluate(v=>v.pause());
+ await expect(page.locator('#nothing-is-only-one-thing .project-download .button')).toHaveAttribute('href', releaseUrl + publication.items['nothing-is-only-one-thing'].download.asset);
+ await page.locator('#nothing-is-only-one-thing summary', {hasText:'Source & credits'}).click();
+ await expect(page.locator('#nothing-is-only-one-thing details').last()).toContainText('CC BY-NC-SA; licence version not specified');
+ await expect(page.locator('#nothing-is-only-one-thing .publication-note')).toHaveCount(0);
  await page.locator('#nothing-is-only-one-thing').screenshot({path:folder+'/nothing-desktop.png'});
  await page.getByRole('button',{name:'All work',exact:true}).click();
- await expect(page.locator('.project-download .button')).toHaveCount(5);
+ await expect(page.locator('.project-download .button')).toHaveCount(6);
  for (const link of await page.locator('.project-download .button').all()) {
-  assert.match(await link.getAttribute('href'), /^https:\/\/github.com\/phoebus-84\/video-studio-site\/releases\/download\/showcase-v1\/[a-z0-9-]+\.mp4$/);
+  const href = await link.getAttribute('href');
+  assert.ok(Object.values(publication.items).some(item => item.download && releaseUrl + item.download.asset === href));
  }
  await expect(page.locator('#sonnet .project-download')).toContainText('original audio omitted');
- results.push('Gallery: filters, counts, playback, English captions, five full-film download links and withheld unlicensed media');
+ results.push('Gallery: filters, counts, playback, English captions, six full-film download links and confirmed soundtrack credits');
  await go('recipes/');
  await page.getByRole('searchbox',{name:'Find a recipe'}).fill('blender');
  assert.equal(await page.locator('.recipe-collection .recipe-row').count(),1);
