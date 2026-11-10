@@ -1,0 +1,74 @@
+{
+  "repository": "phoebus-84/video-studio-site",
+  "release": "showcase-v1",
+  "previews": {
+    "asset": "showcase-previews.tar.gz",
+    "sha256": "514b0abc3bc3be2faff33e3b5f23401b43233a2731d4dea03597ca1a38ced30f"
+  },
+  "items": {
+    "lontano": {
+      "preview": true,
+      "download": {
+        "asset": "lontano-full.mp4",
+        "label": "Download full film",
+        "edition": "1080p · original sound",
+        "bytes": 35797410,
+        "sha256": "1825f6e7e40c80e3992ec9a47c4d15d9fc80c44432bdff470458a435f7bc44f1",
+        "sourceSha256": "79b01d92788bb968cbaf94b6f09d61ad600456f88cb2982ab0d0b2bb8f837684",
+        "duration": 254.545396
+      }
+    },
+    "ambient-kowloon": {
+      "preview": true,
+      "download": {
+        "asset": "ambient-kowloon-full-720p.mp4",
+        "label": "Download full film",
+        "edition": "720p · 1 hour · original sound",
+        "bytes": 244879768,
+        "sha256": "a4d1d511cd7e2cf2c84125bf7693f8d7c6ab844da4d3b56d68b004bb6ecbd193",
+        "sourceSha256": "4c074a4b137a5278f3e681cfdf4d2881d4a4effea8a3630f0bbb780b0e24e642",
+        "duration": 3600.033333
+      }
+    },
+    "jaromail": {
+      "preview": true,
+      "download": {
+        "asset": "jaromail-full.mp4",
+        "label": "Download full film",
+        "edition": "1080p · original sound · embedded captions",
+        "bytes": 31026119,
+        "sha256": "7c74ed3b2e740964e6cab0bf72d66fe87960059dc8b6c8c94f625aab00592edb",
+        "sourceSha256": "6c813d648c73c9dfb88013f39c904ab4c1598fb2702fdc60d646c213e68db840",
+        "duration": 227.1
+      }
+    },
+    "nothing-is-only-one-thing": {
+      "preview": false,
+      "reason": "Public playback and download are withheld pending soundtrack redistribution permission."
+    },
+    "underwater": {
+      "preview": true,
+      "download": {
+        "asset": "underwater-full.mp4",
+        "label": "Download full film",
+        "edition": "720p · 15 seconds · silent",
+        "bytes": 9050967,
+        "sha256": "9a011c491d8edb0d0da286ea59cce170ba36d340edade1733ae68e442bba2c93",
+        "sourceSha256": "78e5bcda1fa19acc34e968815b1e6ce63d17f5cd89b79bdcf5299265cada72ba",
+        "duration": 15
+      }
+    },
+    "sonnet": {
+      "preview": true,
+      "download": {
+        "asset": "sonnet-full-silent.mp4",
+        "label": "Download full silent film",
+        "edition": "1080 × 1920 · 54 seconds · original audio omitted",
+        "bytes": 61583313,
+        "sha256": "eabec7953d8c147e224cb2e19cba868ada2784173396578c37d8e9ff6a250678",
+        "sourceSha256": "bcd3d548fff298fa45124c8e6d89170ddb20b9b82f81d4e3e8fcc0b9605ad5d6",
+        "duration": 54.1
+      }
+    }
+  }
+}

@@ -1,0 +1,184 @@
+import {chromium, expect} from '@playwright/test';
+import {mkdir,writeFile} from 'node:fs/promises';
+import assert from 'node:assert/strict';
+import { showcase } from '../docs/showcase.mjs';
+import { recipes, recipePhases } from '../docs/.vitepress/theme/recipes.mjs';
+const featured = showcase.filter(p => p.featured);
+const base=process.env.SITE_URL || 'http://127.0.0.1:4173/';
+const folder=process.cwd()+'/.impeccable/review';
+await mkdir(folder,{recursive:true});
+const browser=await chromium.launch({headless:true});
+const context=await browser.newContext({viewport:{width:1440,height:1000},deviceScaleFactor:1,permissions:['clipboard-read','clipboard-write']});
+context.setDefaultTimeout(10000);
+context.setDefaultNavigationTimeout(30000);
+const page=await context.newPage();
+const errors=[]; const bad=[]; const results=[];
+page.on('pageerror',e=>errors.push(String(e)));
+page.on('response',r=>{if(r.status()>=400)bad.push([r.status(),r.url()]);});
+const go=async(path='')=>{if(process.env.SITE_TEST_DEBUG)console.log('Visit',path||'/');await page.goto(new URL(path,base).href,{waitUntil:'networkidle'});await page.evaluate(()=>document.fonts.ready);};
+const overflow=async(label)=>{assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),label+' overflows');};
+await writeFile(folder+'/browser-results.json',JSON.stringify({passed:false,completed:false,startedAt:new Date().toISOString()},null,2));
+try {
+ await go();
+ await page.getByRole('heading',{name:/A production studio.*Directed by you/}).waitFor();
+ assert.equal(await page.locator('.screening video').count(),1,'Prepare showcase media with npm run media:prepare before the full browser smoke test.');
+ await overflow('desktop home');
+ await page.screenshot({path:folder+'/desktop.png',fullPage:true});
+ await page.screenshot({path:folder+'/desktop-top.png'});
+ const homeLinks=await page.locator('.site-page a[href]').evaluateAll(links=>links.map(l=>l.href));
+ for(const href of [...new Set(homeLinks)])if(href.startsWith(base)&&!href.includes('#')){const res=await context.request.get(href);assert.equal(res.status(),200,href);}
+ await page.locator('.programme button').nth(1).click();
+ await expect(page.locator('.screening video')).toHaveAttribute('src', new RegExp(featured[1].id));
+ await page.locator('.screening .play-button').click();
+ await page.waitForFunction(()=>document.querySelector('.screening video').currentTime>0.5);
+ await page.locator('.programme button').nth(2).click();
+ await expect(page.locator('.screening video')).toHaveAttribute('src', new RegExp(featured[2].id));
+ assert.equal(await page.locator('.screening video').evaluate(v=>v.paused),true);
+ await page.getByRole('button',{name:'Copy Install the studio command'}).click();
+ assert.match(await page.evaluate(()=>navigator.clipboard.readText()),/git clone/);
+ await page.getByText('Is this a hosted, one-click video generator?',{exact:true}).click();
+ assert.ok(await page.locator('.faq-section details').first().getAttribute('open')!==null);
+ results.push('Home: selectors, video playback/reset, clipboard, FAQ, internal links');
+ await go('examples');
+ await page.getByRole('button',{name:'Editable 3D',exact:true}).click();
+ assert.equal(await page.locator('.project-feature').count(),1);
+ await page.getByRole('button',{name:'All work',exact:true}).click();
+ assert.equal(await page.locator('.project-feature').count(),showcase.length);
+ await page.screenshot({path:folder+'/examples-desktop.png',fullPage:true});
+ await page.locator('.project-feature').first().getByRole('button',{name:/Play/}).click();
+ await page.waitForFunction(()=>document.querySelector('.project-feature video').currentTime>0.5);
+ await page.locator('.project-feature').nth(1).getByRole('button',{name:/Play/}).click();
+ await page.waitForFunction(()=>document.querySelectorAll('.project-feature video')[0].paused);
+ await page.locator('#jaromail .play-button').click();
+ await page.waitForFunction(()=>document.querySelector('#jaromail video').textTracks[0]?.cues?.length > 0);
+ assert.equal(await page.locator('#jaromail video').evaluate(v=>v.muted),false);
+ await page.getByRole('button',{name:'Visual essays',exact:true}).click();
+ assert.equal(await page.locator('.project-feature').count(),1);
+ await expect(page.locator('#nothing-is-only-one-thing video')).toHaveCount(0);
+ await expect(page.locator('#nothing-is-only-one-thing .publication-note')).toContainText('soundtrack redistribution permission');
+ await expect(page.locator('#nothing-is-only-one-thing .project-download')).toHaveCount(0);
+ await page.locator('#nothing-is-only-one-thing').screenshot({path:folder+'/nothing-desktop.png'});
+ await page.getByRole('button',{name:'All work',exact:true}).click();
+ await expect(page.locator('.project-download .button')).toHaveCount(5);
+ for (const link of await page.locator('.project-download .button').all()) {
+  assert.match(await link.getAttribute('href'), /^https:\/\/github.com\/phoebus-84\/video-studio-site\/releases\/download\/showcase-v1\/[a-z0-9-]+\.mp4$/);
+ }
+ await expect(page.locator('#sonnet .project-download')).toContainText('original audio omitted');
+ results.push('Gallery: filters, counts, playback, English captions, five full-film download links and withheld unlicensed media');
+ await go('recipes/');
+ await page.getByRole('searchbox',{name:'Find a recipe'}).fill('blender');
+ assert.equal(await page.locator('.recipe-collection .recipe-row').count(),1);
+ await page.getByRole('searchbox',{name:'Find a recipe'}).fill('doesnotexist');
+ await expect(page.locator('.recipe-group')).toHaveCount(0);
+ await page.getByRole('button',{name:'Show all recipes'}).click();
+ await expect(page.getByRole('searchbox',{name:'Find a recipe'})).toBeFocused();
+ await expect(page.locator('.recipe-collection .recipe-row')).toHaveCount(recipes.length);
+ await expect(page.locator('.recipe-group')).toHaveCount(recipePhases.length);
+ await page.getByRole('searchbox',{name:'Find a recipe'}).fill('  POEM  ');
+ await expect(page.locator('.recipe-group')).toHaveCount(1);
+ await page.locator('.recipe-collection .recipe-row').click();
+ await page.waitForURL('**/recipes/poetry-lesson');
+ await expect(page.locator('h1')).toHaveText('One poem. Two films.');
+ await go('recipes/');
+ await page.getByRole('searchbox',{name:'Find a recipe'}).fill('doesnotexist');
+ await page.getByRole('navigation',{name:'Recipe paths'}).getByRole('link',{name:'Make a film'}).click();
+ await page.waitForURL('**/recipes/#produce');
+ await expect(page.locator('.recipe-collection .recipe-row')).toHaveCount(recipes.length);
+ await expect.poll(()=>page.locator('#produce').evaluate(el=>Math.abs(el.getBoundingClientRect().top-100)),{message:'phase link resets filtering and scrolls to its restored group'}).toBeLessThan(5);
+ await page.evaluate(()=>scrollTo({top:0,behavior:'instant'}));
+ await page.screenshot({path:folder+'/recipes-desktop.png',fullPage:true});
+ await page.screenshot({path:folder+'/recipes-desktop-top.png'});
+ results.push('Recipes: grouped paths, search, empty state, focus after reset, filtered route and phase navigation');
+ await go('quick-start');
+ await page.screenshot({path:folder+'/quick-start-desktop.png',fullPage:true});
+ await page.getByRole('button',{name:'Copy Install Video Studio command'}).click();
+ assert.match(await page.evaluate(()=>navigator.clipboard.readText()),/\nmise install\n/);
+ results.push('Quick start: command line breaks and copy');
+ for (const recipe of recipes) {
+  await go('recipes/'+recipe.slug);
+  await expect(page.locator('h1')).toHaveText(recipe.title);
+  await overflow(recipe.slug);
+  if (['build-a-channel','create-a-character','poetry-lesson','repeatable-series'].includes(recipe.slug)) {
+   await page.screenshot({path:folder+'/'+recipe.slug+'-desktop.png',fullPage:true});
+   await page.screenshot({path:folder+'/'+recipe.slug+'-desktop-top.png'});
+  }
+ }
+ await go();
+ await page.locator('.VPNavBarSearch button').click();
+ await page.locator('#localsearch-input').fill('first local render');
+ await expect(page.locator('.VPLocalSearchBox a[href*="/recipes/first-render"]').first()).toBeVisible();
+ await page.locator('#localsearch-input').fill('character people recognise');
+ const characterResult = page.locator('.VPLocalSearchBox a[href*="/recipes/create-a-character"]').first();
+ await expect(characterResult).toBeVisible();
+ await characterResult.click();
+ await expect(page.locator('h1')).toHaveText('A character people recognise');
+ results.push('Docs: all recipe routes, indexed first-render and character guide search results');
+ await go('architecture');
+ assert.match(await page.locator('main').innerText(),/Remotion renders/);
+ await page.screenshot({path:folder+'/architecture-desktop.png',fullPage:true});
+ await go('guide');
+ assert.equal(await page.locator('main a[href$="packages/remotion-composer"]').count(),1);
+ assert.equal(await page.locator('a[href*="harness-review"]').count(),0,'internal review is absent from the documentation index and navigation');
+ for (const route of ['harness-review', 'harness-review.html']) {
+  assert.equal((await context.request.get(new URL(route,base).href)).status(),404,route+' must not be published');
+ }
+ results.push('Publication scope: internal review absent from navigation and both public route variants');
+ await go('quick-start');
+ const gatewayHref=await page.getByRole('link',{name:'start the gateway',exact:true}).getAttribute('href');
+ await go(gatewayHref);
+ assert.ok(await page.evaluate(()=>Boolean(document.getElementById(decodeURIComponent(location.hash.slice(1))))),'gateway prerequisite link must target an actual heading');
+ await go('collaboration');
+ assert.match(await page.locator('main').innerText(),/S3-compatible/);
+ await page.screenshot({path:folder+'/collaboration-desktop.png',fullPage:true});
+ await page.setViewportSize({width:390,height:844});
+ await go(); await overflow('mobile home');
+ await page.screenshot({path:folder+'/mobile.png',fullPage:true});
+ await page.screenshot({path:folder+'/mobile-top.png'});
+ await page.getByRole('button',{name:'mobile navigation'}).click();
+ await page.getByRole('link',{name:'Examples',exact:true}).last().click();
+ await page.waitForURL('**/examples');
+ await page.waitForTimeout(350); // Let VitePress’s mobile-menu leave transition finish before the capture.
+ await page.evaluate(()=>scrollTo(0,0));
+ await overflow('mobile examples');
+ await page.screenshot({path:folder+'/examples-mobile.png',fullPage:true});
+ await page.getByRole('button',{name:'Visual essays',exact:true}).click();
+ await page.locator('#nothing-is-only-one-thing').screenshot({path:folder+'/nothing-mobile.png'});
+ await overflow('mobile visual essay');
+ await go('recipes/');await overflow('mobile recipes');
+ await page.screenshot({path:folder+'/recipes-mobile.png',fullPage:true});
+ await page.screenshot({path:folder+'/recipes-mobile-top.png'});
+ for(const slug of ['build-a-channel','create-a-character','poetry-lesson']) {
+  await go('recipes/'+slug);await overflow('mobile '+slug);
+  await page.screenshot({path:folder+'/'+slug+'-mobile.png',fullPage:true});
+  await page.screenshot({path:folder+'/'+slug+'-mobile-top.png'});
+ }
+ await go('quick-start');await overflow('mobile quick start');
+ await page.screenshot({path:folder+'/quick-start-mobile.png',fullPage:true});
+ await page.setViewportSize({width:320,height:720});
+ for(const path of ['','examples','recipes/','quick-start','collaboration','architecture','guide',...recipes.map(recipe=>'recipes/'+recipe.slug)]){await go(path);await overflow('320 '+path);}
+ await page.emulateMedia({reducedMotion:'reduce'}); await go();
+ assert.equal(await page.evaluate(()=>getComputedStyle(document.documentElement).scrollBehavior),'auto');
+ assert.ok(await page.locator('video').evaluateAll(videos=>videos.every(v=>!v.autoplay && v.paused)));
+ results.push('Responsive: 390px and 320px, mobile navigation, reduced motion, no autoplay');
+ for (const width of [960,1024]) { await page.setViewportSize({width,height:900}); await go(); await overflow(width+' home'); }
+ assert.deepEqual(errors,[]);assert.deepEqual(bad,[]);
+ const failurePage = await context.newPage();
+ await failurePage.route('**/showcase/*.mp4',r=>r.abort());
+ await failurePage.goto(base,{waitUntil:'networkidle'});
+ await failurePage.locator('.screening .play-button').click();
+ await failurePage.getByText('The preview could not load.',{exact:true}).waitFor();
+ await failurePage.unroute('**/showcase/*.mp4');
+ await failurePage.getByRole('button',{name:'Try preview again'}).click();
+ await failurePage.locator('.screening .play-button').click();
+ await failurePage.waitForFunction(()=>document.querySelector('.screening video').currentTime>0.5);
+ await failurePage.evaluate(()=>Object.defineProperty(navigator,'clipboard',{value:undefined,configurable:true}));
+ await failurePage.getByRole('button',{name:'Copy Install the studio command'}).click();
+ await failurePage.getByText('Copy unavailable. Select the command and copy it manually.').waitFor();
+ await failurePage.close();
+ results.push('Resilience: failed video request, successful retry, clipboard fallback');
+ console.log(JSON.stringify({passed:true,results,errors,bad},null,2));
+ await writeFile(folder+'/browser-results.json',JSON.stringify({passed:true,results,errors,bad},null,2));
+} catch (error) {
+ await writeFile(folder+'/browser-results.json',JSON.stringify({passed:false,results,errors,bad,failure:String(error)},null,2));
+ throw error;
+} finally { await browser.close(); }

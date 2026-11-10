@@ -1,0 +1,5 @@
+> Imported studio reference, based on [bfea2f8](https://github.com/phoebus-84/video-studio/tree/bfea2f80a4f8a10c999118a4db35b2820ac5c5fc) with local source edits. This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
+
+# Workspace layout is flat channel/series/episode nesting; the existing library is frozen as legacy
+
+The canonical workspace layout is `library/<channel-slug>/<series-slug>/<episode-slug>` with no intermediate `series/` or `episodes/` container directories, matching what `video-pipeline-runtime` already creates. WORKSPACE.md is rewritten to match. The pre-conformance content in `library/` (little-red, cinderella, tomb, jaromail, gpu-architecture) is renamed to `library-legacy/` and frozen read-only as reference material; it is never migrated. All new production starts in a fresh `library/` initialized and validated by the runtime, accepting the loss of continuity for old episodes in exchange for a single enforced layout with no migrator to maintain.

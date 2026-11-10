@@ -1,0 +1,17 @@
+node_modules/
+docs/.vitepress/cache/
+docs/.vitepress/dist/
+# Selected media derivatives: local/explicitly restored, never source-library exports.
+docs/public/showcase/
+# Local release staging; never commit full films or upload credentials.
+.site-media/
+.env
+.env.*
+!.env.example
+.DS_Store
+*.log
+playwright-report/
+test-results/
+.impeccable/*
+!.impeccable/design.json
+!.impeccable/surfaces/

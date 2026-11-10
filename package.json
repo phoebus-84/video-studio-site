@@ -1,0 +1,29 @@
+{
+  "name": "video-studio-site",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Independent product website, recipes and selected work for Video Studio.",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "vitepress dev docs",
+    "build": "npm run reference:check && vitepress build docs",
+    "preview": "vitepress preview docs",
+    "test": "node --test tools/test/*.test.mjs",
+    "check": "npm test && npm run build",
+    "test:browser": "node tools/website-browser-smoke.mjs",
+    "media:prepare": "node tools/prepare-site-media.mjs",
+    "media:check": "node tools/prepare-site-media.mjs --check",
+    "media:stage-public": "node tools/prepare-public-media.mjs",
+    "media:restore-public": "node tools/restore-public-media.mjs",
+    "reference:sync": "node tools/sync-reference.mjs",
+    "reference:check": "node tools/sync-reference.mjs --check"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.62.1",
+    "vitepress": "1.6.4",
+    "vue": "3.5.45"
+  }
+}

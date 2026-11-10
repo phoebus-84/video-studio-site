@@ -1,0 +1,1080 @@
+{
+  "version": 1,
+  "repository": "https://github.com/phoebus-84/video-studio",
+  "revision": "bfea2f80a4f8a10c999118a4db35b2820ac5c5fc",
+  "includesLocalEdits": true,
+  "components": {
+    "blender": {
+      "path": "packages/blender",
+      "standalone": true,
+      "capabilities": [
+        "scene.create",
+        "scene.render"
+      ],
+      "summary": "Editable 3D scenes, keyframes and Geometry Nodes; background Eevee/Cycles previews and animations. Poly Haven asset acquisition with provenance."
+    },
+    "voice": {
+      "path": "packages/voice",
+      "standalone": true,
+      "capabilities": [
+        "speech.synthesize"
+      ],
+      "summary": "Speech synthesis and voice cloning on MLX. Usable on its own as a voice tool; knows nothing about episodes or pipelines."
+    },
+    "fal-media": {
+      "path": "packages/fal-media",
+      "standalone": true,
+      "capabilities": [
+        "image.generate",
+        "image.edit",
+        "video.generate"
+      ],
+      "summary": "Tracked image and video generation jobs against fal.ai, with provenance and cost. Video is MiniMax H3."
+    },
+    "codex-image": {
+      "path": "packages/codex-image",
+      "standalone": true,
+      "capabilities": [
+        "image.generate",
+        "image.edit"
+      ],
+      "summary": "Image generation and editing through an OpenAI ChatGPT/Codex subscription, or the Images API. A second provider for image.generate, billed against a plan rather than per image."
+    },
+    "graphics": {
+      "path": "packages/graphics",
+      "standalone": true,
+      "capabilities": [
+        "graphics.render"
+      ],
+      "summary": "Deterministic SVG/PNG rendering of code frames, diagrams, callouts and titles."
+    },
+    "terminal-recorder": {
+      "path": "packages/terminal-recorder",
+      "standalone": true,
+      "capabilities": [
+        "terminal.record"
+      ],
+      "summary": "Records a terminal session to video from a VHS tape. Useful on its own; knows nothing about episodes."
+    },
+    "infographics": {
+      "path": "packages/infographics",
+      "standalone": true,
+      "capabilities": [
+        "graphics.animate"
+      ],
+      "summary": "Frame-accurate animated infographics rendered through Remotion."
+    },
+    "video-composer": {
+      "path": "packages/video-composer",
+      "standalone": true,
+      "capabilities": [
+        "video.compose",
+        "media.probe"
+      ],
+      "summary": "Compiles a typed edit timeline into an FFmpeg filter graph; probes and QAs the result."
+    },
+    "remotion-composer": {
+      "path": "packages/remotion-composer",
+      "standalone": true,
+      "capabilities": [
+        "video.compose"
+      ],
+      "summary": "Renders a layered, kit-based edit timeline (studio.video/v1alpha2) with Remotion, then normalises loudness with FFmpeg. A second provider for video.compose."
+    },
+    "contracts": {
+      "path": "studio/contracts",
+      "standalone": false,
+      "capabilities": [],
+      "summary": "Canonical schemas, vocabulary and bindings. Every other studio piece depends on it."
+    },
+    "series": {
+      "path": "studio/series",
+      "standalone": false,
+      "capabilities": [],
+      "summary": "Series compilers: a pinned episode spec and its measured narration, compiled into an edit timeline."
+    },
+    "episode": {
+      "path": "studio/episode",
+      "standalone": false,
+      "capabilities": [],
+      "summary": "An episode on disk, produced: its edit timeline built or compiled from its spec, checked against its series' rules, rendered."
+    },
+    "runtime": {
+      "path": "studio/runtime",
+      "standalone": false,
+      "capabilities": [],
+      "summary": "Deterministic pipeline state: snapshots, leases, staleness, journal, policy."
+    },
+    "pipelines": {
+      "path": "studio/pipelines",
+      "standalone": false,
+      "capabilities": [],
+      "summary": "Built-in pipeline manifests for the shared narrated-video path."
+    },
+    "adapters": {
+      "path": "studio/adapters",
+      "standalone": false,
+      "capabilities": [],
+      "summary": "Stage adapters: declarative descriptors pairing a pipeline stage's contracts and capability with the code that performs it. What the gateway dispatches to."
+    },
+    "agent": {
+      "path": "studio/agent",
+      "standalone": false,
+      "capabilities": [],
+      "summary": "The Pi executive-producer package: tools, commands, stage UX. This is where studio-specific integration with the reusable packages lives."
+    },
+    "gateway": {
+      "path": "studio/gateway",
+      "standalone": false,
+      "capabilities": [],
+      "summary": "Local backend owning Pi RPC processes and streaming events to the browser."
+    },
+    "web": {
+      "path": "studio/web",
+      "standalone": false,
+      "capabilities": [],
+      "summary": "Browser studio for reviewing artifacts, attempts and deliverables."
+    }
+  },
+  "commandNames": [
+    "video",
+    "render",
+    "request-approval",
+    "vstatus",
+    "skills",
+    "ctx",
+    "dashboard"
+  ],
+  "gatewayTools": [
+    "pva_snapshot",
+    "pva_run_stage",
+    "pva_claim_stage",
+    "pva_complete_stage",
+    "pva_run_pipeline",
+    "pva_check_staleness",
+    "pva_plan_rerun",
+    "pva_request_approval",
+    "pva_budget_status",
+    "pva_journal"
+  ],
+  "files": [
+    {
+      "path": "docs/adr/0001-series-pipelines-use-explicit-inheritance.md",
+      "source": "docs/adr/0001-series-pipelines-use-explicit-inheritance.md",
+      "sourceSha256": "d37d8062f3b1595ad64d37a56e62bbd41a8f30147e753555da04b014a9edba45",
+      "sha256": "b512c367b46f81e41927a60f178022aaff33e5d2a1168b4eed4c6d7fec04a09a"
+    },
+    {
+      "path": "docs/adr/0002-pi-directs-a-deterministic-pipeline-runtime.md",
+      "source": "docs/adr/0002-pi-directs-a-deterministic-pipeline-runtime.md",
+      "sourceSha256": "369d175748a435c5d9c181194821d793a302d7ca3a798cca88243c3435d3fb81",
+      "sha256": "15eca9424982f58fc8068bc4f7ebd9611b7bfcdb1703f93064a3e9733a6513e4"
+    },
+    {
+      "path": "docs/adr/0003-production-state-is-filesystem-first.md",
+      "source": "docs/adr/0003-production-state-is-filesystem-first.md",
+      "sourceSha256": "148fa349accd905d9a3d4ec7981be7b5e865b61a9a687ce0ae0e7d049cd698b3",
+      "sha256": "e7fa602b7d14cff0fa78fa76d60dacfc16c4c44bc5bdd56625f484f65b6b525c"
+    },
+    {
+      "path": "docs/adr/0004-channels-and-series-are-distinct.md",
+      "source": "docs/adr/0004-channels-and-series-are-distinct.md",
+      "sourceSha256": "653732bf3835f041e43f271d68105435b49bcabecd511e3b84d8ab01d32185bf",
+      "sha256": "0d1e7be72aa97ab1ab43e7da9068bd9db2c310b338ce55cdf8752e0c175f6374"
+    },
+    {
+      "path": "docs/adr/0005-artifact-formats-follow-ownership.md",
+      "source": "docs/adr/0005-artifact-formats-follow-ownership.md",
+      "sourceSha256": "7659a0f39c0cecf7526989ab7834d38dd0f345fbfcdf34a13e9a4ab7b381a2c6",
+      "sha256": "655481af49cd1767762b3616ebf7c54bc1ff7d11dd03e5d8a4f40e3fd8b71e62"
+    },
+    {
+      "path": "docs/adr/0006-autopilot-is-bounded-not-unattended.md",
+      "source": "docs/adr/0006-autopilot-is-bounded-not-unattended.md",
+      "sourceSha256": "c03ef8c27e3802169f88a8761a65a1eaa072db94ab78536f1425d14bac07bf05",
+      "sha256": "4dfa130c867fb62fafa8b9fd6a6b94aa6ea5b5d6bd6a221c44f54623ecaa0b67"
+    },
+    {
+      "path": "docs/adr/0007-fal-uses-a-dedicated-provider-adapter.md",
+      "source": "docs/adr/0007-fal-uses-a-dedicated-provider-adapter.md",
+      "sourceSha256": "4c4e7ed8bd165acac836f052bbd8006c7a8830777a0cd6e1295ded27f6600f1f",
+      "sha256": "d60c5c966381df47740712d5a37619b77abe22c3660f3901e5fb7f91c6977faa"
+    },
+    {
+      "path": "docs/adr/0008-qwen-tts-runs-as-a-long-lived-worker.md",
+      "source": "docs/adr/0008-qwen-tts-runs-as-a-long-lived-worker.md",
+      "sourceSha256": "45070d84337e9517b2a7cbba384b36ab1b935f017bfc7ccb4d84c69a01ae5815",
+      "sha256": "a397941410788870f4a997dbe25aa8b85742d337520fd417a01a25496253afa9"
+    },
+    {
+      "path": "docs/adr/0009-ffmpeg-compiles-a-typed-edit-timeline.md",
+      "source": "docs/adr/0009-ffmpeg-compiles-a-typed-edit-timeline.md",
+      "sourceSha256": "c9e28ec859002b6be1205ba324bc49e234934db09ed4765453f13c9938b22f5b",
+      "sha256": "b16656b18823dcc564927c98b648544d1db3c70ecb31480af74f0931f685602f"
+    },
+    {
+      "path": "docs/adr/0010-visual-continuity-is-an-artifact.md",
+      "source": "docs/adr/0010-visual-continuity-is-an-artifact.md",
+      "sourceSha256": "a7db9c79148e9e47f9ce39988cbc6f7a2c06580cd9abb8de0615ae31e3da26fe",
+      "sha256": "a1abdaae91aade510d63f56715d33fe3c0eb4c43526e9a911069e8757e3476f9"
+    },
+    {
+      "path": "docs/adr/0011-multi-video-requests-spawn-independent-episodes.md",
+      "source": "docs/adr/0011-multi-video-requests-spawn-independent-episodes.md",
+      "sourceSha256": "dec21b0f0f9146ce088a25fa90c1786cfcc224c68f6a3780366cde0bd71947c4",
+      "sha256": "dcdf80583516239ee6dfc548cf67f8ff481369e80ea62ee822bfb58431d04581"
+    },
+    {
+      "path": "docs/adr/0012-feedback-is-anchored-and-revisions-propagate-staleness.md",
+      "source": "docs/adr/0012-feedback-is-anchored-and-revisions-propagate-staleness.md",
+      "sourceSha256": "1f2b2e90778bce4f048307567e9444b042655c2323f096ea2960430755c5b5ed",
+      "sha256": "ed3c10b9a6462c40d86afdd41546b4c02f9014b0635f3e5d6db7bc13d586deab"
+    },
+    {
+      "path": "docs/adr/0013-the-browser-connects-through-an-agent-gateway.md",
+      "source": "docs/adr/0013-the-browser-connects-through-an-agent-gateway.md",
+      "sourceSha256": "e3cefe63675b91d6d2c457b5707fe659ed5bfffe3cd842d64f4b6b77add0e79d",
+      "sha256": "2f12d6c2fb3b5dc3bbe7b3b49b27e0cf749bba741c7f1d27aeac439306a9a98b"
+    },
+    {
+      "path": "docs/adr/0014-repository-inputs-are-pinned-and-untrusted.md",
+      "source": "docs/adr/0014-repository-inputs-are-pinned-and-untrusted.md",
+      "sourceSha256": "3dabe93aeefa85559a8f4dbf82fe315627d82418db3e9e40735fd63f57d8e0f0",
+      "sha256": "e6e298ee4bd84cec354f709ca5d77843175f52f02a6a0b8bf208c992943da024"
+    },
+    {
+      "path": "docs/adr/0015-stages-request-capabilities-not-providers.md",
+      "source": "docs/adr/0015-stages-request-capabilities-not-providers.md",
+      "sourceSha256": "85acee7d6f2a68baf1edae923af1b6d6ebfe92df4b37bef54f5e72aeaf5ad0af",
+      "sha256": "acb53a7d79731b6ec62207aa6cc870bfb4ef68ff8f7a0ae6887bd10290b03538"
+    },
+    {
+      "path": "docs/adr/0016-youtube-rendering-not-publishing-defines-the-mvp.md",
+      "source": "docs/adr/0016-youtube-rendering-not-publishing-defines-the-mvp.md",
+      "sourceSha256": "56824dfc123beca40b007ab6c1cf5cc384c30b53533c16de4380ca0ad37afe76",
+      "sha256": "859ecb22cabde382c82297c43cd6926f1374037f5d1b50f43997fdac3fb6cf7a"
+    },
+    {
+      "path": "docs/adr/0017-contracts-are-versioned-in-a-dedicated-module.md",
+      "source": "docs/adr/0017-contracts-are-versioned-in-a-dedicated-module.md",
+      "sourceSha256": "941bc86d375151f629e3efbbb1fcc387def2da4694e73fba6c037cb7dc4aaa16",
+      "sha256": "0a8da2957d98469cef13513e58e9c38c1e634efd51d05c0bdb89c5b90a3efb68"
+    },
+    {
+      "path": "docs/adr/0018-typescript-is-the-control-plane-python-isolated-to-mlx.md",
+      "source": "docs/adr/0018-typescript-is-the-control-plane-python-isolated-to-mlx.md",
+      "sourceSha256": "f2435a9e40566279cbc60e0fced1682e284576263c1f06f3e353eaf2da219abb",
+      "sha256": "b2a2f26c9bd81cc52cfc209aada449d92f037432a64e0ebdcfc112d152387e94"
+    },
+    {
+      "path": "docs/adr/0019-mvp-captions-use-narration-segment-timing.md",
+      "source": "docs/adr/0019-mvp-captions-use-narration-segment-timing.md",
+      "sourceSha256": "45a207c73907290860257745b779367e53e7f93b891f07f8119a6c4d34cbdf98",
+      "sha256": "4d9a165ca4cae5a8a42a53ab94fd6a70d0bf38779231799fe968417a29b7091c"
+    },
+    {
+      "path": "docs/adr/0020-exact-technical-graphics-are-rendered-locally.md",
+      "source": "docs/adr/0020-exact-technical-graphics-are-rendered-locally.md",
+      "sourceSha256": "7fdb40a69bb341df70e6ba3e355de78d2555eb6df5401b45f4d663425846ca94",
+      "sha256": "c4fb995a26f1d0af0c831ce03501be974ba6f3cb4405dee3493fd427664a894f"
+    },
+    {
+      "path": "docs/adr/0021-generated-media-is-immutable-and-not-auto-committed.md",
+      "source": "docs/adr/0021-generated-media-is-immutable-and-not-auto-committed.md",
+      "sourceSha256": "d6ba779867df3c14b1176cbefab1fd2ce9486350d5176d719c92a7be140e67f6",
+      "sha256": "545589bc1414b5949c8ad766af7b479af0fd2a88a25cb46df63b4a7726ea6eca"
+    },
+    {
+      "path": "docs/adr/0022-modules-have-independent-git-and-beads-history.md",
+      "source": "docs/adr/0022-modules-have-independent-git-and-beads-history.md",
+      "sourceSha256": "39479d455620144d59de1d389c4b88c790d63a530752a24b2ccb2c136738b6b5",
+      "sha256": "a2f5bbe0d7b370813dca1285ca41b9f81ba3cda3ca61e26c572c1346666a9a1e"
+    },
+    {
+      "path": "docs/adr/0023-flat-workspace-layout-and-legacy-freeze.md",
+      "source": "docs/adr/0023-flat-workspace-layout-and-legacy-freeze.md",
+      "sourceSha256": "cef90e070d165924782571cddcc977fa879e624e656aaea6e1c44f9b755c45b2",
+      "sha256": "c77a87f33527af1cc37ba634e16d45ce994c8ff27bf2b324401a57964a22f1a1"
+    },
+    {
+      "path": "docs/adr/0024-canonical-pipeline-manifest-owned-by-contracts.md",
+      "source": "docs/adr/0024-canonical-pipeline-manifest-owned-by-contracts.md",
+      "sourceSha256": "80c22d9d37cb5a157c07713743cdf19a01e0e684ddde73a0a55817e009201dc9",
+      "sha256": "729c38d555bb23628ef7d28fa0a59e034f63a9ccf93329312337ba5f71637feb"
+    },
+    {
+      "path": "docs/adr/0025-editorial-and-capability-stage-types.md",
+      "source": "docs/adr/0025-editorial-and-capability-stage-types.md",
+      "sourceSha256": "22543f9986a702c3e8fb592a09bb2adfb4ea970d1e99da5a49d393aa71a2f569",
+      "sha256": "90b2e4e9be3f8cfee75ea95e79c56989ac0e75e027b3295356a720f6b673c8d4"
+    },
+    {
+      "path": "docs/adr/0026-capability-dispatch-via-package-imports.md",
+      "source": "docs/adr/0026-capability-dispatch-via-package-imports.md",
+      "sourceSha256": "314a74f4e2ff352dcb5768c04d444e22a7f64a375356b19cc4e883542ff068bc",
+      "sha256": "b9666086c3a66948a005285615d7c117303cdaeaba02828016947497025a399b"
+    },
+    {
+      "path": "docs/adr/0027-the-gateway-never-produces-artifacts.md",
+      "source": "docs/adr/0027-the-gateway-never-produces-artifacts.md",
+      "sourceSha256": "b4a0bd772123dfac0c510cfcd161745a918b9c8f9ca741e6fce51eebea610d47",
+      "sha256": "128f09e0c04f9aa0d422c7bb4db72a12161174ea01e2724913291915f726b263"
+    },
+    {
+      "path": "docs/adr/0028-contracts-scope-six-schema-families-with-typescript-bindings.md",
+      "source": "docs/adr/0028-contracts-scope-six-schema-families-with-typescript-bindings.md",
+      "sourceSha256": "15060f0ca0651c2a0111042aaa9072464ae6253418678f381f5a7e14e944d18a",
+      "sha256": "ee8dcbfb767a9cf147a0790df60641200f030fbfc859cf30960819a70b972d70"
+    },
+    {
+      "path": "docs/adr/0029-skills-single-source-of-truth.md",
+      "source": "docs/adr/0029-skills-single-source-of-truth.md",
+      "sourceSha256": "c122f86f69b9a2322821458c8980381a4754fc1c7a5902605d0fdea3a0989b3a",
+      "sha256": "b05b270d56e96a5266ab03880dfc9059cc016fbfa540bbac38e8ab9a617347c2"
+    },
+    {
+      "path": "docs/adr/0030-secrets-are-environment-only-and-dev-auth-is-explicit.md",
+      "source": "docs/adr/0030-secrets-are-environment-only-and-dev-auth-is-explicit.md",
+      "sourceSha256": "9a432950bd480fa7a66e44e7509eba9b85d370393847908ddd543594893658bd",
+      "sha256": "86d114ad4e7c7a8884f0fbf749618d0762d9441921e88b3a66bcee72bd654855"
+    },
+    {
+      "path": "docs/adr/0031-bun-is-the-javascript-package-manager.md",
+      "source": "docs/adr/0031-bun-is-the-javascript-package-manager.md",
+      "sourceSha256": "c3f1f01abce5e1b1ccbb1c19b45bae835c982456e5642f2a2f7d1948840dcfd2",
+      "sha256": "6c22cf74d1aa3d05c26d39b4089fc8ca0665e1015ce203a48efdc367c13433b3"
+    },
+    {
+      "path": "docs/adr/0032-single-repository-with-reusable-packages.md",
+      "source": "docs/adr/0032-single-repository-with-reusable-packages.md",
+      "sourceSha256": "f7939336e6dcbdfa92487d9088d12c3f831825341eb786336ded9172fb4da2b5",
+      "sha256": "7700b33aa135f543911a7a939d387c8ee0397055a64643876d51e271b7d31c74"
+    },
+    {
+      "path": "docs/adr/0033-blender-is-a-reusable-scene-provider.md",
+      "source": "docs/adr/0033-blender-is-a-reusable-scene-provider.md",
+      "sourceSha256": "33186192543c03e7fc59751df0d086320de4740b04a3b82ac9b8bd3fc790af43",
+      "sha256": "39a071bacc85bf6a2b2e1f9ed39b40e331e262edbc5772aed8952be0b827b8fa"
+    },
+    {
+      "path": "docs/adr/0034-a-layered-kit-based-edit-timeline.md",
+      "source": "docs/adr/0034-a-layered-kit-based-edit-timeline.md",
+      "sourceSha256": "e9d5b54d862be9b08297055fc2d934dc2ddae3a3bf02c24c25fced335ea79654",
+      "sha256": "d39d94a3873bcacd2fc3499241512937b9562b3b5f209f23571da05c1b72b95c"
+    },
+    {
+      "path": "docs/adr/0035-shared-material-is-pinned-never-copied.md",
+      "source": "docs/adr/0035-shared-material-is-pinned-never-copied.md",
+      "sourceSha256": "f44771512f6e0e7ce6daa3dac5630089e3f89a33c96e95d263341a9a4036ed4e",
+      "sha256": "02f7b726dc3b90f0e6b3fbf51146da844f21ef0ee7fec8b7db6311a2fe11a72d"
+    },
+    {
+      "path": "docs/adr/0036-the-studio-renders-episodes-through-the-edit-timeline.md",
+      "source": "docs/adr/0036-the-studio-renders-episodes-through-the-edit-timeline.md",
+      "sourceSha256": "c5945c4c8c1366daa274f3e2344360d2579454e787c28d3d24eecd0e13a2ee17",
+      "sha256": "c71a3366181986c4e460f6753d6514aa6ae3c1e624074cab48c5b3b62627b120"
+    },
+    {
+      "path": "docs/adr/0037-series-templates-pin-editorial-standards.md",
+      "source": "docs/adr/0037-series-templates-pin-editorial-standards.md",
+      "sourceSha256": "55988ecc7a02afeaf8d8f31af49ac008656bae266513bc5435c3f8206dbb4713",
+      "sha256": "2e729d2d35581858c17637c4983d859839a26d20c176f6271aa07c1aad3b7731"
+    },
+    {
+      "path": "docs/adr/0038-word-timing-comes-from-forced-alignment.md",
+      "source": "docs/adr/0038-word-timing-comes-from-forced-alignment.md",
+      "sourceSha256": "251c9831dfdd32ec4a59154d23be631b2a0e4e477efe57e79b69415b6dc3a62d",
+      "sha256": "c7c738f395439fcf0e139928a778f5a2c425b3d4fec048408eb1fbaa84e6e755"
+    },
+    {
+      "path": "docs/adr/0039-format-kits-share-frozen-libraries.md",
+      "source": "docs/adr/0039-format-kits-share-frozen-libraries.md",
+      "sourceSha256": "eef8dcbc3c93148ab0f3be3cc66b17da864a17b9e5614191826aaa173101cbb0",
+      "sha256": "14de830098db100b42f14ec4e5049022aec10d0367dec3eeab462c00c0e09983"
+    },
+    {
+      "path": "docs/adr/0040-channel-themes-carry-the-look-as-data.md",
+      "source": "docs/adr/0040-channel-themes-carry-the-look-as-data.md",
+      "sourceSha256": "a76f878f30875204887b1699b21cdd15b57653c2d103ca225a22bde3a12196b7",
+      "sha256": "6dba7b541c98474ac322b92806c722d92dfb5e5f72309221c067529546b96cec"
+    },
+    {
+      "path": "docs/adr/0041-a-series-release-carries-its-own-code.md",
+      "source": "docs/adr/0041-a-series-release-carries-its-own-code.md",
+      "sourceSha256": "e044844abd6e07229096ec8b523152d25b07af2ba4e0e95e771aa9082cf91c31",
+      "sha256": "85698a37b0b04f3bcfa792359a0ed0e8af92a83a284096440281f74c0c3093fa"
+    },
+    {
+      "path": "docs/adr/0042-kits-a-channel-or-series-carries.md",
+      "source": "docs/adr/0042-kits-a-channel-or-series-carries.md",
+      "sourceSha256": "ef0c0ed580ecc44b477774cb71cf37999bb0a3123dcd5eb709c553ce8bc6b211",
+      "sha256": "bc52ca3e703b83c9ba56967b35a20b9013758830a69c4c696fd3961f85979887"
+    },
+    {
+      "path": "docs/adr/0043-the-toolbox-for-library-code.md",
+      "source": "docs/adr/0043-the-toolbox-for-library-code.md",
+      "sourceSha256": "39bd8d8853b3c6802b2d21a32a9a417de1378845ffd88e920f15be8cd77e598f",
+      "sha256": "1ea3204f3934fe17f908f5ae3c60cc0420e8091d42978ffe05d2670e39173b48"
+    },
+    {
+      "path": "docs/adr/0044-the-application-ships-no-channel.md",
+      "source": "docs/adr/0044-the-application-ships-no-channel.md",
+      "sourceSha256": "2bb345aca0fcbf784d58fa046a8f6995e0c76f70c300289c973e0740472bf313",
+      "sha256": "e7fc20e0f2062fe5020583c091634b0fad0da8fa7138eafb64ac6649077fb0bf"
+    },
+    {
+      "path": "docs/adr/0045-a-channel-is-its-own-repository.md",
+      "source": "docs/adr/0045-a-channel-is-its-own-repository.md",
+      "sourceSha256": "dcef8cf94f9deba62566fcdd1c8329097ac3d6258f7da369e86f2f7a00c9e1ad",
+      "sha256": "1d084d79ef112f201791b73ab7b528755c77812033c10d5aa093d4bcc2e59393"
+    },
+    {
+      "path": "docs/adr/0046-archive-media-carry-licence-and-evidence.md",
+      "source": "docs/adr/0046-archive-media-carry-licence-and-evidence.md",
+      "sourceSha256": "0fb5117f8f4e73ccd2474b34178a9509d419310cc6de3b2f12fdd6bf1342ce01",
+      "sha256": "ef2aea9609a1752a418f881238afeb6d8cf9687a4285ba5bad61a47b0e41605a"
+    },
+    {
+      "path": "docs/adr/0047-audio-edits-are-recipes.md",
+      "source": "docs/adr/0047-audio-edits-are-recipes.md",
+      "sourceSha256": "221b0a1049c9576be38bb24ecc7d903679b7d687f88f843de4cf6a2803050cda",
+      "sha256": "46ce51ce4f38a19ae39ff21eb0cb80e7e6bd8c14d8e4d274cecd3b06fca0c798"
+    },
+    {
+      "path": "docs/adr/0048-tools-written-once-served-to-any-harness.md",
+      "source": "docs/adr/0048-tools-written-once-served-to-any-harness.md",
+      "sourceSha256": "ad6b8db650e34d9fd8bf83b6391d08f7f6840ade53affc43927a99324d3bc2c2",
+      "sha256": "bea2658a2e56019693b43361a70d0ac63d29056e2f04bf494250e17bf0d13fc2"
+    },
+    {
+      "path": "docs/adr/0049-channel-media-use-a-content-addressed-s3-remote.md",
+      "source": "docs/adr/0049-channel-media-use-a-content-addressed-s3-remote.md",
+      "sourceSha256": "5496e43ac93f59fc2548201878a06e604d768b38202feceb3dd59ae4f6608c46",
+      "sha256": "f6ca74628f5617559305ca50d2cbcd457dc236cbf9af29b5c323c27e1f00c59a"
+    },
+    {
+      "path": "docs/architecture.md",
+      "source": "docs/architecture.md",
+      "sourceSha256": "03dd725141ff3055438bec88b62b1f7c9cc7dee6837e22383ecb847c6dc51a3c",
+      "sha256": "b31cd89d46fb75ed6ae472c505d43fe75692a8e0ce031268e0896cbd72bf4e43"
+    },
+    {
+      "path": "docs/context.md",
+      "source": "docs/context.md",
+      "sourceSha256": "1fa105be6bfbc488d21b31ee185027a72e46855bc6b76781b959e7f0b6333222",
+      "sha256": "cd04a40f3e83f46df758642814a436d8265d3b6ca12cd53127db68941ab84cf6"
+    },
+    {
+      "path": "docs/contributing.md",
+      "source": "docs/contributing.md",
+      "sourceSha256": "3bb839d3736121fab852e782d858dba26f79ad83bfe2378872a9d9d1e755e90b",
+      "sha256": "c8bd4c02e739833bc58553c3ce4ea42b02bf30fed604cda8205c3ac082fe97c8"
+    },
+    {
+      "path": "docs/install.md",
+      "source": "docs/install.md",
+      "sourceSha256": "34f4945fa6dff76f8490d8e8a35818dd0ba25563a86f623b185983509539c445",
+      "sha256": "9a3879ec98fe63e8a8c26005fb52c3fd631797694496fa2b6d556ffb3331573c"
+    },
+    {
+      "path": "docs/packages/blender.md",
+      "source": "docs/packages/blender.md",
+      "sourceSha256": "172e4bc9477e955e7582e58bdaac1b2b614a0068d1c90dcf6e1a8b072a23e1c4",
+      "sha256": "1abddeb3d930d01110fa58121bd6c21f0f7bb362e8736211b435367b56047e72"
+    },
+    {
+      "path": "docs/packages/codex-image.md",
+      "source": "docs/packages/codex-image.md",
+      "sourceSha256": "1d7519c2b64b46303855a05a14ea853d9bfee196390d4c9ac9e460aff57ca0be",
+      "sha256": "c2057d01bb7a96f711506e57120faa27755dbfd4c627ecba4e5fe606e9d85bcd"
+    },
+    {
+      "path": "docs/packages/fal-media.md",
+      "source": "docs/packages/fal-media.md",
+      "sourceSha256": "8a5f6224d685fd23921854233abc8b2352c25ae9e378de677fa1b2b6a12d11ad",
+      "sha256": "6fdd83b98f8b8e771926f7ebf496b1b5e34ad7e09bd590a95004e1e129c78ee7"
+    },
+    {
+      "path": "docs/packages/graphics.md",
+      "source": "docs/packages/graphics.md",
+      "sourceSha256": "1a095010b13cbdae111536fdcea9af4617471484b6f985bae109faee25b123d6",
+      "sha256": "4b89a07a494cff63020e6fe3d581edb4bf3db622f08553b78fa29b3464fafc3e"
+    },
+    {
+      "path": "docs/packages/infographics.md",
+      "source": "docs/packages/infographics.md",
+      "sourceSha256": "d49c81afd8274d50366e70cd32c1c02eca22db888f797f587ce93ceda4b275d6",
+      "sha256": "bd33c72efd79d938376df16630129aa60227a7dc7dbb65eabb232d427475df2c"
+    },
+    {
+      "path": "docs/packages/remotion-composer.md",
+      "source": "docs/packages/remotion-composer.md",
+      "sourceSha256": "9f4c5cd587dd3f1821f4091c3f5e24d817e27ad8f6dc8450e97cbb5a7f195d49",
+      "sha256": "6f7d5b5d20c3f3f3f82974546855bb809025eaefd5232590a3153d543d07399f"
+    },
+    {
+      "path": "docs/packages/terminal-recorder.md",
+      "source": "docs/packages/terminal-recorder.md",
+      "sourceSha256": "4e3b0211b2acd119e1ad7646887e2a4d0e3290c83120d6d2d7c076bbe01ca251",
+      "sha256": "2655cc984d390cefb94da78a94e4368916c0074520c6d463e3606c40acd8eaa9"
+    },
+    {
+      "path": "docs/packages/video-composer.md",
+      "source": "docs/packages/video-composer.md",
+      "sourceSha256": "dca1cd8c56282217abb6c22e058ce54efec3c039a795fcf20685ad214a9579ec",
+      "sha256": "b6a07e4c30968d516886cad3c298bf178021752ff22ab191df95999c412ec126"
+    },
+    {
+      "path": "docs/packages/voice.md",
+      "source": "docs/packages/voice.md",
+      "sourceSha256": "744aceb8d3157790d216549dc3cbcdf7ef386d02f759934a77a577d27ca21943",
+      "sha256": "917c80ac335c2c783af5ec32485edd802e76cf44d93f2a73bd94e4942384bcfb"
+    },
+    {
+      "path": "docs/pipelines.md",
+      "source": "docs/pipelines.md",
+      "sourceSha256": "1eec4ad9f32c00dc2c38f4a987e780a6d505d0b86937cdb54553f68b38e3cfbc",
+      "sha256": "476e121aefa3109ec55e7e0efe3c79a270a2e9d6c7069b06e5f60190aa69479f"
+    },
+    {
+      "path": "docs/public/resolve-handoff.example.json",
+      "source": "docs/public/resolve-handoff.example.json",
+      "sourceSha256": "156932ff2406c4822f8ea2f3b22a366bf1a862ed7210fc0c98b519df999e7e01",
+      "sha256": "156932ff2406c4822f8ea2f3b22a366bf1a862ed7210fc0c98b519df999e7e01"
+    },
+    {
+      "path": "docs/reference/adapters/readme.md",
+      "source": "studio/adapters/README.md",
+      "sourceSha256": "f6281a362e8fff5d3150b8055a63801ee17e1380764e634d788bc6b1d0a6c8f5",
+      "sha256": "61b8d8e18fa300ca081d57c1bfa4f4335ece45780d30568c3e0e2952bbc1aa07"
+    },
+    {
+      "path": "docs/reference/agent/changelog.md",
+      "source": "studio/agent/CHANGELOG.md",
+      "sourceSha256": "60c0a6dac5e4539edce27ae62b854561db504d7de4331579efc94ae173b81072",
+      "sha256": "cb66dbd8b90432ce980e2456d35f3903981e2853b8f13d2c4d55ec13d87ece1c"
+    },
+    {
+      "path": "docs/reference/agent/contributing.md",
+      "source": "studio/agent/CONTRIBUTING.md",
+      "sourceSha256": "976e60663e7664ee48f5bfe8aaa2547cd1f930b9b0d2b59de44e886a22f0bd27",
+      "sha256": "c15dd17ced29464fe399bd720bbae52e051fb7f6b7de779c0b39301c616a8266"
+    },
+    {
+      "path": "docs/reference/agent/readme.md",
+      "source": "studio/agent/README.md",
+      "sourceSha256": "f64b1bb36be2c7c97b7258734543f2bc7f1e4c56a102509985f792635a5dbaa5",
+      "sha256": "08442ba7a3846108ee4e7e992104205158c2233a0e9ac17cf1870238bee2f01e"
+    },
+    {
+      "path": "docs/reference/agent/security.md",
+      "source": "studio/agent/SECURITY.md",
+      "sourceSha256": "7c36a85fa527d43a095dd6c32685af61a4a0fa4348ada2976dca1cb79c903b26",
+      "sha256": "4c1b996839f4a8616ed73a2ccde14f1035b64f0f858d7fbb6ac0a7cf972b2bee"
+    },
+    {
+      "path": "docs/reference/agent/skills/pva-executive-producer/skill.md",
+      "source": "studio/agent/skills/pva-executive-producer/SKILL.md",
+      "sourceSha256": "137c897dbc0a2155ef3c9b2529315e9508519520975fdb621bed8a96c195aa55",
+      "sha256": "e49c179fa77133ee152251a762fed321662749d8cc3e604bde853abb461737fe"
+    },
+    {
+      "path": "docs/reference/blender/readme.md",
+      "source": "packages/blender/README.md",
+      "sourceSha256": "5cf1a3be0dc275ef463b29cfee8f62a26a1be848162a3b2f6004e1b9923527ca",
+      "sha256": "87da7b49e701edf33c282b8e4494f0e9a199e42d2bed79f892836dc8e21d134d"
+    },
+    {
+      "path": "docs/reference/codex-image/readme.md",
+      "source": "packages/codex-image/README.md",
+      "sourceSha256": "fe7ff583b6cecc42047e6a5c34225a04e4fb447c36f5d5e1ff4dba17eafe0aa3",
+      "sha256": "1ec9164a299d9dc6beb8a7ab0989762f3d7fe5fe9c6bfbe3b54c86e5d531951f"
+    },
+    {
+      "path": "docs/reference/contracts/docs/compatibility-policy.md",
+      "source": "studio/contracts/docs/compatibility-policy.md",
+      "sourceSha256": "6dcecb42616a18e32782f7d266847c14f67752db0127b79b18243bb510a859e6",
+      "sha256": "9bab68bae313815c3fdf0805b86b6a0062681e2951f0b785b62d9941e3d70711"
+    },
+    {
+      "path": "docs/reference/contracts/docs/contract-catalog.md",
+      "source": "studio/contracts/docs/contract-catalog.md",
+      "sourceSha256": "3000e396ed02f79eb51e6b1e2b3c0e71f6de26b90fae024a2bc76366477d1fa7",
+      "sha256": "cb6d3fd37e343dba71941eef790c0e8584145d2c4c7555f532455b0614a2e8a9"
+    },
+    {
+      "path": "docs/reference/contracts/docs/identity-and-provenance.md",
+      "source": "studio/contracts/docs/identity-and-provenance.md",
+      "sourceSha256": "4b2ada92d9ebbccfe4d01eab07e550bd5eedf13957aca0661881d82ebd9e5e9a",
+      "sha256": "d63211a9f8ced615f513d6bace555901a823ef046917b985d1e20a45f7e90432"
+    },
+    {
+      "path": "docs/reference/contracts/docs/wire-conventions.md",
+      "source": "studio/contracts/docs/wire-conventions.md",
+      "sourceSha256": "65be719a68946e3ba8cabd32881488884c80f514182a5cce9bff166df6371be9",
+      "sha256": "1e154f748b83b4fb2db6ed990f97b56b9082efbe466a6815a655ff4f9a899c3d"
+    },
+    {
+      "path": "docs/reference/contracts/docs/workspace-and-policy.md",
+      "source": "studio/contracts/docs/workspace-and-policy.md",
+      "sourceSha256": "cd816a29f3c2653cd00ab28f7cba80bc6dafe1ec1fb9af719a1c475addfa3597",
+      "sha256": "26e5a27d8c048108259c9e381a64ab751771b2e213e42efad52e92f7bacd7df9"
+    },
+    {
+      "path": "docs/reference/contracts/readme.md",
+      "source": "studio/contracts/README.md",
+      "sourceSha256": "00b193b0ad3c8220b428823cc34f729ec0cec5a3ff539d924399006676da0267",
+      "sha256": "c5fbc8de497b4ad70353944142047955d7fe44f02d2473768a040aeb838007e6"
+    },
+    {
+      "path": "docs/reference/episode/readme.md",
+      "source": "studio/episode/README.md",
+      "sourceSha256": "87e78778ab424e796abec3eaf5e8c5f8af4383e9dd371d15ec233c70761daecb",
+      "sha256": "7e85b438c9474aae6ce8767791aed13f531ab227c3182ae1adcae05d90941a4d"
+    },
+    {
+      "path": "docs/reference/fal-media/docs/contract.md",
+      "source": "packages/fal-media/docs/CONTRACT.md",
+      "sourceSha256": "c30a6385724c7ccd30966d5882f79767f8c51cb4a8ae38785f39abe2df05b5ad",
+      "sha256": "1555b252f2f4e1c9feca16683e90fa821c8c4cac4edfeebca1f2a46e3819f81a"
+    },
+    {
+      "path": "docs/reference/fal-media/docs/contributing.md",
+      "source": "packages/fal-media/docs/CONTRIBUTING.md",
+      "sourceSha256": "048ca9da2f057d8ba662a4b37644643d6bc791ef5ee6695f39eafaca1c31a001",
+      "sha256": "635ec3ea5e2c53342d1254de86f7e9fea5ce4db667fcdac460f64d1175462d2c"
+    },
+    {
+      "path": "docs/reference/fal-media/readme.md",
+      "source": "packages/fal-media/README.md",
+      "sourceSha256": "62eb19e0844fc42090a59ba07d72b47f5a78af92b3e1934b44a02ad89c391cc8",
+      "sha256": "1bfac09da230543571266c592fd6b04af2a4ace8c49d61e82f6bb28530413c5b"
+    },
+    {
+      "path": "docs/reference/gateway/docs/api.md",
+      "source": "studio/gateway/docs/API.md",
+      "sourceSha256": "daa3a5e2d2992ade3680bd057703185f0246013ea7b79410a10630124e0ef2e1",
+      "sha256": "1127920927cd6fa0f6951cdbc47da12253017bce383e00eff51b5aabd46e105a"
+    },
+    {
+      "path": "docs/reference/gateway/docs/contributing.md",
+      "source": "studio/gateway/docs/CONTRIBUTING.md",
+      "sourceSha256": "6b06a672c709ad9de2cb04319b20c0514417b44ee27600ad6a5e2e7a87c0de33",
+      "sha256": "1c3b1c4f1ab5877469d59cb63c199de81f9200f4e66550150ffbd8ce1ea0faa9"
+    },
+    {
+      "path": "docs/reference/gateway/docs/operator.md",
+      "source": "studio/gateway/docs/OPERATOR.md",
+      "sourceSha256": "5c1838c979a87548b0bc5123cfc52c5c688a4bab373d94de1c2afe810ea4e3d7",
+      "sha256": "f3c384512ff1247d5cab6981afe6999f5ebd58afec8f0b48955985335a6ee9b0"
+    },
+    {
+      "path": "docs/reference/gateway/readme.md",
+      "source": "studio/gateway/README.md",
+      "sourceSha256": "e87b47396937b5c301a2046295f06369bd47bda5645fad3e411d5b0532f9dc12",
+      "sha256": "744662884abc8b9175d45b57ab5f8953403c56bf703db58139f1ed434a431c4c"
+    },
+    {
+      "path": "docs/reference/graphics/docs/contracts.md",
+      "source": "packages/graphics/docs/contracts.md",
+      "sourceSha256": "f9a008d0d57b4c740ef7b174a033fc53470f072b94b9194dfe59bc73206c260d",
+      "sha256": "7c598dcb67751f685551a4c15a951c8aae54a786741e5b77d23be90ab5d018d5"
+    },
+    {
+      "path": "docs/reference/graphics/docs/operator-guide.md",
+      "source": "packages/graphics/docs/operator-guide.md",
+      "sourceSha256": "f1451bc198c0fdf8f3633ffda4dd5a1e00248ec34b0385ce0c43b19235caee0f",
+      "sha256": "b913b4c09739f9925381c5eee2c53709e38ee8d71240a8fa7b3866df6c5c0a84"
+    },
+    {
+      "path": "docs/reference/graphics/docs/security.md",
+      "source": "packages/graphics/docs/security.md",
+      "sourceSha256": "88397022f855c04dbe3e3cf58924faa7c51fdab19fce8f819dd796bcd3881c14",
+      "sha256": "c133a096737a1f8d8a5374276e525cbd1329c806c1e2514a4becdd7ed023b318"
+    },
+    {
+      "path": "docs/reference/graphics/readme.md",
+      "source": "packages/graphics/README.md",
+      "sourceSha256": "2b8af3cc25a9e76d34b76acafa6fc0b7eabc0366956de73ce620c3206582caa2",
+      "sha256": "03be517605f401017078077895f74943e3f1ca94483128707b39ca84db25f042"
+    },
+    {
+      "path": "docs/reference/index.md",
+      "source": "docs/reference/index.md",
+      "sourceSha256": "ec3b05691985c0067d9beced9d4a67ffd4978b9bf5d3043b64d31a20e775c66d",
+      "sha256": "2dc3bf998ceb2b3e0b5a4e1acbb4ebfb0b68703c4cfc47e386d64ab6e144f6fa"
+    },
+    {
+      "path": "docs/reference/infographics/readme.md",
+      "source": "packages/infographics/README.md",
+      "sourceSha256": "eeac7e85763bbd4dc6042f0f735930d7cfbd3a8576e67afe0480f66572605e8a",
+      "sha256": "acd4bc2e5bce8b6d5ee3123a2d277c689e17fb077e8eb23e5174cf444c6efe2d"
+    },
+    {
+      "path": "docs/reference/pipelines/docs/contributing.md",
+      "source": "studio/pipelines/docs/CONTRIBUTING.md",
+      "sourceSha256": "a8d919bc715dae72a34a7b8a414d02f7c077cb36aece3ae6245302c374a4aa31",
+      "sha256": "fa63d164a431da9e45d8225d5550e21fc5d21a3a5ffc312eb915b657e10ee155"
+    },
+    {
+      "path": "docs/reference/pipelines/docs/operator-guide.md",
+      "source": "studio/pipelines/docs/OPERATOR-GUIDE.md",
+      "sourceSha256": "87768714eb4e5253578b50e30240a00cac6cb1ab87cfabef996efa1a714473e1",
+      "sha256": "8134b73390034787bddf9aa662d3ac6781bb5e7b6fda4fecfe33bbab4ad7a8d8"
+    },
+    {
+      "path": "docs/reference/pipelines/pipeline-conventions/anti-patterns.md",
+      "source": "studio/pipelines/pipeline-conventions/ANTI-PATTERNS.md",
+      "sourceSha256": "265264a6e9468931da13dbac436d99f6a4b12bd9de73215b24ae9dd3eb6e3ab0",
+      "sha256": "c354b82d4f4222e96cff56d8000ccacdfac1e3868f4683e84f173bcacf0400eb"
+    },
+    {
+      "path": "docs/reference/pipelines/pipeline-conventions/pipeline-manifest.md",
+      "source": "studio/pipelines/pipeline-conventions/PIPELINE-MANIFEST.md",
+      "sourceSha256": "a32791f06842903f59ec599a7193207ec31520f3902a559eb6ad4f81f5e81028",
+      "sha256": "107f8133a55331f5845a8ea943fcc682c19d6687164531502e868d353175e5b7"
+    },
+    {
+      "path": "docs/reference/pipelines/pipeline-conventions/readme.md",
+      "source": "studio/pipelines/pipeline-conventions/README.md",
+      "sourceSha256": "fb02687255bdf82da1b6d2cef96a0bc1305cf4f73fddfdbf7d61a649464531ee",
+      "sha256": "c12285df42d40be5f884b00701e969f1537501b0b20147db080b5f3912951ab0"
+    },
+    {
+      "path": "docs/reference/pipelines/pipeline-conventions/reviewer-format.md",
+      "source": "studio/pipelines/pipeline-conventions/REVIEWER-FORMAT.md",
+      "sourceSha256": "b6c2bd9478d6e149168ab2ed2241e317396ade02033e272ac1b1a403ba1b4d47",
+      "sha256": "af99add964b7ea2ac7f364f6de32f0814a2c551a158f59eb249e2f14c24bab20"
+    },
+    {
+      "path": "docs/reference/pipelines/pipeline-conventions/series-overrides.md",
+      "source": "studio/pipelines/pipeline-conventions/SERIES-OVERRIDES.md",
+      "sourceSha256": "100a9666d6d025a595a0b1b9675b7f139db88a3260bcd7bec7d25447b3d692cc",
+      "sha256": "f46965732182ecfbad5cc290ff8690e6f53d8afda227a19c49d118422dc91451"
+    },
+    {
+      "path": "docs/reference/pipelines/pipeline-conventions/skill-frontmatter.md",
+      "source": "studio/pipelines/pipeline-conventions/SKILL-FRONTMATTER.md",
+      "sourceSha256": "cc870ce677a581d1a4e60412437e8bddc5801c3e2928b4f0ae541cd2ca0eb9b6",
+      "sha256": "c4cb76bfc563505fecfa72be9d7e0749ef242ab2bf286707799bf3e7e493caa7"
+    },
+    {
+      "path": "docs/reference/pipelines/pipeline-conventions/stage-i-o-checklist.md",
+      "source": "studio/pipelines/pipeline-conventions/STAGE-I-O-CHECKLIST.md",
+      "sourceSha256": "ef96c3bc297b7e8f6ee96b2a110a1a4e34763af7634cd9be3c6dc65fa0e59d31",
+      "sha256": "1ac1472f2daf81ede504b31dfb18905395df3f13805ebdb37f3e77248dd285d0"
+    },
+    {
+      "path": "docs/reference/pipelines/readme.md",
+      "source": "studio/pipelines/README.md",
+      "sourceSha256": "84189c332dad6f5c3da7c7e6dd423a64b82d4f687c4a4a135a0c2ede1fb3c916",
+      "sha256": "bae5f5c8c28ff0c06815138eee91ef2949b92885744060f218b9dad9e68e9deb"
+    },
+    {
+      "path": "docs/reference/remotion-composer/readme.md",
+      "source": "packages/remotion-composer/README.md",
+      "sourceSha256": "b7d0647b704f4e653764aa211078131e262d9df55a7d463d4b2c692310b194f2",
+      "sha256": "ad4552f57b1e058e6b9ed78516acb54068410f81d89bbf1706504633624af120"
+    },
+    {
+      "path": "docs/reference/runtime/docs/contracts.md",
+      "source": "studio/runtime/docs/CONTRACTS.md",
+      "sourceSha256": "ea7fe24808e6cc673a3840c7ba41930015a1191be7c0e3d262e3a48f488a8a36",
+      "sha256": "01087f3c2bd070a61eeff1e507b4a70d404f48830ca00a6116aaece45a6358dc"
+    },
+    {
+      "path": "docs/reference/runtime/docs/contributing.md",
+      "source": "studio/runtime/docs/CONTRIBUTING.md",
+      "sourceSha256": "0a5f2a25daa4f2cb2d1334676a6e4cd98406830096d56fea2787fdabf8bcf45d",
+      "sha256": "43b45eca84017b559048daf64b0f54b2d8a29d5a5bb5abcf0dfdf6604fd85f17"
+    },
+    {
+      "path": "docs/reference/runtime/readme.md",
+      "source": "studio/runtime/README.md",
+      "sourceSha256": "a8149340809e3c1eb850e5a05c2cadea3689b8dd2f1bb4f14eb242b6efb3bd42",
+      "sha256": "b6536beb1d8edced9cd3c3ea2ec70e4fd4a5dbff85d4ad554d9d82d21daa8db1"
+    },
+    {
+      "path": "docs/reference/series/readme.md",
+      "source": "studio/series/README.md",
+      "sourceSha256": "d019e569a2f2336c3a62a73376b1f0ce4b681ba5bb3cce5cfd8ce89daad2f43d",
+      "sha256": "9a86ef4ea176e6fde0b082c11686e6f70a0fe6747a55795829f3a0ae889612f9"
+    },
+    {
+      "path": "docs/reference/terminal-recorder/readme.md",
+      "source": "packages/terminal-recorder/README.md",
+      "sourceSha256": "ae2ea956022059195756ff7b7c5afa66bce3e7d52b39fbe8720696207baf5590",
+      "sha256": "05bb2016b2d34b86a31e75a8cdab5193dca74629a6a2c57746e31420e21d55ed"
+    },
+    {
+      "path": "docs/reference/video-composer/docs/api.md",
+      "source": "packages/video-composer/docs/API.md",
+      "sourceSha256": "796750f944b5cc98b247e3a7770c62fd23fc072951cf8a23401733eb45e492b2",
+      "sha256": "1e6d2fdb402d0ec952b38326be51f84e632b035f24b8d3248b99c6c408839db6"
+    },
+    {
+      "path": "docs/reference/video-composer/docs/contributing.md",
+      "source": "packages/video-composer/docs/CONTRIBUTING.md",
+      "sourceSha256": "296d80b666b9fc49ddf16f3f2786ed3a4448441357f9c91d78a661ab142e9937",
+      "sha256": "b12839db61785b8f12d945b7190dbc1d126a5ce1fa08eeba087fdd298c370ef6"
+    },
+    {
+      "path": "docs/reference/video-composer/readme.md",
+      "source": "packages/video-composer/README.md",
+      "sourceSha256": "5abd2e4c07911ac2159e10fe0251a0b7642d916df87666fca4ac63045e139220",
+      "sha256": "7d70b7ba3116e68b292b9a669b8bea72a9ee7b13c73c130af6fe3f1da8fbe8f3"
+    },
+    {
+      "path": "docs/reference/voice/changelog.md",
+      "source": "packages/voice/CHANGELOG.md",
+      "sourceSha256": "bc0d28292d687b88bb6574664998e479a36647bd67b558dee2552eba9a53146f",
+      "sha256": "d99635979df1c8b120953647d421e06542d443a90323be2a713b12aa5718aa8c"
+    },
+    {
+      "path": "docs/reference/voice/docs/advisory-diagnostics.md",
+      "source": "packages/voice/docs/ADVISORY-DIAGNOSTICS.md",
+      "sourceSha256": "f00b7a4745369c21b19646df060e38645b8089ff1386654fa95a0e6c225495ec",
+      "sha256": "88c565f27a11eb8b62d90bcddffcb49265df80acbc48918ec9f0172e42d29d9f"
+    },
+    {
+      "path": "docs/reference/voice/docs/api.md",
+      "source": "packages/voice/docs/API.md",
+      "sourceSha256": "7de2b5ce2f0900c3df59b10a3f22af9ae5911f9f7ef9ac9e8b7a56f0e0c8db00",
+      "sha256": "79412213aea295576fa4c15ec50ed4f31fb9dd802a1335ea456c9c7b69582c64"
+    },
+    {
+      "path": "docs/reference/voice/docs/audio-processing.md",
+      "source": "packages/voice/docs/AUDIO-PROCESSING.md",
+      "sourceSha256": "6927e1d837f55ef66d83f9b096d4975d57cba5b8f333ef51dda625fd66d2b26d",
+      "sha256": "64fa2a7826a664af65d7298399ffbf839ad4a6384e100ece02b36ed21a8ba72e"
+    },
+    {
+      "path": "docs/reference/voice/docs/batching.md",
+      "source": "packages/voice/docs/BATCHING.md",
+      "sourceSha256": "c48ac4d08d623276a9e514c42eb8ccccfcafa11b5266d99a2657107942f77038",
+      "sha256": "26260e056a4b1c68d27c06f7bf500c35305180da854fb34dc0687b35343c5cda"
+    },
+    {
+      "path": "docs/reference/voice/docs/contributing.md",
+      "source": "packages/voice/docs/CONTRIBUTING.md",
+      "sourceSha256": "d14e9ef9e5cbf702bdbbc27ee70eb65c5312e8800901cf62b2fb0f8e55bafdd2",
+      "sha256": "31eae59a6ff49288ce3acaeebbb089fd4df502015ce9b50c51693dd76baf5e8f"
+    },
+    {
+      "path": "docs/reference/voice/docs/dialogue.md",
+      "source": "packages/voice/docs/DIALOGUE.md",
+      "sourceSha256": "ed7176c60a3879f2542e2390bdeef2e9e928431af2e4a03d3f102938393be3c9",
+      "sha256": "ba5e4525fa39707e01efee0b179c73c75c382a5968932fca83888ac25deb0583"
+    },
+    {
+      "path": "docs/reference/voice/docs/index.md",
+      "source": "packages/voice/docs/index.md",
+      "sourceSha256": "dc88f86666bd11deb06d444788cff7321076623ccf6d5fbf666dcd2f14b9455e",
+      "sha256": "bb5e837f6d1131428627238e752ad19954146d6fde0bb7116253eeb9f88ed743"
+    },
+    {
+      "path": "docs/reference/voice/docs/listening-review.md",
+      "source": "packages/voice/docs/LISTENING-REVIEW.md",
+      "sourceSha256": "63be60d0160efa8a8b8cdc671fbc3a185bda775457a007e038b5cf1ddf9e3f94",
+      "sha256": "e857f92178f299ea6842f24c351874710e12474018b23e520022f37416bdfb0e"
+    },
+    {
+      "path": "docs/reference/voice/docs/macos-cli.md",
+      "source": "packages/voice/docs/MACOS-CLI.md",
+      "sourceSha256": "7aaf8d2895cbb58ed25e72d4bf28f79f934456c108b9986676fd6c6cef92ad78",
+      "sha256": "63fce71a116112de68b02e03e986a6d144c03225430c425b617a5c72db8094a9"
+    },
+    {
+      "path": "docs/reference/voice/docs/mastering.md",
+      "source": "packages/voice/docs/MASTERING.md",
+      "sourceSha256": "cbfb35cf137f82d24141804cb789491bf11d1953b7e19c0ec8acedfb8a6df7ab",
+      "sha256": "a1416bcb51d641817513519ec994a92055b1270bcf951b91ff6ea7e994f53910"
+    },
+    {
+      "path": "docs/reference/voice/docs/narration-migration.md",
+      "source": "packages/voice/docs/NARRATION-MIGRATION.md",
+      "sourceSha256": "c290472f9fadb8cad832099ef7d4d8c31e78b2308c93569188713cf333aed597",
+      "sha256": "26a919dae33004261e35835403f3d8af2fa7129ac6a759a0c08557cb42292722"
+    },
+    {
+      "path": "docs/reference/voice/docs/normalization.md",
+      "source": "packages/voice/docs/NORMALIZATION.md",
+      "sourceSha256": "09fc4a0a407bbb03b8d54a7d2c1be72c6828c4e47fa13be79ad4730b77d5fa20",
+      "sha256": "257a48bfb9789f2267ec5d41918aa6823732efc3eff80da16a5d3671979c4acf"
+    },
+    {
+      "path": "docs/reference/voice/docs/operator.md",
+      "source": "packages/voice/docs/OPERATOR.md",
+      "sourceSha256": "62b1f46bf39961782c88140ed2d8b44335a4c5d471d8a090c0e412d8a94ff486",
+      "sha256": "37f9e28c14180a183a2c05a488faec17e0cf377254258a9c4c08f40614a79a96"
+    },
+    {
+      "path": "docs/reference/voice/docs/production-acceptance.md",
+      "source": "packages/voice/docs/PRODUCTION-ACCEPTANCE.md",
+      "sourceSha256": "c527a4e6ce0140ad95946c4a0721d6fc9b028875b28efb78a7cd7f3e0b9c9e83",
+      "sha256": "e8880a9b314679f25727fa01d2afddc5f1128ae4022583e325489d820f85e8d5"
+    },
+    {
+      "path": "docs/reference/voice/docs/releasing.md",
+      "source": "packages/voice/docs/RELEASING.md",
+      "sourceSha256": "f30c8f0c3ef8bbd36f76d7f817f7c4230c2021a7e6386ceba3717320f566611e",
+      "sha256": "8b88f663bf787479d735b849a1837f38c2e4fdcc26e400351667d5c1ac3fd937"
+    },
+    {
+      "path": "docs/reference/voice/docs/segmentation.md",
+      "source": "packages/voice/docs/SEGMENTATION.md",
+      "sourceSha256": "286d753dc3d75b9a4b182e6ea41e5bf25cb01aafd1cca0ad2690d3ff2a6e9a34",
+      "sha256": "e1780d35d3bca95adc8cc862d20c2ce0d6c333b0821cc2024e282f2e5beae067"
+    },
+    {
+      "path": "docs/reference/voice/docs/signal-validation.md",
+      "source": "packages/voice/docs/SIGNAL-VALIDATION.md",
+      "sourceSha256": "972126b4c7bc33e7773eda98ad1a8604e2c54da03952a66405f0e2e619e19a11",
+      "sha256": "42b31d69069e2544e9927f0a82bec50d075bfc2942b7e5afd4b97ab64ea61308"
+    },
+    {
+      "path": "docs/reference/voice/docs/tts-quality-pipeline.md",
+      "source": "packages/voice/docs/TTS-QUALITY-PIPELINE.md",
+      "sourceSha256": "27f24c3bed2da1ca9cdc9759644754c2934d5c5b89045ac54d02a470b07f6635",
+      "sha256": "59f353df985bd2fee5884d46f5a9abd1d04be162ddcf6b1821e8fe416a594cd2"
+    },
+    {
+      "path": "docs/reference/voice/docs/voice-cloning.md",
+      "source": "packages/voice/docs/VOICE-CLONING.md",
+      "sourceSha256": "1acf4a688249e8a5b6fec37be1689d680ed980f462b982ef8f66c364b4a5f9aa",
+      "sha256": "314da36e72ecb58e0c33980867e3de8aba886950e9ed7e7419aa6bf674d48913"
+    },
+    {
+      "path": "docs/reference/voice/docs/voice-direction.md",
+      "source": "packages/voice/docs/VOICE-DIRECTION.md",
+      "sourceSha256": "26fe7821f26e57940eab88af3263f0f146a3fcdf5c3d9f9f2e0a03aa61a5102f",
+      "sha256": "b3b2f8c8eabae7c6deffa9facbbbf7cdba043a9828ec8297d43409faea5ea9cd"
+    },
+    {
+      "path": "docs/reference/voice/readme.md",
+      "source": "packages/voice/README.md",
+      "sourceSha256": "bb3d12da22d37209bd4f209add735c3514ef166aaf313f74e0ed7a8a106ba511",
+      "sha256": "c50db8674af53d8d3f9f8a7f69e522751f88c804aaa2005cd9750f278ede55c5"
+    },
+    {
+      "path": "docs/reference/web/design.md",
+      "source": "studio/web/DESIGN.md",
+      "sourceSha256": "c5c98299eb4bdd879d76bd066eef0e50167975b1117b6c94bf04acef2f6ab0db",
+      "sha256": "c64de13abf3c6f8c382aff3a2daae20844fbaaf136b3318e9604338fd3d5f062"
+    },
+    {
+      "path": "docs/reference/web/docs/contract.md",
+      "source": "studio/web/docs/CONTRACT.md",
+      "sourceSha256": "989da1f99da06f25600d0a6d1f1bd5018ac486db9249cc14800f362af3c9536f",
+      "sha256": "99f956564497d218127ea062dbd330665567efb7cecf2b1e72c1de8838e0c2df"
+    },
+    {
+      "path": "docs/reference/web/docs/contributing.md",
+      "source": "studio/web/docs/CONTRIBUTING.md",
+      "sourceSha256": "cef8415bb377a66f8f6490a5864efe6589f4309ff1e5299d703a9afb400e63ff",
+      "sha256": "39abeb8eecd27cc29cd6a82deed915e3989455a1f3f7222385b5c2957174a709"
+    },
+    {
+      "path": "docs/reference/web/docs/operator.md",
+      "source": "studio/web/docs/OPERATOR.md",
+      "sourceSha256": "b39464ed221241ad0a026950aeb1bfd706861a296a5b543559d73d1c1852d786",
+      "sha256": "32b577c7e2a17ef98a9caad992ea41fc39e9713160ae7f3c7b02253a5034ba79"
+    },
+    {
+      "path": "docs/reference/web/docs/shape-brief.md",
+      "source": "studio/web/docs/SHAPE-BRIEF.md",
+      "sourceSha256": "ba3d13b2b67bfdc8c5d835a36e9ad174002ffea9f78e0a1976f8ea1cdfe57b99",
+      "sha256": "97163354c08c78f1d2c2a248ca3326d343880f03fe932edf9248aaee08cedd29"
+    },
+    {
+      "path": "docs/reference/web/product.md",
+      "source": "studio/web/PRODUCT.md",
+      "sourceSha256": "5503b41aee9e497c94829e0e07835caf1c27efd82806425ef4a9ec0718b649a9",
+      "sha256": "35b112063e3e8b6120dd10d855b4c4b9875db69eb904e301b97163c4fc01769d"
+    },
+    {
+      "path": "docs/reference/web/readme.md",
+      "source": "studio/web/README.md",
+      "sourceSha256": "0347a5e619e7aeac29be245a1c4c15e37846383c48fde8dbf59daba470f1654e",
+      "sha256": "8b14433aa6656c258944f3cf9f099c2222fd34e11d36999d4cc4e30f890ed5ef"
+    },
+    {
+      "path": "docs/repository-layout.md",
+      "source": "docs/repository-layout.md",
+      "sourceSha256": "4cc5dce03a984534099404d35c1b1501ee240213edae4ee7a15a0eceff06f9f0",
+      "sha256": "aa2aedd180a7e346cedfad01e37510262787b1e34f770a93d96b7a390759fda8"
+    },
+    {
+      "path": "docs/resolve-handoff.md",
+      "source": "docs/resolve-handoff.md",
+      "sourceSha256": "53b3164b940d6f1128a0d411fc5ef042d54f6da35404f62e9b8e4e59dc9741d9",
+      "sha256": "9b95eb4b7da4c6718a51c389d67652315b971e4a31cee05ecf94419ca66c1da3"
+    },
+    {
+      "path": "docs/running.md",
+      "source": "docs/running.md",
+      "sourceSha256": "94def95b765653487b569d0f5fbe1c9816d920175a812c9085beef0918478ccc",
+      "sha256": "dc18998167f58bd0a0f379e277eb0b577e3d7b7027deb805cf8b56f6fdc3a6ca"
+    },
+    {
+      "path": "docs/studio/adapters.md",
+      "source": "docs/studio/adapters.md",
+      "sourceSha256": "32b5d822f1236c6aa8b3c888875517a2e03c801e72fdb219193099499209df20",
+      "sha256": "1391bf3a7cb3a1147a4d1b3ceb1cec13dddab84a8ec0c22b29ad5c490370ec0d"
+    },
+    {
+      "path": "docs/studio/agent.md",
+      "source": "docs/studio/agent.md",
+      "sourceSha256": "c8c3b781af3656c63836ebf2c6a90b41f701a9e11b4d2c024ea8bd473b542052",
+      "sha256": "1518b88c2922e4a6a1ff401d81cf83eaa5d9fb52040b8790f0de616e3bb1366a"
+    },
+    {
+      "path": "docs/studio/contracts.md",
+      "source": "docs/studio/contracts.md",
+      "sourceSha256": "a0a72e076e9e8e729c75edf89df5b4eae6e954121fe002cf36cac772671094e6",
+      "sha256": "58eb45d792d5d5d8747138e92ae554dbeb6c66ffe86c9a6da187d0f2d7258c22"
+    },
+    {
+      "path": "docs/studio/episode.md",
+      "source": "docs/studio/episode.md",
+      "sourceSha256": "26079a1df4cdd3a753e69508ce837f463efb3579c5e3b6de2d849298dc2191ba",
+      "sha256": "411432e10fe82a610927af7154905cb357c75d3401dbda88c5cef0364f014c67"
+    },
+    {
+      "path": "docs/studio/gateway.md",
+      "source": "docs/studio/gateway.md",
+      "sourceSha256": "3ac0956a1a391ae57a95ed51f4c571ce22bd428d910a932eafb9dc5e3330efb0",
+      "sha256": "1f561bacb1eebb3bf85e47f41cd9756bf836e8009a0ea66ef1371fc7bfc3f820"
+    },
+    {
+      "path": "docs/studio/pipelines.md",
+      "source": "docs/studio/pipelines.md",
+      "sourceSha256": "c55c981965117baa18644c6ca736bf93c4ad709f61da489f26ae3badc4d01886",
+      "sha256": "57f6cd5ef497f372a0c653771cd0afa28d0df4433a51ab4c757b6cbb28d5b591"
+    },
+    {
+      "path": "docs/studio/runtime.md",
+      "source": "docs/studio/runtime.md",
+      "sourceSha256": "52ab6a647667f3af6c0b8d1cf18971f4ba8325f857be8b1e915929132e7f665f",
+      "sha256": "79d446d93320a443bdbac51e032dbe43c9a8f19ff49ebcce1e298d6abde6ef48"
+    },
+    {
+      "path": "docs/studio/series.md",
+      "source": "docs/studio/series.md",
+      "sourceSha256": "13665adf5bd0f3bef5a38bd54bddc7800cf53efeac8ceffb0da0582c46ef70d2",
+      "sha256": "c1c4fa89cf007d12cedad59574f0b3acbb28abcef83fda32190760204d6e6417"
+    },
+    {
+      "path": "docs/studio/web.md",
+      "source": "docs/studio/web.md",
+      "sourceSha256": "9e22a27d94f64ad27f2d4ec1d88e7eaa30162a7e923a2ffdae83ed78e1aa3812",
+      "sha256": "b74e11c49d147ada39f0f1874e59df195c1235b6126ee6aade794604458bf1bd"
+    },
+    {
+      "path": "docs/workspace.md",
+      "source": "docs/workspace.md",
+      "sourceSha256": "37a23533577f248f3a3ebe540d938bf39fd92858b09e1b3e34e4fb02b65d0fd5",
+      "sha256": "a7b5b851581fe28836a0251bfb90d033b9b341b8e5ecb6fecd8cfbdba9d5ab4b"
+    }
+  ]
+}
