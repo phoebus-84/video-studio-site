@@ -12,6 +12,16 @@ Everything is here, in one place.
 | [Repository layout](./repository-layout) | Why is the tree split into `packages/` and `studio/`, and where does my code go? |
 | [Contributing](./contributing) | How do I add a package, capability, skill or pipeline? |
 
+## Where it stands
+
+| Document | What it answers |
+|---|---|
+| [Limits](./limits) | What does not work yet, and what was fixed in the release being prepared? |
+| [Changelog](./changelog) | What changed for someone who uses the studio, and what needs action? |
+| [Retake](./retake) | How will it be measured against a model working alone? A specification; no results. |
+| [Compared with the others](./compare) | When is another tool the better choice? |
+| [Licence](./licence) | What covers the site, the software and the films? |
+
 ## Understanding the system
 
 | Document | What it answers |

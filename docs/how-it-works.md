@@ -4,6 +4,8 @@ description: "Understand the %product% workflow: an agent, specialised media too
 ---
 # A studio, not a single model.
 
+%product% makes agent-made video repeatable and correctable: episode twenty as good as episode one, and a fix at second 47 that leaves everything else alone. This page says how; [the limits](./limits) say where it stops.
+
 %product% coordinates the work between an idea and a finished video. An AI agent helps make creative decisions and operates specialised tools; a deterministic runtime tracks production state.
 
 You can start with your own footage, a script, a poem, a code repository, or a visual idea. You decide what the project is for, what it should look like, and when it is ready.
