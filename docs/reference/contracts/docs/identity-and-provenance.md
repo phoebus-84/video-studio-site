@@ -1,8 +1,8 @@
-> Imported studio reference, based on [bfea2f8](https://github.com/phoebus-84/video-studio/tree/bfea2f80a4f8a10c999118a4db35b2820ac5c5fc) with local source edits. This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
+> Imported studio reference, based on [aea888a](https://github.com/phoebus-84/video-studio/tree/aea888a3b007ec8530cf98fb3abdb2f8dc6e9f63). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
 
 # Identity, revisions, hashes, and provenance
 
-Canonical definitions live in [`schemas/v1alpha1/identity.schema.json`](https://github.com/phoebus-84/video-studio/blob/bfea2f80a4f8a10c999118a4db35b2820ac5c5fc/studio/contracts/schemas/v1alpha1/identity.schema.json).
+Canonical definitions live in [`schemas/v1alpha1/identity.schema.json`](https://github.com/phoebus-84/video-studio/blob/aea888a3b007ec8530cf98fb3abdb2f8dc6e9f63/studio/contracts/schemas/v1alpha1/identity.schema.json).
 
 ## Stable identity versus names
 

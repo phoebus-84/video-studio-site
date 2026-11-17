@@ -1,4 +1,4 @@
-> Imported studio reference, based on [bfea2f8](https://github.com/phoebus-84/video-studio/tree/bfea2f80a4f8a10c999118a4db35b2820ac5c5fc) with local source edits. This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
+> Imported studio reference, based on [aea888a](https://github.com/phoebus-84/video-studio/tree/aea888a3b007ec8530cf98fb3abdb2f8dc6e9f63). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
 
 # Workspace contract
 
@@ -55,6 +55,78 @@ holding areas (`_media`, `_exports`). Neither is ever content, at any level.
 `studio/contracts/src/layout.mjs` is the single source of truth for these paths.
 Compute paths through it rather than joining strings.
 
+### A film
+
+A library holds two kinds of project. A channel keeps making episodes; a
+**film** is one self-contained work, short or feature length (ADR-0050).
+`film.yaml` is what makes a directory a film.
+
+```text
+library/
+└── film-slug/
+    ├── film.yaml                       # title, format, running time, sequences and acts
+    ├── pipeline.yaml                   # pipeline: / scenes: / shots: — who decides, per level
+    ├── settings.yaml                   # `budget:` covers every scene and shot under it
+    ├── bible/                          # film knowledge: the look and sound every shot is held to
+    ├── characters/
+    ├── locations/
+    ├── references/
+    ├── skills/
+    ├── sources/
+    ├── voices/
+    ├── footage/                        # catalog.json · media/ · proxies/ · sheets/
+    ├── music/
+    ├── artifacts/                      # cut.json: the film's cut, of its scenes' renders
+    ├── output/                         # the film's renders
+    └── scenes/                         # explicit container
+        └── scene-slug/
+            ├── scene.yaml
+            ├── references/  skills/  sources/
+            ├── artifacts/              # cut.json: the scene's cut, of its shots' renders
+            ├── output/
+            └── shots/                  # explicit container
+                └── shot-slug/
+                    ├── shot.yaml
+                    ├── assets/         # the shot's takes
+                    ├── artifacts/      # cut.json: the shot's cut, of its take
+                    └── output/
+```
+
+The film, each scene and each shot are **production units**, with what an
+episode has: `artifacts/`, `assets/`, `attempts/`, `journal/`, `reviews/`,
+`output/` and their own pipeline state. Every tool and route addresses one
+with the same three positions as an episode — the film, the scene, the shot —
+and `_` for the level itself: `tide/010-shore/020-close` is a shot,
+`tide/010-shore/_` the scene's own unit, `tide/_/_` the film's.
+
+A render is immutable (`output/<render-id>.mp4`, with the cut it rendered and
+a report). `output/current.json` names a unit's final render and
+`output/preview.json` its latest preview. The renderer keeps the windows it
+has rendered in the unit's `.cut/`; they are a cache and can be deleted.
+
+### Characters and casts
+
+`characters/` in a channel, a series or a film holds one folder per character
+(ADR-0052). `cast.yaml` in a series or a film says who plays what there.
+
+```text
+characters/
+└── character-id/
+    ├── character.yaml                  # who it is, its forms, their releases and hashes
+    ├── character.md                    # identity: what never changes
+    ├── backstory.md
+    ├── performance.md                  # how it plays a scene
+    └── forms/
+        └── form-id/
+            └── release-id/             # never edited; a change is a new release
+series-slug/  (or film-slug/)
+└── cast.yaml                           # role -> character, the form it wears, the release pinned
+```
+
+A form made before this layout may stay where it is: its release records the
+folder it is in. A character's files are media, and follow the channel's Git
+and media store like any other ([Git and storage](#git-and-storage)).
+
 ## Migrating
 
 ```bash
@@ -102,12 +174,13 @@ holds the rooms to them. `vpr template release` copies a release to a new
 version pinned to a sealed theme, and `pva_upgrade_spec` moves an episode's
 spec to it (its revision goes up; the sheet must be reviewed again).
 
-`pva_init_spec` creates an episode spec from a release. `pva_build_timeline`,
-`pva_check_episode`, `pva_layout_sheet` and `pva_compose_video` use the pinned
-release's compiler and validator (ADR-0041). Episodes without a spec can build
-from their scene images and narration instead. Path helpers are
-`seriesTemplatePath` and `seriesReferencePath` in `layout.mjs`;
-`EPISODE_SPEC_PATH` names the editorial file.
+`pva_init_spec` creates an episode's spec from a release, and
+`pva_build_timeline`, `pva_check_episode`, `pva_layout_sheet` and
+`pva_compose_video` compile and render it with the release's compiler and
+validator (ADR-0041). An episode without a spec is built from its scene images
+and narration instead. Path helpers are `seriesTemplatePath` and
+`seriesReferencePath` in `layout.mjs`; `EPISODE_SPEC_PATH` names the editorial
+file.
 
 ## File ownership
 
@@ -199,6 +272,7 @@ the browser remembers the choice.
 The rules have `.gitignore`'s syntax and stack, a later layer winning:
 
 1. **The studio's defaults:** `.git/`, `node_modules/`, `.cache/`, `*.tmp`,
+   a cut renderer's working files (`.cut/`, `.locks/`, `*.partial.mp4`),
    `*.bak.json`, `*.tsbuildinfo`, `Thumbs.db`, and lock files (`*.lock`,
    `*.lockb`, `*.lock.json`, `*.lock.jsonl`, `package-lock.json`,
    `pnpm-lock.yaml`, so `bun.lock`, `kits.lock.json` and `media.lock.jsonl`

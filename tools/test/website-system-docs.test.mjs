@@ -26,12 +26,13 @@ test('public system explanations distinguish current execution from historical p
   for (const path of ['docs/architecture.md', 'docs/how-it-works.md', 'docs/quick-start.md']) {
     const text = await read(path);
     assert.match(text, /gateway/i, path);
-    assert.match(text, /pipeline tools/i, path);
+    // The architecture page is imported; the website's own pages must say which tools need the gateway.
+    if (path !== 'docs/architecture.md') assert.match(text, /pipeline tools/i, path);
     assert.doesNotMatch(text, /superpowers\//, path);
   }
   const architecture = await read('docs/architecture.md');
   assert.match(architecture, /Remotion renders/);
-  assert.match(architecture, /FFmpeg processes/);
+  assert.match(architecture, /FFmpeg masters/);
   assert.match(architecture, /vertical-1080x1920/);
   assert.match(architecture, /not a blanket lock/i);
   assert.doesNotMatch(await read('docs/workspace.md'), /forthcoming series compilers/);

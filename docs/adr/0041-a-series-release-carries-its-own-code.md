@@ -1,4 +1,4 @@
-> Imported studio reference, based on [bfea2f8](https://github.com/phoebus-84/video-studio/tree/bfea2f80a4f8a10c999118a4db35b2820ac5c5fc) with local source edits. This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
+> Imported studio reference, based on [aea888a](https://github.com/phoebus-84/video-studio/tree/aea888a3b007ec8530cf98fb3abdb2f8dc6e9f63). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
 
 # ADR-0041: A series release carries its own code
 
@@ -9,11 +9,11 @@ Accepted (`avg-d1x`, phase 1). Implemented:
 - the loader that runs a release's sealed bundles;
 - `vpr template seal` and `vpr template verify`.
 
-Kits (phase 2), the toolbox (phase 3) and moving dentro-i-versi out of the application (phase 4) follow. See `docs/superpowers/specs/2026-10-09-channel-series-extensions-design.md`.
+Kits (phase 2), the toolbox (phase 3) and moving the first channel out of the application (phase 4) follow.
 
 ## Context
 
-ADR-0037 pinned a series template release to a compiler and a validator by `id@version` in the application's registry. That makes every series format application code: dentro-i-versi's director lives in `studio/series`, and a new series means a change to the core.
+ADR-0037 pinned a series template release to a compiler and a validator by `id@version` in the application's registry. That makes every series format application code: the first channel's director lives in `studio/series`, and a new series means a change to the core.
 
 The operator's rule (2026-10-09): the application holds generic code and capabilities. Everything about a channel or a series, data and procedures, sits at the channel's and the series' level. Each channel is its own git repository.
 

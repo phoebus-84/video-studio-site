@@ -1,10 +1,10 @@
-> Imported studio reference, based on [bfea2f8](https://github.com/phoebus-84/video-studio/tree/bfea2f80a4f8a10c999118a4db35b2820ac5c5fc) with local source edits. This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
+> Imported studio reference, based on [aea888a](https://github.com/phoebus-84/video-studio/tree/aea888a3b007ec8530cf98fb3abdb2f8dc6e9f63). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
 
 # ADR-0039: Format kits share frozen libraries
 
 ## Status
 
-Accepted (`avg-dcf.3`). The kits of the Dentro i versi short —
+Accepted (`avg-dcf.3`). The kits of the first channel's short —
 `museum-hall`, `room-effect`, `verse-plate`, `interprete`, `lower-third`,
 `title-chip`, `brand-mark`, all `1.0.0` — are the first to import library
 modules, and `remotion-composer`'s lock covers them.
@@ -14,7 +14,7 @@ modules, and `remotion-composer`'s lock covers them.
 A kit version never changes (ADR-0034): a delivered episode must re-render
 as it was. So far a kit file could import only `react`, `remotion`, `zod`
 and types, which kept it self-contained and its lock entry — the file's
-sha256 — honest. CreativeStudio's museum format is seven pieces drawn with
+sha256 — honest. The predecessor project's museum format is seven pieces drawn with
 the same math (smoothstep ramps, envelopes, deterministic noise), the same
 palette and fonts, the same picture and room effects and the same actor.
 Copying all of it into each of seven files would freeze seven diverging
@@ -56,7 +56,7 @@ is drawn before its fonts.
 - The lock check reads imports: a library import that is not
   `<name>/<version>.js`, or a module that imports beyond the rule, fails
   `npm test`.
-- Channel specifics now live in composer code (`lib/dentro-i-versi` — the
+- Channel specifics now live in composer code (`lib/<channel>` — the
   palette —, the actor's costumes and poses, the series compiler). That is
   against the boundary the studio is moving to (`avg-d1x`): looks and
   parameters as library data, the application executing, composers and

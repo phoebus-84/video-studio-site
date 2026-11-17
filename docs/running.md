@@ -1,4 +1,4 @@
-> Imported studio reference, based on [bfea2f8](https://github.com/phoebus-84/video-studio/tree/bfea2f80a4f8a10c999118a4db35b2820ac5c5fc) with local source edits. This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
+> Imported studio reference, based on [aea888a](https://github.com/phoebus-84/video-studio/tree/aea888a3b007ec8530cf98fb3abdb2f8dc6e9f63). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
 
 # Running the agent
 
@@ -75,45 +75,61 @@ pi list                       # confirm it is registered
 
 | Command | Purpose |
 |---|---|
-| `/video create <channel>/<series>/<episode>` | Create an episode and any missing channel/series |
-| `/video resume <channel>/<series>/<episode>` | Resume an episode |
-| `/video status [<path>]` | Show production status |
+| `/video create <channel>/<series>/<episode>` | Create an episode (and its channel and series when missing) |
+| `/video resume <channel>/<series>/<episode>` | Resume production on an episode |
+| `/video status [<path>]` | Production status, for one episode or all |
 | `/vstatus` | Stage status for the current episode |
 | `/ctx` | Show resolved channel / series / episode context |
 | `/skills` | List discovered skills |
 | `/request-approval` | Ask the operator to review a stage waiting at a gate |
 | `/render` | Render the current timeline |
-| `/dashboard` | Show or hide the TUI production dashboard |
+| `/dashboard` | Show or hide the production dashboard in the TUI |
 
 ### Tools the agent can call
 
-This is an orientation to frequently used tools, not an exhaustive inventory.
-The active registrations and each tool's parameter schema are the authority.
+Every tool the studio registers, by group. A tool's own description is the
+authority on its parameters.
 
-::: info Terminal sessions can still need the gateway
-The pipeline tools below and `pva_journal` call the gateway's execution API.
-They require the gateway even when no browser is open: see
-[agent plus gateway](#_2-agent-plus-gateway-plus-web-studio). Configure
-`AVG_GATEWAY_URL` and `AVG_GATEWAY_TOKEN` (or the `.gateway-token` file at the
-agent's working directory). Media tools use their own prerequisites; launching
-an agent does not launch the gateway or the voice worker.
-:::
-
-Workspace: `pva_channels`, `pva_series`, `pva_episodes`, `pva_episode_detail`,
-`pva_create_channel`, `pva_create_series`, `pva_create_episode`, `pva_journal`
-
-Pipeline: `pva_snapshot`, `pva_run_pipeline`, `pva_run_stage`,
-`pva_claim_stage`, `pva_complete_stage`, `pva_request_approval`,
-`pva_plan_rerun`, `pva_check_staleness`, `pva_budget_status`
-
-Readiness: `pva_capability_status`
-
-Production: `pva_generate_image`, `pva_synthesize_speech`, `pva_register_take`,
-`pva_synthesize_nonverbal_audio`, `pva_synthesize_sound`, `pva_render_graphics`,
-`pva_render_terminal`, `pva_render_vector_animation`, `pva_init_spec`,
-`pva_upgrade_spec`, `pva_propose_reference`,
-`pva_build_timeline`, `pva_check_episode`, `pva_layout_sheet`, `pva_compose_video`, `pva_compare_versions`, `pva_compose_multitrack_video`,
-`pva_probe_media`
+- **Health:** `pva_version`, `pva_diagnostics`, `pva_config`, `pva_health`,
+  `pva_rpc_health`, `pva_capability_status`.
+- **Workspace:** `pva_channels`, `pva_series`, `pva_episodes`,
+  `pva_episode_detail`, `pva_create_channel`, `pva_create_series`,
+  `pva_create_episode`, `pva_create_source`, `pva_sources`,
+  `pva_gather_context`.
+- **Skills:** `pva_list_skills`, `pva_load_skill`.
+- **Pipeline:** `pva_snapshot`, `pva_run_pipeline`, `pva_run_stage`,
+  `pva_claim_stage`, `pva_complete_stage`, `pva_request_approval`,
+  `pva_plan_rerun`, `pva_check_staleness`, `pva_budget_status`,
+  `pva_journal`. **These ten reach the execution service through the
+  gateway** (`AVG_GATEWAY_URL`, with `AVG_GATEWAY_TOKEN` or `.gateway-token`):
+  with no gateway running they fail, while every other tool works without one.
+- **Pictures and clips:** `pva_generate_image`, `pva_generate_images`
+  (several at once, drawn concurrently), `pva_generate_wan_video`,
+  `pva_generate_minimax_h3_video`, `pva_generate_flux3_max_video`,
+  `pva_stitch_video_clips`, `pva_render_graphics`, `pva_render_terminal`,
+  `pva_render_vector_animation`, `pva_derive_media`.
+- **Archive and local media:** `pva_search_media`, `pva_fetch_media`,
+  `pva_search_local_media`, `pva_reuse_local_media`, `pva_mapillary`,
+  `pva_poly_haven`, `pva_check_provenance`.
+- **Voice and sound:** `pva_voices`, `pva_synthesize_speech`,
+  `pva_write_narration_manifest`, `pva_register_take`, `pva_align_take`,
+  `pva_verify_take`, `pva_edit_audio`, `pva_analyze_audio`,
+  `pva_synthesize_nonverbal_audio`, `pva_synthesize_sound`.
+- **3D:** `pva_blender_probe`, `pva_blender_create_scene`,
+  `pva_blender_render`.
+- **Series episodes:** `pva_init_spec`, `pva_upgrade_spec`,
+  `pva_check_episode`, `pva_propose_reference`.
+- **Timeline and render:** `pva_build_timeline`, `pva_layout_sheet`,
+  `pva_record_sheet_reading`, `pva_compose_video`, `pva_compare_versions`,
+  `pva_compose_multitrack_video`, `pva_extend_episode`, `pva_probe_media`.
+- **Films:** `pva_create_film`, `pva_create_scene`, `pva_create_shot`,
+  `pva_film`, `pva_update_unit`, `pva_ingest_footage`, `pva_footage`,
+  `pva_inspect_media`, `pva_assemble_cut`, `pva_edit_cut`, `pva_check_cut`,
+  `pva_cut_frame`, `pva_cut_effects`, `pva_render_cut`. See
+  [Making a film](#making-a-film).
+- **Characters:** `pva_characters`, `pva_create_character`,
+  `pva_update_character`, `pva_cast`. See
+  [Characters and casts](#characters-and-casts).
 
 `pva_synthesize_sound` makes a series' sounds at $0, locally: wind, sea, rain,
 fire, steam, birds, thunder, applause, a whoosh, a shimmer, and a music bed (a
@@ -140,6 +156,13 @@ and kits: about 2 GB with large paintings.
   tabs: Chrome draws all of a browser's tabs in a single GPU process, which
   past a few tabs is what holds a render back. `AVG_RENDER_BROWSERS=<n>`
   forces their number (`1` is the old single browser).
+- **GPU.** Left alone, Chrome picks its own graphics path, which on some
+  machines is software. `AVG_CHROMIUM_GL=angle` asks for the GPU (other
+  values: `egl`, `angle-egl`, `vulkan`, `swangle`, `swiftshader`); on the
+  machines measured it drew several times faster. Every tab then holds its
+  pictures in video memory: on a card with little of it (2 GB), keep the tabs
+  per browser low, for example four browsers with `AVG_RENDER_CONCURRENCY=4`
+  rather than 8, or Chrome stops with "ran out of memory".
 - **Large pictures.** Original image bytes are preserved: a kit may crop or
   zoom beyond 2×, and even an unzoomed panoramic image may need its full
   resolution to cover the frame. Prepare smaller assets explicitly when the
@@ -295,11 +318,66 @@ The voice worker can speak with an enrolled clone voice, through the Qwen3-TTS
 - **Sampling:** `temperature` and `repetitionPenalty` can be set on any
   voice. Without them the worker's defaults apply: temperature 0.7, and a
   repetition penalty of 1.5 for a clone or 1.05 for a preset. Values out of
-  range are refused before synthesis. On Novembre the recital read better at
-  1.1, synthesized one stanza at a time with each verse on its own line.
+  range are refused before synthesis. For recited verse, a repetition
+  penalty near 1.1, one stanza at a time with each verse on its own line, is
+  a reasonable first try.
 - **The receipt** names the voice's revision, the reference's hashes, the
   model, the seed, and the sampling when it was set.
 - **A channel's characters** name their voice in `voices/registry.local.json`.
+
+### Speech from a ComfyUI server
+
+`pva_synthesize_speech` with `provider: "comfyui-qwen"` speaks through the
+Qwen3-TTS nodes of a ComfyUI server you run (`packages/comfyui-speech`): free,
+no spend ledger, and never chosen on its own.
+- **The address** is `AVG_COMFYUI_URL`, or `url` in the library's
+  `.render/comfyui.json` (`AVG_COMFYUI_CONFIG` names another file). That file
+  also sets the nodes: `model`, `device`, `precision`, `attention`,
+  `unloadModelAfterGenerate`, `outputPrefix`, `inputSubfolder`,
+  `timeoutSeconds`.
+- **A server that listens only on its own loopback** needs a tunnel you open:
+  `ssh -N -L 18188:127.0.0.1:8188 <host>`, then
+  `AVG_COMFYUI_URL=http://127.0.0.1:18188`.
+- **Voices:** `voice` is a preset speaker or `saved:<name>` (a voice saved on
+  the server); `referenceAudioPath` clones a recording of the workspace, with
+  `referenceText` its exact words; `cleanReference: true` cuts it
+  (`referenceStart`, `referenceDuration`) and separates the voice from music
+  and noise first, `saveVoiceAs` keeps the learned voice on the server.
+- **Consent is checked before upload or execution.** A reference clone or
+  `saved:<name>` requires `voiceConsentPath`, a workspace-relative JSON file
+  **created by the operator**, never approved by the agent on their behalf:
+  ```json
+  {
+    "confirmed": true,
+    "source": "synthetic",
+    "statement": "I authorize this synthetic reference for this production.",
+    "license_or_terms": "Applicable reference licence or permission",
+    "recorded_at": "2026-11-16T00:00:00Z",
+    "reference_audio_sha256": "<SHA-256 of the original reference file>"
+  }
+  ```
+  `source` is `self_recorded`, `licensed` or `synthetic`. For a saved voice,
+  replace `reference_audio_sha256` with `"saved_voice": "saved:<name>"`, exactly
+  matching the request. Removing the file or setting `confirmed: false`
+  blocks subsequent calls. This records authorization; it cannot independently
+  prove ownership. Saved names can change on the server and have no verified
+  waveform identity. Uploads and optionally saved voices remain on ComfyUI;
+  revoking this local record does not delete them there.
+- **The receipt** names the workflow hash, consent-record hash, reference
+  hashes, seed and sampling. `requestedRuntime` is what the studio asked for;
+  `runtimeVerified: false` means ComfyUI did not attest the actual checkpoint
+  hashes or resolved runtime versions. Speech is validated non-silent mono
+  PCM16/24 kHz WAV. Qwen times no words: register with `pva_register_take`,
+  then align with `pva_align_take` and verify the take.
+- **Same flow, explicit choice:** omitting `provider` keeps the local worker
+  (MLX or Torch); `comfyui-qwen` is never a fallback. Episodes, channel sources
+  and film units use the same synthesis/register/align/verify tools. This does
+  not replace the worker's durable `/attempt-jobs` and mastering contracts.
+- `pva_capability_status` says whether the server answers, which workflows it
+  has the nodes for, and its saved voices; `pva_voices` lists them.
+- **Clean only:** `pva_clean_voice` separates a recording's voice from music
+  and noise on the same server (optionally cut first) into a new WAV under
+  `assets/`, with `<file>.clean.json` beside it. Nothing is cloned.
 
 ### Editing audio
 
@@ -333,6 +411,99 @@ and the studio compares the two. The report goes to
 
 Which pauses are too short is the series' or the channel's rule, in its skill
 or validator.
+
+### Making a film
+
+A film is one self-contained work, short or feature length, beside the
+library's channels (ADR-0050). Ask for one in words — "make a two-minute
+film from the footage in ~/shoot and this script" — and the agent loads the
+`film-producer` skill and works through it. What it does, and what you can
+do by hand at any point:
+
+- **It is produced at three levels.** The film, its scenes, their shots:
+  each has its own files, pipeline, cut (`artifacts/cut.json`) and renders.
+  A shot's render is a source of its scene's cut, a scene's of the film's.
+  Every tool takes a unit as film / scene / shot, and the pipeline, budget
+  and approval tools take the same unit as channel / series / episode with
+  `_` for the level itself (`tide/010-shore/_` is a scene).
+- **Where it stands:** `pva_film` lists every scene and shot in running
+  order with its state — no cut, blocked, ready to render, stale, preview
+  only, current — and what stands between the film and its final render.
+- **Real material:** `pva_ingest_footage` brings camera originals, location
+  sound, stock and music into the film's `footage/`, each named by its
+  content with a proxy a browser plays, a contact sheet, the instants its
+  picture cuts and its loudness. `link: true` leaves large originals where
+  they are. `pva_footage` searches and annotates the log.
+- **Made material:** a shot's takes go under its `assets/`, made with the
+  same image, video, Blender, graphics, terminal, voice and sound tools as
+  an episode's, addressed to the shot.
+- **The cut:** `pva_assemble_cut` makes a unit's cut from what is under it
+  and keeps it in step; `pva_edit_cut` edits it with operations applied
+  together or not at all; `pva_cut_effects` lists the picture and sound
+  effects; `pva_cut_frame` composes one frame with every effect, to judge a
+  grade without rendering.
+- **An edit names the revision it read.** `pva_edit_cut` takes
+  `expectedRevision` — printed as `cut revision N` by `pva_check_cut` and by
+  every edit; 0 for a unit with no cut yet — or `latest: true` for an edit
+  that is right on any revision. An edit that names neither is refused. The
+  read, the check and the write are held together by a lock, so the agent
+  and the browser cannot both write the next revision.
+- **Rendering:** `pva_render_cut` renders a unit with FFmpeg, first
+  rendering whatever under it is out of date and nothing that is not: a
+  change to one shot costs that shot and the joins above it. `preview` is
+  small and fast; `final` is the film's format and is what the level above
+  is cut from. Everything here is local and $0.
+- **One render of a film at a time.** A second one is refused, from any
+  process — the agent's `pva_render_cut`, a stage, the browser — and the
+  refusal says what is being rendered. A render that finishes after its cut
+  was edited and rendered again does not take the newer render's place.
+- **Who decides:** each level's `pipeline.yaml` names its pipeline and the
+  one the levels under it run, from a person at every step to only a final
+  review. See [the film families](./pipelines.md#the-film-families).
+
+In the browser studio a film opens on its **board** — scenes and shots with
+their state — and every level has a **Cut** view: sources, a monitor, the
+timeline and an inspector. The monitor plays the draft from its sources
+(cuts and timing only), the unit's render, or one composed frame, and says
+which. You edit a draft with undo and save it as the next revision; a save is
+refused if the agent wrote one meanwhile, and the agent's edit is refused the
+same way. Lock a clip or a track and the agent and assembly leave it as it
+is. **Footage** on the film lists the log with each clip's sheet and proxy.
+
+### Characters and casts
+
+A character is a record apart from how it appears (ADR-0052), owned by a
+channel, a series or a film. Ask for one in words — "a guide for this
+series, a voice and a dot" — and the agent loads `character-development`,
+then `character-forms`. What it does:
+
+- **Who it is:** `pva_create_character` writes
+  `characters/<id>/character.yaml` with `character.md` (identity),
+  `backstory.md` and `performance.md` beside it. A character with no form yet
+  is valid. One drawn from a real person states its `likeness`: whose, and
+  what permits it. The studio does not judge the permission.
+- **How it appears:** `pva_update_character` adds a *form* — its medium is
+  one of `rig-3d`, `model-3d`, `puppet-2d`, `sprites`, `vector`, `images`,
+  `photo`, `graphic`, `sound`, `voice`, `other` — and what the form `can` do:
+  the actions, expressions, mouth shapes and views it has, by the names a
+  script uses.
+- **Releases:** the same tool records a release of a form: a folder
+  (`forms/<form>/<release>/` by default) with the hash of its entry file and
+  of its whole tree, what made it and its licence. A release is never
+  edited; a change is a new release.
+- **Casting:** `pva_cast` writes a series' or a film's `cast.yaml`: each
+  role's character, the form it wears there and the release it is pinned to.
+  Another owner's character is named `owner/id` and read where it lives. With
+  `asks` it checks what a script wants of each role against what its form
+  can do; with `verify` it reads every pinned file again.
+- **What is there:** `pva_characters` lists an owner's characters, or shows
+  one in full and verifies its released files.
+
+The studio keeps, hashes and pins a form; it does not play one it does not
+understand (a `.blend`, an SVG component stay the job of the kit or tool that
+knows the medium), and it does not make one. Turning a picture into a model,
+a model into a rig, or words into motion are capabilities named in ADR-0052
+and not built. The browser studio has no view of a cast.
 
 ## 1b. The same agent in Claude Code
 
@@ -432,9 +603,11 @@ cd studio/web
 npm run dev            # http://localhost:5173
 ```
 
-The agent finds the gateway at `http://127.0.0.1:5198` and authenticates with
-`.gateway-token` in the agent's working directory. Point `AVG_GATEWAY_TOKEN`
-at the token configured for that gateway; `AVG_GATEWAY_URL` overrides its URL.
+The agent finds the gateway at `http://127.0.0.1:5198`; `AVG_GATEWAY_URL`
+overrides it. The gateway writes its token to `.gateway-token` in its own
+working directory (`studio/gateway/` with the commands above). The pipeline
+tools look for `.gateway-token` only in the agent's working directory, so set
+`AVG_GATEWAY_TOKEN` to the gateway's token (or copy the file there).
 
 ### Which agent the studio drives
 
@@ -896,7 +1069,7 @@ vpr channel media my-channel --check --episode my-series/ep001 --verify --librar
 ```
 
 Alternatively rebuild excluded derivatives/deliveries, then verify their hashes.
-The test on `ambient-through-time` and acceptance of its existing signed layout
+The test on a real channel and acceptance of its existing signed layout
 sheet by `pva_compose_video` remain an operator-run production check. No transfer
 creates an approval, and approval verification still requires the existing
 shared operator HMAC key (ADR-0045). A render on another machine need not be
@@ -951,6 +1124,21 @@ The gateway's `POST …/budget/reservations/:id/release` has the same rule.
 environment holds `FAL_KEY`, so a `curl` from its shell reaches fal with no
 reservation, and spend lines are not signed. This is the same same-user
 boundary as the operator key (avg-qr4.8).
+
+## Handing a creative stage to the agent
+
+`Run stage` invokes an automatic adapter; it cannot write a brief or script.
+For creative work, sign in as operator in the browser, select the stage, and
+choose **Claim for agent**. This leases the stage without executing it. The
+button is offered for runnable stages and stages blocked solely by the
+attendance requirement; the gateway still checks dependencies, budget and
+reviews. File-driven episodes do not use this action.
+
+Give the returned `leaseId` and expiry to the agent, not your operator key.
+The agent performs the work and calls `pva_complete_stage` with that exact
+lease and its output paths. An expired lease needs a new operator claim.
+Completing the work does not approve it: any human review gate still applies.
+Signing in does not turn the agent's own requests into operator requests.
 
 ## The operator key
 

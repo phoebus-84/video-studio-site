@@ -1,8 +1,8 @@
-> Imported studio reference, based on [bfea2f8](https://github.com/phoebus-84/video-studio/tree/bfea2f80a4f8a10c999118a4db35b2820ac5c5fc) with local source edits. This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
+> Imported studio reference, based on [aea888a](https://github.com/phoebus-84/video-studio/tree/aea888a3b007ec8530cf98fb3abdb2f8dc6e9f63). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
 
 # voice
 
-> Speech synthesis and voice cloning on MLX. Usable on its own as a voice tool; knows nothing about episodes or pipelines.
+> Local Qwen speech synthesis and consented voice cloning with MLX or PyTorch (CPU, CUDA, ROCm). Usable on its own; knows nothing about episodes or pipelines.
 
 |  |  |
 |---|---|
@@ -36,12 +36,12 @@ it grows a dependency on `studio/*`. Studio-specific integration lives in
 - [Normalization](../reference/voice/docs/normalization.md)
 - [Operator](../reference/voice/docs/operator.md)
 - [Production acceptance](../reference/voice/docs/production-acceptance.md)
-- [Releasing](../reference/voice/docs/releasing.md)
 - [Segmentation](../reference/voice/docs/segmentation.md)
 - [Signal validation](../reference/voice/docs/signal-validation.md)
 - [TTS quality pipeline](../reference/voice/docs/tts-quality-pipeline.md)
 - [Voice cloning](../reference/voice/docs/voice-cloning.md)
 - [Voice direction](../reference/voice/docs/voice-direction.md)
+- [Backends](../reference/voice/docs/backends.md)
 - [Index](../reference/voice/docs/index.md)
 
 ---

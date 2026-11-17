@@ -1,4 +1,4 @@
-> Imported studio reference, based on [bfea2f8](https://github.com/phoebus-84/video-studio/tree/bfea2f80a4f8a10c999118a4db35b2820ac5c5fc) with local source edits. This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
+> Imported studio reference, based on [aea888a](https://github.com/phoebus-84/video-studio/tree/aea888a3b007ec8530cf98fb3abdb2f8dc6e9f63). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
 
 # Contributing to qwen-tts-worker
 
@@ -125,19 +125,10 @@ The registry never claims an unsupported combination exists. The
 
 - All hardware-independent tests pass: `pytest`
 - `python -m compileall -q src` and `git diff --check` pass
-- `mkdocs build --strict` and wheel/sdist metadata checks pass
 - No model weights, private voice references, listener audio, or unblinding keys are staged
 - Live MLX dependencies remain lazy in hardware-independent tests
 - Documentation and the OpenAPI schema reflect API changes
 
-## Beads workflow
+## Issue tracking
 
-This project uses Beads for issue tracking. See `PLAN.md` for the dependency graph.
-
-```bash
-bd ready          # Find available work
-bd show <id>      # Read issue details
-bd update <id> --claim  # Claim an issue
-```
-
-Follow the active Beads profile. Do not push code or Dolt data unless the user or active repository profile explicitly authorizes it.
+Work is tracked once, for the whole repository, at its root.
