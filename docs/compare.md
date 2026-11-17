@@ -15,7 +15,7 @@ vendor's own, it is marked as a claim.
 ## Use OpenMontage if you want the widest choice
 
 [OpenMontage](https://github.com/OpenMontageInc/OpenMontage) turns a coding
-assistant into a video studio: the agent reads a pipeline, follows a skill for
+assistant into a studio for video: the agent reads a pipeline, follows a skill for
 each stage and calls Python tools.
 
 - Twelve production pipelines, from animated explainers to podcast reuse, and

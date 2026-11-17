@@ -20,7 +20,7 @@ const withReceipts = ['jaromail', 'ambient-kowloon', 'nothing-is-only-one-thing'
   .map(id => films.find(film => film.id === id));
 const guide = films.find(film => film.id === 'sonnet');
 
-const installation = `git clone ${brand.repository}.git\ncd video-studio\nmise install\nbun install\nnpm run compose -- --profile=studio\nnpm run doctor\nnpm run demo:render`;
+const installation = `git clone ${brand.repository}.git ${brand.directory}\ncd ${brand.directory}\nmise install\nbun install\nnpm run compose -- --profile=studio\nnpm run doctor\nnpm run demo:render`;
 </script>
 <template>
   <div class="site-page home-page">

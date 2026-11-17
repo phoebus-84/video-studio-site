@@ -1,5 +1,5 @@
 ---
-name: Video Studio website
+name: Sergio website
 description: An editorial screening programme for a local creative production system.
 colors:
   signal: "#b63d28"
@@ -53,7 +53,7 @@ components:
     padding: "10px 17px"
 ---
 
-# Design System: Video Studio website
+# Design System: Sergio website
 
 ## Overview
 

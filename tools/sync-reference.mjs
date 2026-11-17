@@ -69,7 +69,7 @@ async function check() {
 async function main() {
   const args = process.argv.slice(2);
   if (args.length === 1 && args[0] === '--check') return check();
-  if (args.length !== 2 || args[0] !== '--from') throw new Error('Usage: npm run reference:sync -- --from /path/to/video-studio\nFirst run npm run docs:generate in that checkout. Or use npm run reference:check.');
+  if (args.length !== 2 || args[0] !== '--from') throw new Error('Usage: npm run reference:sync -- --from /path/to/the-application\nFirst run npm run docs:generate in that checkout. Or use npm run reference:check.');
   const from = await realpath(resolve(args[1]));
   if (from === root) throw new Error('Choose the studio repository, not the website');
   const revision = execFileSync('git', ['rev-parse', 'HEAD'], { cwd: from, encoding: 'utf8' }).trim();

@@ -2,11 +2,12 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { showcase } from '../../docs/showcase.mjs';
+import { brand } from '../../docs/.vitepress/theme/brand.mjs';
 const read = path => readFile(new URL('../../' + path, import.meta.url), 'utf8');
 
 test('public selection records soundtrack permission and pins every full download', async () => {
   const policy = JSON.parse(await read('data/public-media.json'));
-  assert.equal(policy.repository, 'phoebus-84/video-studio-site');
+  assert.equal('https://github.com/' + policy.repository, brand.siteRepository);
   assert.match(policy.previews.sha256, /^[a-f0-9]{64}$/);
   assert.deepEqual(Object.keys(policy.items).sort(), showcase.map(p => p.id).sort());
   const essay = policy.items['nothing-is-only-one-thing'];
@@ -38,7 +39,7 @@ test('Pages deploy restores pinned media, uses the repository base and least-pri
   assert.match(workflow, /npm ci/);
   assert.match(workflow, /npm test/);
   assert.match(workflow, /npm run media:restore-public/);
-  assert.match(workflow, /DOCS_BASE: \/video-studio-site\//);
+  assert.ok(workflow.includes(`DOCS_BASE: /${brand.siteRepository.split('/').pop()}/`), 'the Pages path follows the repository');
   assert.match(workflow, /actions\/deploy-pages@v4/);
   const restore = await read('tools/restore-public-media.mjs');
   assert.match(restore, /createHash\('sha256'\)/);

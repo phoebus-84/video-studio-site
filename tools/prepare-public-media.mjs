@@ -5,6 +5,7 @@ import { spawnSync } from 'node:child_process';
 import { resolve, join } from 'node:path';
 import { sources, hashFile, probe } from './prepare-site-media.mjs';
 import { showcase } from '../docs/showcase.mjs';
+import { brand } from '../docs/.vitepress/theme/brand.mjs';
 
 const flags = process.argv.slice(2);
 if (flags.some(flag => flag !== '--verify-staged')) throw new Error('Use only --verify-staged to validate and finalize existing staged derivatives.');
@@ -23,7 +24,7 @@ function run(binary, args) {
   const result = spawnSync(binary, args, { stdio: 'inherit', env: { ...process.env, COPYFILE_DISABLE: '1' } });
   if (result.error || result.status !== 0) throw new Error(binary + ' failed');
 }
-const credits = ['Video Studio — selected full-length website editions', '',
+const credits = [brand.name + ' — selected full-length website editions', '',
   'Website distribution is not production approval. Originals remain unchanged.',
   'Third-party materials retain the licences and attribution listed below.',
   'Retain these credits and applicable share-alike terms when redistributing.', ''];

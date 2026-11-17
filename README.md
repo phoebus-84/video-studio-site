@@ -1,6 +1,6 @@
-# Video Studio website
+# Sergio website
 
-The English-language product website for [Video Studio](https://github.com/phoebus-84/video-studio), which the site presents under the name set in `docs/.vitepress/theme/brand.mjs`: a cinematic first page, six films with their receipts, recipes, limits, an honest comparison, the benchmark's specification and the technical reference.
+The English-language product website of Sergio, a video production studio your agent can run ([the application's repository](https://github.com/phoebus-84/video-studio)): a cinematic first page, six films with their receipts, recipes, limits, an honest comparison, the benchmark's specification and the technical reference.
 
 **This is an independent Git project, not a studio workspace.** It needs Node 22+ and npm. Building it does not require the studio, a production library, FFmpeg, an agent, provider credentials or a sibling directory.
 
@@ -15,7 +15,7 @@ npm run preview         # serve the built site on port 4173
 
 The output is `docs/.vitepress/dist/`. Source: https://github.com/phoebus-84/video-studio-site. Public site: https://phoebus-84.github.io/video-studio-site/.
 
-Pushes to `main` deploy through `.github/workflows/pages.yml`. The workflow tests the source, restores only the checksum-pinned public preview bundle from GitHub Releases, builds with `DOCS_BASE=/video-studio-site/`, and deploys the static output using GitHub Pages’ short-lived token. Pull requests only run checks; they do not deploy.
+Pushes to `main` deploy through `.github/workflows/pages.yml`. The workflow tests the source, restores only the checksum-pinned public preview bundle from GitHub Releases, builds for the Pages path set as `DOCS_BASE` in the workflow, and deploys the static output using GitHub Pages’ short-lived token. Pull requests only run checks; they do not deploy.
 
 ## Test in a browser
 
@@ -88,7 +88,7 @@ To refresh deliberately:
 # In the chosen studio checkout first:
 npm run docs:generate
 # Then in THIS repository:
-npm run reference:sync -- --from /path/to/video-studio
+npm run reference:sync -- --from /path/to/the-application
 npm run check
 ```
 
@@ -98,7 +98,7 @@ Homepage, gallery, recipes, collaboration, onboarding and maintenance pages belo
 
 ## The first-render recipe is a studio command
 
-`npm run demo:render` and `tools/first-render.mjs` belong to **video-studio**, where the compositor is installed. They are intentionally not dependencies or scripts of this website. Product-install commands shown on the site are for that repository, not this one.
+`npm run demo:render` and `tools/first-render.mjs` belong to the application's repository, where the compositor is installed. They are intentionally not dependencies or scripts of this website. Product-install commands shown on the site are for that repository, not this one.
 
 ## Dependencies and rights
 
@@ -125,5 +125,9 @@ documentation and carries the application's licence.
 The product's name is one constant, `brand.name` in
 `docs/.vitepress/theme/brand.mjs`. Site-owned Markdown writes it as
 `%product%`; the navigation, titles, home page and footer read the constant.
-The repository's URL, the commands and the tool names are not renamed, and the
-imported reference says what the application's own documentation says.
+The two GitHub addresses (the application's and this site's, with its Pages
+path) stay as they are until the repositories move; they are in `brand.mjs`,
+`data/public-media.json`, `tools/sync-reference.mjs`, the Pages workflow and
+the commands of this README. Tool and package names (`pva_*`, `@av/*`,
+`@studio/*`) are identifiers and are not renamed. The imported reference
+takes the name from the application.

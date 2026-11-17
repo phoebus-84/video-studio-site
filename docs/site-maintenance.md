@@ -91,7 +91,7 @@ Refresh deliberately, not as an install/build side effect:
 # First, in the selected %product% checkout:
 npm run docs:generate
 # Then, in this website repository:
-npm run reference:sync -- --from /path/to/video-studio
+npm run reference:sync -- --from /path/to/the-application
 npm run check
 ```
 
@@ -146,10 +146,10 @@ motion and 320/390px overflow. Results and screenshots stay ignored in
 
 ## Static hosting
 
-The public source repository is [phoebus-84/video-studio-site](https://github.com/phoebus-84/video-studio-site).
+The source is public, in [the website's repository](https://github.com/phoebus-84/video-studio-site).
 The site is [hosted on GitHub Pages](https://phoebus-84.github.io/video-studio-site/).
 Pushes to `main` run `.github/workflows/pages.yml`: install, test, explicitly
-restore the public media archive, build for `/video-studio-site/`, then deploy
+restore the public media archive, build for the Pages path, then deploy
 only `docs/.vitepress/dist/`. Pull requests cannot deploy. Pages uses the
 workflow's short-lived token, not a committed credential.
 
