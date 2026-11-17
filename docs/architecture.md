@@ -1,94 +1,79 @@
-> Imported studio reference, based on [bfea2f8](https://github.com/phoebus-84/video-studio/tree/bfea2f80a4f8a10c999118a4db35b2820ac5c5fc) with local source edits. This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
+> Imported studio reference, based on [e2796c5](https://github.com/phoebus-84/video-studio/tree/e2796c57f66a019df41574d69bba41eb358e4e65). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
 
 # Architecture
 
 This page describes the current responsibilities and boundaries. It is not a
 promise of unattended, one-prompt production. See the
-[harness review](https://github.com/phoebus-84/video-studio/blob/bfea2f80a4f8a10c999118a4db35b2820ac5c5fc/docs/harness-review.md) for implementation gaps and the
+[harness review](https://github.com/phoebus-84/video-studio/blob/e2796c57f66a019df41574d69bba41eb358e4e65/docs/harness-review.md) for implementation gaps and the
 [running guide](./running.md) for prerequisites.
 
 ## Product boundary
 
-The studio produces videos from source material, with an agent helping to plan,
-make and revise them. It supports one-off work and spec-driven series.
+The studio produces narrated, illustrated videos, one-off or as episodes of a
+series:
 
-- Output profiles include `youtube-1920x1080` (16:9) and
-  `vertical-1080x1920` (9:16), delivered as H.264/AAC MP4.
-- Pictures can be generated, licensed archive material, deterministic graphics,
-  terminal recordings, Blender shots or existing media.
-- Narration can use recorded or synthesised takes. Forced alignment supplies
-  word timing; segment timing is available where word alignment is absent.
-- **Remotion renders the episode's layered edit timeline. FFmpeg processes
-  media, masters audio and performs technical checks.** The separate FFmpeg
-  composer remains available for multitrack compositions.
-- Rendering does not upload, schedule or publish the result.
-
-The separate product website shows selected productions, not built-in channel
-formats. Their scripts, styles and custom composition code belong to the
-production library, not to the reusable application.
+- output profiles `youtube-1920x1080` (16:9) and `vertical-1080x1920` (9:16),
+  H.264/AAC MP4;
+- one or more narrators, synthesized locally or recorded, as takes;
+- generated, archive and deterministic pictures, generated clips, Blender
+  shots, terminal recordings and infographics;
+- captions by word for takes aligned to their text, by narration segment
+  otherwise;
+- composition by Remotion from a declarative edit timeline, then loudness and
+  a render audit by FFmpeg;
+- no upload or scheduling.
 
 ## Control plane
 
-**The agent** is the executive producer: it interprets intent, works on editorial
-material and calls tools. Pi loads the registrations in `studio/agent/src/`
-directly; Claude Code accesses those same registrations through the studio's
-MCP server. Tools are not implemented separately for each harness
-([ADR-0048](./adr/0048-tools-written-once-served-to-any-harness.md)).
+The agent — Pi, or Claude Code through the studio's MCP server (ADR-0048) — is
+the **Executive Producer**. It interprets intent, performs editorial work,
+chooses explicit provider bindings, calls production tools, reviews results,
+and reacts to feedback. Both harnesses get the same tools, written once in
+`studio/agent/src/`.
 
 **The execution service**, in `studio/runtime`, tracks pipeline snapshots,
 leases, attempts, dependencies, staleness, reviews and the spend ledger. The CLI
 and gateway use that service. It does not write prose or silently choose a
 creative provider.
 
-**The gateway** provides the API and event transport used by agent pipeline tools
-and the browser studio. It manages browser-facing agent sessions, with backend
-configuration for Pi RPC or the Claude Agent SDK. Production execution is
-delegated to the service and stage adapters; it is not a second renderer.
-
-The browser is optional. **The gateway is still required for the agent's
-pipeline tools**, including stage claims/completion, approval requests and
-budget status. They call its HTTP API even from a terminal session. Standalone
-media tools and the first-render demo do not require the browser; each tool
-still needs its own software, provider and credential prerequisites.
+The **Agent Gateway** owns the agent sessions the browser talks to: Pi RPC processes or Claude Agent SDK sessions (`AVG_AGENT_BACKEND`). Browser clients connect to the gateway, not to the agent's stdin/stdout. The gateway associates sessions with episodes, maps comments to `prompt`, `steer`, or `follow_up`, handles extension UI requests, and streams both agent and production events. It never produces an artifact (ADR-0027).
 
 ## Data plane
 
-Capabilities are named independently of providers. The vocabulary lives in
-`studio/contracts/src/vocabulary.mjs`; composition wiring lives in
-`compose.config.json`. A declared capability is not proof that a machine has
-its dependencies or credentials ready.
+Stages request provider-neutral capabilities (`studio/contracts/src/vocabulary.mjs`):
 
-| Work | Capability / implementation |
-|---|---|
-| Image generation and editing | `image.generate`, `image.edit`: `@av/fal-media` or `@av/codex-image` |
-| Generated clips | `video.generate`: `@av/fal-media` |
-| Speech | `speech.synthesize`: local Qwen3-TTS on MLX |
-| Word alignment | `speech.align`: local voice worker or the explicitly selected ElevenLabs route |
-| Static graphics | `graphics.render`: `@av/graphics` |
-| Animated infographics | `graphics.animate`: `@av/infographics` |
-| Terminal recording | `terminal.record`: `@av/terminal-recorder`, using VHS |
-| Episode rendering | `video.compose`: `@av/remotion-composer` |
-| Multitrack composition and probing | `video.compose`, `media.probe`: `@av/video-composer` and FFmpeg tooling |
-| Editable 3D | `scene.create`, `scene.render`: `@av/blender` |
+- `image.generate` and `image.edit`: fal (`@av/fal-media`) or an OpenAI route (`@av/codex-image`);
+- `video.generate`: fal — MiniMax H3, Wan 2.2 and FLUX 3 Max clips;
+- `model.generate`: fal — a 3D model from one picture, by Tripo H3.1;
+- `speech.synthesize`: the local Qwen3-TTS worker with MLX or PyTorch CPU/CUDA/ROCm (`packages/voice`);
+- `speech.align`: the same worker's MLX-only aligner, or ElevenLabs when asked (`@av/elevenlabs`);
+- `graphics.render`: deterministic SVG, diagram and code-frame renderer;
+- `graphics.animate`: Remotion infographics;
+- `terminal.record`: VHS terminal recordings;
+- `video.compose`: `@av/remotion-composer` for edit timelines; `@av/video-composer` (FFmpeg) for multitrack mixes;
+- `media.probe`: FFmpeg probes;
+- `scene.create` and `scene.render`: Blender editable 3D scenes and background
+  Eevee/Cycles previews/animation, with a Pi-directed artist-handoff workflow.
 
-Archive acquisition and audio editing also have reusable packages and agent
-tools; they are not separate stage-capability names. See the
-[package reference](./guide.md#packages) and run `npm run doctor` for this
-machine's readiness. Providers must be selected explicitly, not silently
-substituted.
+Archive and stock media (`@av/archive-media`) and audio edits (`@av/audio-edit`)
+are tools rather than stage capabilities.
 
 ## From sources to a candidate
 
 ```text
-Direction and source material
-  -> agent prepares the editorial work
-  -> execution service tracks stages and dependencies
-  -> tools and adapters produce assets and records
-  -> sources build an edit timeline
-     (a spec-driven series uses its pinned release's compiler and validator)
-  -> layout sheet: inspect representative frames and satisfy its review policy
-  -> Remotion renders; FFmpeg masters and audits
-  -> candidate is watched, listened to and reviewed by the operator
+Terminal prompt or GUI action
+  -> the agent (Pi or Claude Code) as executive producer
+  -> pipeline runtime opens/leases a stage
+  -> the agent reads the stage skill and current artifacts
+  -> the agent calls one or more capability tools
+  -> adapters persist jobs and immutable attempts
+  -> the agent writes the canonical stage artifact
+  -> runtime validates and records the attempt
+  -> policy either continues or awaits approval
+  -> the edit timeline is built (or compiled from the series' spec)
+  -> a layout sheet is read and, for a series episode, approved by a person
+  -> Remotion renders the timeline; FFmpeg masters the sound
+  -> the render audit determines Current Deliverable
 ```
 
 The service can execute stages with a registered adapter. Other stages need
@@ -115,7 +100,7 @@ compilation is not a future placeholder.
   a universal billing or safety boundary.
 
 Review the actual film and audio. See [revision checks](./running.md#comparing-two-versions)
-and the [harness review](https://github.com/phoebus-84/video-studio/blob/bfea2f80a4f8a10c999118a4db35b2820ac5c5fc/docs/harness-review.md) for the limits of sampled evidence,
+and the [harness review](https://github.com/phoebus-84/video-studio/blob/e2796c57f66a019df41574d69bba41eb358e4e65/docs/harness-review.md) for the limits of sampled evidence,
 same-user access and execution guarantees.
 
 ## Files, history and collaboration

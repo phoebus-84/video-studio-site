@@ -1,12 +1,16 @@
-> Imported studio reference, based on [bfea2f8](https://github.com/phoebus-84/video-studio/tree/bfea2f80a4f8a10c999118a4db35b2820ac5c5fc) with local source edits. This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
+> Imported studio reference, based on [e2796c5](https://github.com/phoebus-84/video-studio/tree/e2796c57f66a019df41574d69bba41eb358e4e65). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
 
-# video-studio-web
+# Sergio web
 
 Browser production studio for inspecting and steering every stage of an episode.
 
 ## Core surfaces
 
 Channel and series library, pipeline/stage rail, editable editorial documents, scene timeline, asset attempt comparison, audio and video review, anchored comments, generation progress, staleness explanations, budget/provenance views, approvals, and targeted reruns.
+
+For a film (ADR-0050): its board of scenes and shots with where each stands between its cut and its render, a scene's shot list and a shot's plan and takes, the footage log, each level's manifest as a form, who decides at each level, and the cut editor — sources, monitor, multitrack timeline and inspector — the same at the three levels.
+
+Structured files (JSON, YAML) open as fields and as source; a pipeline manifest opens beside its stage chain.
 
 ## Product constraints
 
@@ -43,4 +47,4 @@ Contributor and operator guidance:
 
 ## Plan
 
-Run `bd list`, `bd graph`, and `bd show <id>`.
+Work is tracked once, for the whole repository, at its root; this module keeps no plan of its own.

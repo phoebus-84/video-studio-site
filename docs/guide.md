@@ -12,6 +12,16 @@ Everything is here, in one place.
 | [Repository layout](./repository-layout) | Why is the tree split into `packages/` and `studio/`, and where does my code go? |
 | [Contributing](./contributing) | How do I add a package, capability, skill or pipeline? |
 
+## Where it stands
+
+| Document | What it answers |
+|---|---|
+| [Limits](./limits) | What does not work yet, and what did release 0.2.0 fix? |
+| [Changelog](./changelog) | What changed for someone who uses the studio, and what needs action? |
+| [Retake](./retake) | How will it be measured against a model working alone? A specification; no results. |
+| [Compared with the others](./compare) | When is another tool the better choice? |
+| [Licence](./licence) | What covers the site, the software and the films? |
+
 ## Understanding the system
 
 | Document | What it answers |
@@ -29,8 +39,10 @@ Reusable outside this project. They know nothing about episodes or pipelines.
 | Package | Capabilities |
 |---|---|
 | [remotion-composer](./packages/remotion-composer) | `video.compose`: layered episode timelines |
+| [render-worker](./packages/render-worker) | renders that timeline on other machines; optional |
 | [blender](./packages/blender) | `scene.create`, `scene.render` |
 | [voice](./packages/voice) | `speech.synthesize`; the worker also supports alignment |
+| [comfyui-speech](./packages/comfyui-speech) | speech through the Qwen3-TTS nodes of a ComfyUI server; optional |
 | [fal-media](./packages/fal-media) | `image.generate`, `image.edit`, `video.generate` |
 | [codex-image](./packages/codex-image) | `image.generate`, `image.edit` |
 | [graphics](./packages/graphics) | `graphics.render` |
@@ -55,6 +67,8 @@ The product. Depends on `packages/`. All studio-specific integration lives here.
 | [contracts](./studio/contracts) | Canonical schemas, vocabulary, bindings |
 | [series](./studio/series) | Series compilers: episode spec and narration → edit timeline |
 | [episode](./studio/episode) | An episode on disk, produced: timeline built or compiled, checked, rendered |
+| [film](./studio/film) | A film on disk, produced: scenes and shots, footage, a cut at each level assembled, checked and rendered |
+| [cast](./studio/cast) | Characters on disk: who they are, the forms they take, and a production's cast pinned to what it wears |
 | [runtime](./studio/runtime) | Snapshots, leases, staleness, journal, policy |
 | [pipelines](./studio/pipelines) | Built-in pipeline manifests |
 | [agent](./studio/agent) | The executive-producer package: a Pi extension, served to Claude Code over MCP |

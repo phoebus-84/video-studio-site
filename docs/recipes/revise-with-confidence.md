@@ -1,97 +1,120 @@
 ---
 title: Change the line. Keep the film.
-description: Revise a rendered episode, preserve the previous delivery and inspect unexpected changes with Video Studio’s comparison workflow.
+description: "Correct one thing in a rendered episode: find what depends on it, redo only that, keep the delivered version, and compare the two renders to see that nothing else moved."
 ---
 # Change the line. Keep the film.
 
-**Goal:** make a specific correction without casually changing everything around it.
+**You end with:** a new render in which one thing changed, the render you
+delivered still on disk beside it, and a report of every section that differs
+between the two.
+
+<RecipeFilm id="nothing-is-only-one-thing" />
 
 ## Ingredients
 
-- An existing rendered episode and its source files.
-- The actual previous deliverable, not a newly recreated approximation.
-- An authenticated agent and working render tools.
-- A precise description of what should change.
+- A rendered episode and its source files, in your library.
+- The gateway running, for the staleness and rerun tools
+  ([running the agent](../running)).
+- The correction, said precisely: which sentence, shot or section, and what
+  it should become.
 
-**Costs:** agent work, rerendering and any explicitly requested regeneration. A text correction should not automatically trigger new paid imagery.
+**Costs:** the agent's model usage, and whatever the change itself needs
+again. A text correction on a terminal-and-diagram film costs a local render.
+A new sentence costs its narration; a new picture costs that picture. Nothing
+that does not depend on the change is made again.
 
-## Make the change bounded
+## 1. Say what may change, and what may not
 
 ```text
-Revise the second section's explanation; keep every other section unchanged.
-First identify the source file that owns that text.
-Preserve the delivered render and list which downstream outputs become stale.
-Do not regenerate unrelated images or narration.
-Show me the revised layout before rendering.
-Then compare the new output with the delivered version,
-expecting changes only in the second section.
-Do not approve any review gate on my behalf.
+In the episode my-channel/my-series/ep004, the second section says the
+filter runs on the GPU. It runs on the CPU. Correct that sentence.
+Before changing anything, tell me which file owns it and what goes stale.
+Do not regenerate any picture. Do not touch the other sections.
+Show me the layout sheet before rendering, then compare the new render
+with the one I delivered, expecting changes only in section two.
 ```
 
-## Turn a reaction into a change you can judge
+You do not need the diagnosis. “The middle drags” is a fair start: ask the
+agent for the possible causes and two remedies before it touches the film.
 
-You do not need to arrive with a technical diagnosis. “The middle drags” or “I lose the argument here” is a legitimate starting point. Ask the agent to identify possible causes and show a small set of remedies before touching the whole film.
+## 2. What goes stale
 
-| Your observation | What the agent can investigate | What you decide |
-|---|---|---|
-| “The explanation feels rushed” | Reading pace, dense wording, visual holds | Rewrite, rerecord or give it more time |
-| “This does not look like our character” | Reference version, selected asset, framing | Replace the shot or deliberately revise the identity |
-| “The room is too busy” | Competing layers, contrast, motion and sound | Which elements should recede or disappear |
-| “The lesson repeats itself” | Script structure and repeated examples | The argument and material worth keeping |
+The agent edits the file that owns the decision, not a file derived from it.
+In a series made to a format, that is the episode's spec or its script: the
+timeline is compiled from them, and a patched timeline is replaced at the
+next compile.
 
-Separate symptoms from solutions. More transitions will not fix a redundant script, and a new voice will not necessarily fix an unclear explanation.
+Then it asks the runtime, not itself:
 
-## Agree what the change is allowed to affect
+- `pva_check_staleness` marks the stages whose inputs changed.
+- `pva_plan_rerun` lists what must run again, in order, before anything runs.
 
-Have the agent propose a short change plan: owning source, intended remedy, downstream work, possible costs and material that stays untouched.
+Read the plan. If one corrected sentence asks for new pictures, something
+depends on more than it should: stop and ask why.
 
-For a paired poetry production, changing only the lesson’s commentary should not automatically recreate the shared recital. Correcting a word in the shared poem text may affect both films and needs a different plan.
+## 3. Redo only that
 
-Also choose the scope of the lesson learned:
+| What changed | What is made again |
+|---|---|
+| A sentence of narration, same length | that take, its alignment, the timeline; the picture where it follows the words |
+| A sentence that got longer or shorter | the same, and every second after it: the picture's cache is keyed by time |
+| Sound only: music, a level, a fade | the mix. The whole picture is reused |
+| One title, caption or graphic | the seconds it is on screen |
+| The template release, the resolution | everything |
 
-- **This episode:** a particular image does not work.
-- **The series:** verse needs more reading time in this layout.
-- **The channel:** the guide’s tone should change for future work.
+The render keeps its picture in one-second segments and reuses the ones a
+change did not touch. [See it happen on a six-second film](../correction-shown).
 
-Save a reusable decision where the next session will find it. A changed standard does not retroactively authorise replacing every delivered episode.
+The render you delivered is not overwritten. Each render has its own id and
+keeps its timeline beside it (`output/<render-id>.timeline.json`).
 
-## Change the source that owns the decision
+## 4. Look before you render
 
-For a spec-driven episode, the timeline is compiled from the episode spec, takes and series release. Change those sources rather than patching a derived timeline that the next compile replaces.
+`pva_layout_sheet` makes stills of the timeline a render would use, at its
+first and last frame, across its sections. It is written to
+`artifacts/layout-sheet/sheet.jpg`. A corrected sentence that is longer than
+the old one moves everything after it: the sheet is where you see a caption
+pushed off its mark, before a render is spent.
 
-For other edits, inspect the actual workflow first. If the timeline has deliberate manual edits, do not rebuild it blindly.
+## 5. Compare the two renders
 
-## Check, render, compare
+```text
+Compare the new render with <the id of the render I delivered>,
+expecting changes only in section two.
+```
 
-1. Record the previous render ID and preserve its timeline.
-2. Inspect staleness after the source change.
-3. Run episode checks; resolve errors rather than rendering an older valid state.
-4. Review a fresh layout sheet.
-5. Ask for the required human review.
-6. Render to a new version.
-7. Use the comparison workflow with the old render ID and the sections expected to change.
-8. Read the report and inspect the changed frame pairs.
-9. Watch and listen to the corrected section and its boundaries.
+`pva_compare_versions` decodes both videos at the same instants and aligns
+them section by section through their timelines. The result is in
+`reviews/compare/<old>--<new>/`:
 
-The comparison writes reports and paired images under `reviews/compare/` in the episode. It samples selected instants and detects structural changes in sections.
+- `report.json`: every pair of frames measured, the sections that changed
+  shape, and a verdict: `ok`, or `unexpected-changes`.
+- `changed.jpg` and `pairs/`: each changed frame as old, new and difference.
 
-::: warning Know what the evidence proves
-A sampled pixel comparison does not inspect every frame and does not verify the soundtrack. Listen to audio revisions and watch timing-sensitive transitions. A clean report is supporting evidence, not a universal quality guarantee.
-:::
+The comparison looks at about 24 instants, or the ones you name. It is
+evidence, not proof of every frame. Sections added, removed or resized are
+reported whatever was sampled.
 
-## When the change is a new direction
+## Where it goes wrong
 
-A complete creative re-edit is different from a bounded correction. Agree on what may change and what must survive, then preserve the previous candidate rather than treating it as an error to erase.
+- **The agent fixes the timeline.** It works until the next compile. Ask
+  which source owns the sentence.
+- **A longer sentence.** The comparison aligns the films section by section,
+  so later sections that only moved still compare as unchanged, and the
+  section itself is reported as resized. The render is another matter:
+  everything after the change is rendered again, because it moved in time.
+- **A correction that is really a new standard.** “Verse needs more time on
+  screen” is not about one episode. Change the series' format in a new
+  release; it does not reach back into delivered episodes by itself.
+- **Approving on the agent's word.** A stage that waits for a person waits
+  for you. The agent asks with `pva_request_approval`.
 
-[Nothing Is Only One Thing V006](../examples#nothing-is-only-one-thing) is a real example: the images, transitions and music-led edit were recomposed around the existing V005 narration. Earlier films and voice takes remain intact. It demonstrates a revision approach, not a bundled format or a pixel-identical correction. Selecting it for the gallery does not approve its production review gate.
+## What is not built
 
-## Acceptance check
+Drawing on the frame and having that piece made again without a conversation.
+You tell the agent, in words. [Limits](../limits)
 
-- The requested correction is visible or audible.
-- No unrelated section is marked as unexpectedly changed.
-- New line breaks, durations and transitions still work.
-- The old deliverable remains accessible.
-- Reviews apply to the current bytes, not an earlier version.
-- The person who requested the correction agrees it is resolved.
+## Next
 
-[Comparison details and limitations →](../running#comparing-two-versions)
+[Hand the episode to someone else](./team-handoff), with the old render, the
+new one and the comparison between them.

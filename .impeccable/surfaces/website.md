@@ -1,4 +1,4 @@
-# Video Studio website
+# Sergio website
 
 Mode: Persuade (home), Experience (examples), Read (recipes and technical documentation).
 

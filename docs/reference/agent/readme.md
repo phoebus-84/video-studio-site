@@ -1,8 +1,8 @@
-> Imported studio reference, based on [bfea2f8](https://github.com/phoebus-84/video-studio/tree/bfea2f80a4f8a10c999118a4db35b2820ac5c5fc) with local source edits. This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
+> Imported studio reference, based on [e2796c5](https://github.com/phoebus-84/video-studio/tree/e2796c57f66a019df41574d69bba41eb358e4e65). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
 
 # pi-video-agent
 
-A distributable Pi package that turns Pi into the Agentic Video Studio executive producer.
+A distributable Pi package that turns Pi into Sergio's executive producer.
 
 ## Owns
 
@@ -33,4 +33,4 @@ Add a tool here once, against Pi's API — both harnesses get it.
 
 ## Plan
 
-Run `bd list`, `bd graph`, and `bd show <id>`.
+Work is tracked once, for the whole repository, at its root; this module keeps no plan of its own.

@@ -1,4 +1,4 @@
-> Imported studio reference, based on [bfea2f8](https://github.com/phoebus-84/video-studio/tree/bfea2f80a4f8a10c999118a4db35b2820ac5c5fc) with local source edits. This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
+> Imported studio reference, based on [e2796c5](https://github.com/phoebus-84/video-studio/tree/e2796c57f66a019df41574d69bba41eb358e4e65). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
 
 # ADR-0037: Series templates pin editorial standards
 
@@ -20,7 +20,7 @@ verified by `verifySeriesReference` (`avg-jao.6`).
 A series is a repeatable editorial format, not a directory of unrelated
 videos. Approved episodes establish its style, direction, writing, voices
 and editing; the next episode should change the content, not quietly invent
-another format. CreativeStudio's UP-52/53 express this well, but copying its
+another format. The predecessor project's UP-52/53 express this well, but copying its
 executable episode templates into `library/` would violate our boundary:
 editorial intent is data; reviewed repository code compiles it (ADR-0034).
 
@@ -179,7 +179,7 @@ the sheet's review is `avg-3th.2`.
 ### Corrections are proven by comparison
 
 A correction to a rendered episode changes only what was asked for, and that
-is shown (`avg-jao.5`, CreativeStudio's UP-54): the new render is compared
+is shown (`avg-jao.5`, the predecessor project's UP-54): the new render is compared
 with the old one — or with a golden reference — at the same instants, and
 every frame that differs is listed with its section.
 
@@ -295,5 +295,5 @@ before it is promoted; afterwards only a signed withdrawal ends a reference.
   pictures, takes, timeline, check, render), its stage adapters and
   `pva_init_spec`; `avg-jao.5` made the identical-instant comparison of
   two versions. Real channel templates and approved reference media belong to
-  `avg-dcf`, not contract fixtures. No CreativeStudio runtime or production
+  `avg-dcf`, not contract fixtures. No the predecessor project runtime or production
   content is copied into this repository.

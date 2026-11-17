@@ -8,7 +8,7 @@ web
 
 ## Product Purpose
 
-Video Studio is a local, agent-directed video production system. This English-language website explains the product, makes installation approachable, and teaches through recipes and selected real examples. This purpose is explicit in the operator's request.
+Sergio is a local, agent-directed video production system. This English-language website explains the product, makes installation approachable, and teaches through recipes and selected real examples. This purpose is explicit in the operator's request.
 
 ## Users
 
@@ -20,7 +20,7 @@ An agent coordinates reusable media tools while files, timelines, production sta
 
 ## Operating Context
 
-Independent VitePress website in its own Git repository, using Node 22 and npm. The Video Studio application remains a separate Bun workspace. Technical documentation is an explicitly imported, hash-recorded snapshot; normal site builds do not read a studio checkout or production library. Users can start with existing media and add generation providers later.
+Independent VitePress website in its own Git repository, using Node 22 and npm. The Sergio application remains a separate Bun workspace. Technical documentation is an explicitly imported, hash-recorded snapshot; normal site builds do not read a studio checkout or production library. Users can start with existing media and add generation providers later.
 
 ## Capabilities and Constraints
 
@@ -30,11 +30,11 @@ Independent VitePress website in its own Git repository, using Node 22 and npm. 
 - Generated production media is never committed to git. Website derivatives remain ignored and are prepared explicitly from selected sources.
 - Preserve technical documentation in the application; import only explicit, versioned reference snapshots into this website. Never add workspace or sibling-checkout build dependencies.
 - Collaboration is a core product message explicitly requested by the operator: each channel’s text is versioned in its own Git repository; the media lock identifies exact binary versions, and optional S3-compatible storage restores them across machines. Do not imply real-time co-editing, automatic distributed locking or per-person approval signatures.
-- The operator requested public GitHub and Pages publication: source at `phoebus-84/video-studio-site`, site at `https://phoebus-84.github.io/video-studio-site/`. This is not production approval or a blanket distribution licence. The operator confirmed permission to publish V006 with its soundtrack, Simio Sakrecoer’s “Acid In My Lounge”, and identified its licence as CC BY-NC-SA (version unspecified). This licence applies to the soundtrack, not automatically to the whole film. V006 remains a review candidate, not a production-approved release. Published full downloads retain credits. The operator explicitly requested Sonnet 18’s original audio in both excerpt and full download. Its production declares “Reverie (small theme)” by _ghost under CC BY 3.0, CC0 archive effects, locally synthesised effects and operator-authorised recital voices; preserve these specific credits instead of inventing a blanket film licence.
+- The operator requested public GitHub and Pages publication: source at https://github.com/phoebus-84/video-studio-site, site at https://phoebus-84.github.io/video-studio-site/. This is not production approval or a blanket distribution licence. The operator confirmed permission to publish V006 with its soundtrack, Simio Sakrecoer’s “Acid In My Lounge”, and identified its licence as CC BY-NC-SA (version unspecified). This licence applies to the soundtrack, not automatically to the whole film. V006 remains a review candidate, not a production-approved release. Published full downloads retain credits. The operator explicitly requested Sonnet 18’s original audio in both excerpt and full download. Its production declares “Reverie (small theme)” by _ghost under CC BY 3.0, CC0 archive effects, locally synthesised effects and operator-authorised recital voices; preserve these specific credits instead of inventing a blanket film licence.
 
 ## Brand Commitments
 
-English site content; the existing Video Studio / Agentic Video Studio name. No existing marketing visual identity was found.
+English site content. The product is named Sergio and its domain is sergiostud.io (operator, 17 November 2026); the site reads the name from one constant, `brand.name` in `docs/.vitepress/theme/brand.mjs`. The GitHub repositories keep their present addresses until the operator moves them. No existing marketing visual identity was found.
 
 ## Evidence on Hand
 

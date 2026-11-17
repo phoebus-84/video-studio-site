@@ -2,7 +2,7 @@
 layout: page
 sidebar: false
 aside: false
-title: Selected work
-description: "Explore Lontano, a dicembre, the latest Ambient Through Time delivery, JaroMail pixel v4, editable Blender animation and visual poetry lessons."
+title: Films
+description: "Six films made with %product%, each with its receipt: what it was made from, what it cost where a cost was recorded, and whose work is in it."
 ---
 <ExamplesPage />

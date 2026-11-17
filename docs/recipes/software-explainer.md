@@ -1,91 +1,117 @@
 ---
 title: Explain the software, not the hype
-description: Turn verified repository research into a narrated software explainer with clear terminal scenes and word-synchronised motion graphics.
+description: "Make a narrated explainer of a repository whose every command and claim is checked against one pinned commit, and that can be made again when the software changes."
 ---
 # Explain the software, not the hype
 
-**Goal:** a useful technical video whose commands, diagrams and claims match the actual software.
+**You end with:** a narrated video of a few minutes about one repository, a
+script whose claims are tied to a commit, terminal scenes recorded from real
+commands, and an episode on disk that can be made again when the code moves.
 
-[Watch JaroMail pixel v4 →](../examples#jaromail)
+<RecipeFilm id="jaromail" />
 
-The selected example is the newest rendered format experiment, not the older version named by the episode’s current-delivery pointer. Its research pins a source commit; demo people and email addresses are fictional.
+That film uses its channel's own format: pixel characters, a big terminal,
+graphics keyed to the words. The studio ships no such format. What this recipe
+gives you is the built-in route, which is plainer.
 
 ## Ingredients
 
-- A source repository and a specific revision.
-- An authenticated agent with access to that source.
-- A target audience and a realistic user task.
-- Narration: a recording or a ready speech capability.
-- Terminal capture and/or graphics tools suitable for the scenes.
+- %product% installed, `npm run doctor` clean, and an agent connected
+  ([quick start](../quick-start)).
+- The gateway running: the pipeline tools need it
+  ([running the agent](../running)).
+- A repository the agent can read, and the commit you want explained.
+- [VHS](https://github.com/charmbracelet/vhs) for terminal scenes, and a
+  speech capability that `npm run doctor` reports ready.
+- A viewer in mind: who watches, and what they should be able to do after.
 
-**Costs:** agent access, optional narration services and local rendering. A graphics-and-terminal treatment need not use generated imagery.
+**Costs:** the agent's own model usage. Terminal scenes, diagrams, local
+speech and the render cost nothing beyond your machine. Generated
+illustrations are optional and metered: set a budget first.
 
-## Brief from the source
+## 1. Set the budget before anything can spend
 
-```text
-Make a three-minute English introduction to this software repository.
-Pin the revision you research. Explain one useful workflow for a newcomer.
-Verify every command and feature claim against that revision.
-Use fictional example.org addresses and no real credentials or personal data.
-Separate conceptual diagrams from actual terminal captures.
-Propose the script and scene list before producing narration or visuals.
+In the channel's or the series' `settings.yaml`:
+
+```yaml
+budget:
+  currency: USD
+  limitMicros: 2000000   # $2.00
 ```
 
-## Choose a viewer, not a feature list
+A paid call reserves its cost in the episode's journal before it is made, and
+is refused if it would pass the limit. `pva_budget_status` shows where the
+episode stands. Terminal scenes, diagrams, local speech and the render
+reserve nothing.
 
-A maintainer may know what the software does without knowing which part a newcomer will find confusing. Tell the agent who is watching and what they should be able to understand or try afterwards.
+## 2. Ask for the episode
 
-Ask it to propose two angles grounded in the repository: a task-based demonstration and a conceptual explanation, for example. Each should name a question, a sequence and the evidence available at the pinned revision.
+```text
+Make a three-minute English explainer of https://github.com/OWNER/REPO
+for someone who has never used it. Pin the commit you research.
+Explain one workflow a newcomer would actually run.
+Check every command and every claim against that commit.
+Use example.org addresses and no real accounts or credentials.
+Prefer terminal scenes and diagrams to generated images,
+and tell me before any paid call.
+Show me the script and the scene list before any narration.
+```
 
-**You bring:** domain knowledge, a realistic task and the mistakes people actually make. **The agent brings:** repository research, candidate examples and a list of claims that need checking. Choose the useful story together.
+In Pi, `/video create <channel>/<series>/<episode>` creates the episode first;
+in Claude Code the same command is `/mcp__pva__video`.
 
-For a recurring channel, save audience assumptions, terminology and the distinction between a tutorial, a review and a promotional overview. They are different promises.
+## 3. What the agent does, and where you look
 
-## Build a safe demonstration kit
+| Stage | The agent uses | You read |
+|---|---|---|
+| Research | the `repo-analysis` skill, on the pinned commit | the analysis: what the tool is, its commands, what it could not verify |
+| Plan | `content-plan`: one episode or several from that analysis | which episode to make first |
+| Script | `write-brief`, `write-script` | every sentence, and the commit it stands on |
+| Terminal | `vhs-terminal-recording`, `pva_render_terminal` | the recordings: real commands, in a disposable directory |
+| Diagrams | `pva_render_graphics` | each diagram at delivery size |
+| Voice | `narration`, `pva_synthesize_speech`, then `pva_verify_take` | the verification: words missing, extra or heard differently |
+| Timing | `pva_align_take`, `pva_build_timeline` | nothing yet |
+| Layout | `pva_layout_sheet` | `artifacts/layout-sheet/sheet.jpg`: stills of the film before a render is spent |
+| Render | `pva_compose_video` | the film, and its audit |
 
-Prepare fictional inputs, a disposable working directory and exact commands. Never demonstrate against real accounts or private inboxes just because they are already configured.
+The built-in pipeline for the research is `repository-documentation`
+(analysis, content plan, architecture diagram); the episode itself runs
+`narrated-illustrated-video` (brief, script, art direction, terminal
+recordings, illustrations, narration, captions, timing, compose, QA). Stages
+marked for human review stop and wait:
+the agent asks with `pva_request_approval` and cannot approve for you.
 
-Ask the agent to identify commands with external effects before running them. Where a safe live demonstration is not available, use a clearly labelled diagram or illustrative example—not invented output presented as proof.
+## 4. Read the script like a maintainer
 
-Keep a small claim-to-source note: the sentence in the script, its evidence at the selected revision and any limitation the viewer should know. A maintainer can then correct the film without repeating the research.
+This is the step that decides whether the film is worth making. For each
+sentence that states a fact about the software, ask where it comes from. A
+good script keeps that answer beside the sentence: the file and the line at
+the pinned commit. Strike what cannot be traced.
 
-## Compare one scene in two treatments
+Run the commands yourself, in the order the script gives them. A terminal
+scene is recorded from a tape of commands; if a command needs a network, an
+account or a file that is not in the demonstration directory, the recording
+will show its failure faithfully.
 
-Try the same explanation as a terminal-led scene and as a diagram with a short command reveal. A restrained character can connect the beats, but should not cover the information or distract from it.
+## Where it goes wrong
 
-You choose what teaches best. Check the scene at the actual delivery size and read the narration aloud before producing every screen.
+- **The agent explains the README, not the tool.** READMEs lag. Ask which
+  claims were checked against code and which only against documentation.
+- **Terminal text too small.** Judge it on the layout sheet at the size the
+  viewer will see, not in the recording.
+- **A name said wrong.** Synthesised speech guesses at `msmtp` or `kubectl`.
+  `pva_verify_take` catches a different word, not a strange stress: listen to
+  every tool name once.
+- **Private data in the recording.** Real paths, tokens and addresses end up
+  on screen when the demonstration runs in your home directory. Use a
+  disposable directory and fictional data, and look before you render.
+- **No gateway.** The pipeline tools fail without it; everything else works.
 
-JaroMail’s pixel treatment is one possible creative answer, not a required style for software films. A [recurring character](./create-a-character) or visual grammar belongs to your channel only if it improves comprehension.
+## When the software changes
 
-## Build the explanation
+Move the pinned commit, ask the agent what in the script no longer holds, and
+correct those sentences. The stages downstream of the script go stale; the
+rest stays. [Change the line. Keep the film.](./revise-with-confidence)
 
-1. **Research:** read the README, commands, configuration and relevant implementation. Keep a source list.
-2. **Choose the argument:** what is this tool, how does it work, and who is it for?
-3. **Write for a newcomer:** establish the mental model before introducing flags.
-4. **Prove commands:** run safe demonstrations in an isolated fixture where possible. Label illustrative output instead of passing it off as a recording.
-5. **Record the voice:** verify tool names, pronunciation, commands and pacing.
-6. **Synchronise:** use measured voice timing, not guessed durations, for visual emphasis.
-7. **Caption:** produce accurate captions from the final narration and check them against playback.
-
-JaroMail v4 uses pixel characters, large terminal layouts and word-keyed motion graphics. Its audio is locally synthesised; the format is a custom prototype rather than a ready-made application template.
-
-## Keep screens readable
-
-- One conceptual step per visual beat.
-- Terminal text that survives the delivery resolution.
-- No real API keys, account details or private paths.
-- A consistent distinction between narration, commands and commentary.
-- Enough time to read a command before the next one arrives.
-- Explicit versions and platform assumptions for installation advice.
-
-## Let someone unfamiliar watch it
-
-Ask a viewer to describe the workflow after a normal playback. Where they hesitate is more useful than a general “looks good”.
-
-If they miss the purpose, fix the opening. If they understand the purpose but cannot read the command, fix the layout or time on screen. If the demonstration contradicts the narration, correct the underlying script and source evidence rather than hiding the mismatch with an animation.
-
-## Acceptance check
-
-Can a newcomer explain the workflow after watching? Can a maintainer trace the important claims back to the pinned source? Both matter.
-
-Keep the research notes, script, demonstration fixtures, narration timings, captions and timeline. [Version them with the channel](../collaboration) so another person can update the film when the software changes.
+If you will explain a tool a month, make the look and the pacing a
+[format](./repeatable-series), and give it a [cast](./create-a-character).

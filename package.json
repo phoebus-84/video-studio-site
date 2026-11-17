@@ -1,9 +1,9 @@
 {
-  "name": "video-studio-site",
+  "name": "sergio-site",
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "Independent product website, recipes and selected work for Video Studio.",
+  "description": "Independent product website, recipes and selected work for Sergio.",
   "engines": {
     "node": ">=22"
   },

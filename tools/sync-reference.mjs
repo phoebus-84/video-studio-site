@@ -10,12 +10,16 @@ const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const receiptPath = join(root, 'data/studio-reference.json');
 const repository = 'https://github.com/phoebus-84/video-studio';
 export const pages = ['architecture', 'context', 'contributing', 'install', 'pipelines', 'repository-layout', 'resolve-handoff', 'running', 'workspace'];
+// Imported from outside the studio's docs/: published path -> path in the studio repository.
+// Their links are written from the repository's root and are rebased onto docs/.
+export const rootPages = { 'docs/changelog.md': 'CHANGELOG.md' };
 // Former imports, not website pages. Allow their checked removal, never reimport them.
 const retiredPaths = new Set(['docs/harness-review.md']);
 const hash = text => createHash('sha256').update(text).digest('hex');
 export function ownedPath(path) {
   if (retiredPaths.has(path)) return false;
   return path === 'docs/public/resolve-handoff.example.json' || pages.some(page => path === `docs/${page}.md`) ||
+    Object.hasOwn(rootPages, path) ||
     /^docs\/adr\/(?:\d{4}-[\w-]+|index)\.md$/.test(path) ||
     /^docs\/(?:packages|studio)\/[\w-]+\.md$/.test(path) ||
     (/^docs\/reference\/[\w./-]+\.md$/.test(path) && !path.split('/').some(p => p.startsWith('.')) && !/(^|\/)plan\.md$/i.test(path));
@@ -65,7 +69,7 @@ async function check() {
 async function main() {
   const args = process.argv.slice(2);
   if (args.length === 1 && args[0] === '--check') return check();
-  if (args.length !== 2 || args[0] !== '--from') throw new Error('Usage: npm run reference:sync -- --from /path/to/video-studio\nFirst run npm run docs:generate in that checkout. Or use npm run reference:check.');
+  if (args.length !== 2 || args[0] !== '--from') throw new Error('Usage: npm run reference:sync -- --from /path/to/the-application\nFirst run npm run docs:generate in that checkout. Or use npm run reference:check.');
   const from = await realpath(resolve(args[1]));
   if (from === root) throw new Error('Choose the studio repository, not the website');
   const revision = execFileSync('git', ['rev-parse', 'HEAD'], { cwd: from, encoding: 'utf8' }).trim();
@@ -75,6 +79,7 @@ async function main() {
   const manifest = JSON.parse(await readFile(join(from, 'compose.config.json'), 'utf8'));
   const components = Object.fromEntries(Object.entries(manifest.components).map(([name, c]) => [name, { path: c.path, standalone: c.standalone, capabilities: c.capabilities, summary: c.summary }]));
   const sourceOf = dest => {
+    if (Object.hasOwn(rootPages, dest)) return rootPages[dest];
     const match = dest.match(/^docs\/reference\/([^/]+)\/(.*)$/);
     if (match && components[match[1]]) {
       const path = `${components[match[1]].path}/${match[2]}`;
@@ -93,6 +98,12 @@ async function main() {
     const input = await readFile(path, 'utf8');
     inputs.push({ path: dest, input, source: sourceOf(dest), sourceSha256: hash(input) });
   }
+  for (const [dest, source] of Object.entries(rootPages)) {
+    if (!inside(from, await realpath(join(from, source)))) throw new Error(`Source escapes checkout: ${source}`);
+    const original = await readFile(join(from, source), 'utf8');
+    inputs.push({ path: dest, input: original.replace(/\]\(docs\//g, '](./'), source, sourceSha256: hash(original) });
+  }
+  inputs.sort((a, b) => a.path.localeCompare(b.path));
   const known = new Set(inputs.map(i => i.path));
   for (const file of await walk(join(root, 'docs'))) {
     const dest = relative(root, file);

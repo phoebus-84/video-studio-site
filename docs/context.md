@@ -1,4 +1,4 @@
-> Imported studio reference, based on [bfea2f8](https://github.com/phoebus-84/video-studio/tree/bfea2f80a4f8a10c999118a4db35b2820ac5c5fc) with local source edits. This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
+> Imported studio reference, based on [e2796c5](https://github.com/phoebus-84/video-studio/tree/e2796c57f66a019df41574d69bba41eb358e4e65). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
 
 # Agentic Video Production
 
@@ -149,3 +149,23 @@ _Avoid_: Working copy, current repository
 **Capability**:
 A provider-neutral production operation required by a stage, such as speech synthesis, illustration generation, deterministic graphics rendering, or video composition.
 _Avoid_: Tool name, provider, model endpoint
+
+**Character**:
+A record of who someone or something in a production is, apart from how it appears: its identity, backstory and way of playing, its voice. Owned by a channel, a series or a film; valid with no form at all.
+_Avoid_: Avatar, model, rig, asset
+
+**Form**:
+One way a character appears — a rig, a puppet, sprites, a drawing made by code, pictures, a photograph, a dot, a sound, a voice alone — with the list of what it can do. A character may have several.
+_Avoid_: Skin, variant, version
+
+**Form Release**:
+A form's files as recorded at one moment, with the hash of their tree, what made them and their licence. Never edited; a change is a new release.
+_Avoid_: Latest, current files
+
+**Cast**:
+A series' or a film's assignment of roles to characters, each with the form it wears there and the release it is pinned to.
+_Avoid_: Character list
+
+**Role**:
+The part a character plays in one production, by the name its scripts use. The same character may hold different roles in different productions.
+_Avoid_: Character

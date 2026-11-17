@@ -1,101 +1,87 @@
 ---
 title: An illustrated short
-description: Plan a coherent illustrated video from a compact story, with clear art direction, optional generation and review before rendering.
+description: "Make a short film from generated illustrations: settle the look on a few pictures before paying for the rest, hold the camera still, animate only what should move, and cut to the sound."
 ---
 # An illustrated short
 
-**Goal:** a compact story with a deliberate visual language, not a slideshow of unrelated images.
+**You end with:** a short film made of illustrations you chose one by one,
+with only the chosen elements moving, cut to narration or to music.
 
-[See Lontano, a dicembre →](../examples#lontano)
+<RecipeFilm id="lontano" />
 
-That example is a music-led creative experiment, shown in its revised complete v03 version. This recipe teaches the approach; it does not claim to rebuild that project from a single prompt or include its private source files.
+That film was made as an experiment outside the pipeline, with a score
+composed for it; no narration. The built-in route below produces a narrated
+illustrated film. The method is the same: few pictures, looked at, before
+many.
 
 ## Ingredients
 
-- An authenticated agent and working rendering tools.
-- A short original script, or public-domain material you can adapt.
-- Existing illustrations **or** a configured image provider.
-- Optional narration: your recording or a ready speech capability.
-- An episode budget if you plan to use supported paid generation.
+- %product% installed, an agent connected and the gateway running.
+- A story with a turn in it: what is different at the end.
+- An image provider that `npm run doctor` reports ready: a fal.ai key, or an
+  OpenAI plan for the `openai-codex` provider.
+- A voice, or music you may use ([borrow it with its licence](./research-and-materials)).
 
-**Costs:** agent usage; image generation if selected; local render compute. Do not assume every provider is free or covered by the budget ledger.
+**Costs:** pictures are metered per image and animated clips per clip (a
+Wan 2.2 clip of about five seconds is $0.05 to $0.10 by resolution). Set the
+episode's budget first; the agent reads it with `pva_budget_status` before
+spending and a call past the limit is refused.
 
-## Start with the story, not the image prompt
+## 1. Find the turn before the look
 
 ```text
-Help me develop a 45-second illustrated short.
-A night-shift baker leaves a warm loaf outside a neighbour's door.
-The audience is adults. The tone is quiet, observant and warm.
-Use at most six shots. Let gestures carry the story.
-
-First propose the brief, a shot list and a consistent art direction.
-Do not generate anything until I review the plan.
-Then check the episode budget and available image provider.
-Keep every source image and generation record.
+Make a ninety-second illustrated film from this story: <the story>.
+Start with writing. Give me the brief and a scene list, with the one moment
+where the film turns. No pictures yet.
 ```
 
-## Find the turn together
+The agent uses `write-brief` and `write-script`. If you cannot say what
+changes between the first scene and the last, more pictures will not find it.
 
-Before choosing an illustration style, ask the agent for two or three ways the story could unfold. In the baker example, is the loaf a daily kindness, an apology, or an unexpected gift? The same images would mean different things.
+## 2. Settle the look on three pictures
 
-**The agent proposes:** a short treatment, the turning point and what each shot needs to communicate. **You decide:** the emotional reading and what should remain unsaid.
+```text
+Load the art-direction skill. Propose two visual treatments for scenes 1, 4
+and 7: the same three scenes in each. Tell me the cost before generating.
+```
 
-Bring a reference image, a photograph of a doorway, a texture or a film moment if it helps explain your taste. Say what you like about it. “This distance from the person” is more actionable than “make it like this film”, and inspiration is not permission to reproduce someone else’s artwork.
+`pva_generate_images` draws several at once, each saved to `assets/images/`
+with its cost on the episode's ledger. Judge them at the size
+the viewer will see, next to each other. Choose one treatment and write down
+what makes it: palette, line, how a face is drawn, what is never shown.
 
-Read the treatment aloud or act out its beats. A six-shot sequence should be understandable before it is beautiful.
+Only then the rest of the scenes.
 
-## Compare the look before making the sequence
+## 3. Hold the camera, move one thing
 
-Ask for a few art-direction proposals using the same key scene. Start with descriptions and references; authorise a small image test only when it would settle a real question.
+A generated clip that moves everything moves the faces too. Hold the
+composition and animate what the scene is about:
 
-Compare the character, location, palette and composition as a whole. Then test the selected look in two different shots—a wide view and a close gesture, for example. This reveals inconsistencies that an isolated hero image can hide.
+- `pva_generate_wan_video` animates one picture; with `loop: true` it closes
+  on its first frame.
+- Whatever the composer draws itself (layers, type, simple motion) is not
+  metered.
 
-Useful feedback might be: “Keep the paper texture and warm window light. Make the street simpler. The baker should look tired, not sad.”
+## 4. Cut to the sound
 
-For a recurring protagonist, [prepare the character pack](./create-a-character) before producing the whole story. An approved reference is guidance for each image, not a guarantee that every new generation will match it.
+With narration, the timeline is built from the measured timing of the take
+(`pva_align_take`, `pva_build_timeline`), not from guessed durations. Read
+the layout sheet (`pva_layout_sheet`) before the render.
 
-## Build a visual grammar
+## Where it goes wrong
 
-Agree on a small set of rules before making final images:
+- **A new face in every scene.** Generated pictures do not hold a character
+  by themselves. Keep reference pictures as a
+  [character's form](./create-a-character) and check each new angle.
+- **Generating all the scenes first.** The treatment changes after you see
+  three. The other twenty were paid for the old one.
+- **Text in the picture.** Titles and captions belong to the composer, where
+  they can be corrected without a new image.
+- **A story for children.** The `fairy-tale-adaptation` pipeline adds
+  audience adaptation and a safety review; a person still reads the script.
 
-| Decision | A useful constraint |
-|---|---|
-| Character | One reference for clothing, face and proportions |
-| Place | A stable doorway, room layout and light source |
-| Palette | A restrained set of colours tied to the story |
-| Camera | A reason for each wide shot, detail or close-up |
-| Motion | Slow movement only where it supports attention |
-| Text | Minimal, readable, and never a substitute for the shot |
+## Next
 
-Ask for a contact sheet of the candidate images. Select the ones that belong in the same film. Regenerate or revise the outliers rather than smoothing over inconsistency with transitions.
-
-## Edit before embellishing
-
-1. Read the story aloud to find its real duration.
-2. Place shots against the narration or intended rhythm.
-3. Keep held frames intentional. A still image can carry a moment; an arbitrary zoom usually cannot.
-4. Add room tone or sound effects only after the cut works.
-5. Inspect the layout sheet, then watch and listen to the rendered preview.
-
-When the original concept needs full character animation, say so explicitly. Generated stills with camera movement are not the same thing.
-
-## Acceptance check
-
-- The character remains recognisable from shot to shot.
-- Locations and light are consistent unless the story changes them.
-- No unintended text, anatomy errors or distracting image artifacts remain.
-- The emotional turn is understandable without explaining the prompt.
-- The audio and visual pacing work together.
-- You have reviewed licences and provider terms before publication.
-
-## Use feedback to improve the story, not just the frames
-
-If the emotional turn is unclear, ask whether the missing ingredient is a shot, a gesture, a pause or a sound. Do not automatically add explanatory narration.
-
-Keep a revision list with the chosen remedy: “Hold the neighbour’s hand at the door before the reveal” is a different request from “replace the neighbour’s appearance”. Review the affected moments and their boundaries after the change.
-
-If this is for children, set the intended age before writing, adapt the language and review potentially frightening or unsafe material explicitly. A gentle visual palette is not a substitute for an age-appropriate story.
-
-## Keep the result editable
-
-Retain the script, art-direction notes, source images, selected takes and timeline. If this becomes a recurring format, [build a series from the reviewed pilot](./repeatable-series), not from the first draft.
+[Change the line. Keep the film.](./revise-with-confidence) when one scene is
+wrong. [A format worth repeating](./repeatable-series) when you want a second
+story in the same hand.

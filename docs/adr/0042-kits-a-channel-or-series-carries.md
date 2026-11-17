@@ -1,4 +1,4 @@
-> Imported studio reference, based on [bfea2f8](https://github.com/phoebus-84/video-studio/tree/bfea2f80a4f8a10c999118a4db35b2820ac5c5fc) with local source edits. This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
+> Imported studio reference, based on [e2796c5](https://github.com/phoebus-84/video-studio/tree/e2796c57f66a019df41574d69bba41eb358e4e65). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
 
 # ADR-0042: Kits a channel or a series carries
 
@@ -12,7 +12,7 @@ Accepted (`avg-d1x`, phase 2). Implemented:
 
 ## Context
 
-ADR-0041 put a series' compiler and validator in its release. What they draw with was still the composer's code: dentro-i-versi's hall, interpreter, verse plates and titles are kits in `packages/remotion-composer`. A phase 0 spike showed that a kit built outside the package, with React, Remotion and zod left external, can be bundled by Remotion and drawn with the application's own React.
+ADR-0041 put a series' compiler and validator in its release. What they draw with was still the composer's code: the first channel's hall, interpreter, verse plates and titles are kits in `packages/remotion-composer`. A phase 0 spike showed that a kit built outside the package, with React, Remotion and zod left external, can be bundled by Remotion and drawn with the application's own React.
 
 ## Decision
 
@@ -40,7 +40,7 @@ ADR-0041 put a series' compiler and validator in its release. What they draw wit
 
 ## Consequences
 
-- **Moving out.** A format's look and drawing can live with the channel, versioned in its repository. Phase 4 moves dentro-i-versi's kits out.
+- **Moving out.** A format's look and drawing can live with the channel, versioned in its repository. Phase 4 moves the first channel's kits out.
 - **Lookup.** A timeline names a kit `name@version`. The application's kit wins, and a library kit can't take its name. The release's pins list exactly which library kits exist for it.
 - **Sharing.** Library kits share the application's React, Remotion and zod. A kit that needs another package bundles it.
-- **No kit toolbox yet.** The composer's fonts and text measuring aren't importable by a library kit yet: the package exports only its index, and the fonts are `.woff2` files. Phase 3 (the toolbox) and phase 4 (dentro-i-versi's kits moving out) supply them.
+- **No kit toolbox yet.** The composer's fonts and text measuring aren't importable by a library kit yet: the package exports only its index, and the fonts are `.woff2` files. Phase 3 (the toolbox) and phase 4 (the first channel's kits moving out) supply them.

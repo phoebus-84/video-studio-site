@@ -1,4 +1,4 @@
-> Imported studio reference, based on [bfea2f8](https://github.com/phoebus-84/video-studio/tree/bfea2f80a4f8a10c999118a4db35b2820ac5c5fc) with local source edits. This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
+> Imported studio reference, based on [e2796c5](https://github.com/phoebus-84/video-studio/tree/e2796c57f66a019df41574d69bba41eb358e4e65). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
 
 # @av/blender
 
@@ -31,7 +31,7 @@ npm test                 # fake-process tests; no Blender needed
 npm run test:live        # actual Eevee/Cycles + Geometry Nodes smoke test
 ```
 
-In video-studio: `npm run compose -- --profile=blender`, then `npm run doctor`.
+In Sergio: `npm run compose -- --profile=blender`, then `npm run doctor`.
 The `full` and `studio` profiles also include Blender. Other profiles remain
 unchanged. The agent exposes `pva_blender_probe`, `pva_blender_create_scene`,
 `pva_blender_render` and `pva_poly_haven`; load the `blender-scene` skill.

@@ -23,7 +23,7 @@ test('the operator-selected films lead the programme and retain exact versions',
   assert.match(sources[essay.id].path, /output\/v006\/nothing-is-only-one-thing-v006\.mp4$/);
   assert.match(sources[essay.id].captions, /-v006\.en\.srt$/);
   assert.deepEqual([essay.start, essay.duration], [39, 31]);
-  assert.match(essay.note, /not an approved release/);
+  assert.match(essay.status, /not an approved release/);
   assert.match(essay.credit, /CC BY-NC-SA; licence version not specified/);
   assert.match(essay.credit, /operator confirmed permission/);
   assert.match(essay.credit, /not a blanket licence for the entire film/);

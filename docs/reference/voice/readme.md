@@ -1,20 +1,22 @@
-> Imported studio reference, based on [bfea2f8](https://github.com/phoebus-84/video-studio/tree/bfea2f80a4f8a10c999118a4db35b2820ac5c5fc) with local source edits. This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
+> Imported studio reference, based on [e2796c5](https://github.com/phoebus-84/video-studio/tree/e2796c57f66a019df41574d69bba41eb358e4e65). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
 
 # qwen-tts-worker
 
-Persistent local Qwen3-TTS service optimized for Apple Silicon through MLX.
+Persistent local Qwen3-TTS service: MLX/Metal on Apple Silicon, or official Qwen/PyTorch on CPU, CUDA and ROCm. Backend-specific checkpoints, one shared API and warm-model lifecycle.
+
+For Linux, Windows, Intel Mac or non-Metal GPU execution, see **[Portable backends](./docs/backends.md)**. It includes installation, tuning, readiness, tested scope and the GGUF assessment.
 
 ## Owns
 
 Model discovery/download state, load and unload lifecycle, one reusable model cache, voice profiles, synthesis job queue, progress, cancellation, segment outputs, health/resource diagnostics, and canonical WAV metadata.
 
-It also aligns: `POST /align` returns when each word of a known text is said in an audio file, with Qwen3-ForcedAligner (`QTW_ALIGN_MODEL`, default `mlx-community/Qwen3-ForcedAligner-0.6B-8bit`, downloaded and loaded on first use). See [the API contract](./docs/api.md#forced-alignment).
+With the MLX backend it also aligns: `POST /align` returns when each word of a known text is said in an audio file, with Qwen3-ForcedAligner (`QTW_ALIGN_MODEL`, default `mlx-community/Qwen3-ForcedAligner-0.6B-8bit`, downloaded and loaded on first use). See [the API contract](./docs/api.md#forced-alignment).
 
 ## Design correction over the prototype
 
 The worker does not spawn and reload Python for every Pi tool call. A typed local API keeps models warm and makes narration jobs resumable and observable. Audio transcoding and final mixing remain FFmpeg composer responsibilities.
 
-## Quick start
+## Apple Silicon quick start
 
 ```bash
 python3.12 -m venv .venv
@@ -44,12 +46,12 @@ QTW_ALIGN_LIVE=1 pytest tests/test_alignment.py   # also a real alignment (macOS
 
 ## Documentation
 
+- [Portable backends](./docs/backends.md) — CPU/CUDA/ROCm/MLX selection, tuning, provenance and limitations
 - [API Contract](./docs/api.md) — public HTTP API reference
 - [Operator Guide](./docs/operator.md) — deployment, configuration, monitoring
 - [macOS CLI](./docs/macos-cli.md) — installation, LaunchAgent lifecycle, diagnostics, synthesis, and recovery
 - [Local voice cloning](./docs/voice-cloning.md) — consented Base enrollment, private references, synthesis, revocation, and limitations
 - [Contributing](./docs/contributing.md) — development setup and conventions
-- [Releasing](./docs/releasing.md) — clean-room gates, signed tags, checksums, provenance, verification, and incidents
 - [Changelog](./changelog.md) — production release capabilities, security boundary, and explicit quality limitations
 - [TTS quality pipeline](./docs/tts-quality-pipeline.md) — investigation, architecture, evaluation design, and implementation plan
 - [English normalization](./docs/normalization.md) — supported spoken forms, lexicon policy, diagnostics, and source mapping
@@ -62,9 +64,9 @@ QTW_ALIGN_LIVE=1 pytest tests/test_alignment.py   # also a real alignment (macOS
 - [Audio processing](./docs/audio-processing.md) — non-destructive edge trim, exact pauses, provenance, and fade decision
 - [Narration mastering](./docs/mastering.md) — manifest order, boundary checks, two-pass loudness, and final provenance
 - [Narration migration](./docs/narration-migration.md) — canonical workspace contract, compatibility readers, timing, and staleness
-- [Production acceptance](./docs/production-acceptance.md) — controlled candidate, JaroMail/fairy runs, listener workflow, findings, and limitations
+- [Production acceptance](./docs/production-acceptance.md) — controlled candidate, production runs, listener workflow, findings, and limitations
 - [Blinded review publication](./docs/listening-review.md) — key-free packaging, deferred GitHub Pages deployment, collection, and analysis
 
 ## Plan
 
-Run `bd list`, `bd graph`, and `bd show <id>`.
+Work is tracked once, for the whole repository, at its root; this module keeps no plan of its own.

@@ -1,12 +1,12 @@
-> Imported studio reference, based on [bfea2f8](https://github.com/phoebus-84/video-studio/tree/bfea2f80a4f8a10c999118a4db35b2820ac5c5fc) with local source edits. This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
+> Imported studio reference, based on [e2796c5](https://github.com/phoebus-84/video-studio/tree/e2796c57f66a019df41574d69bba41eb358e4e65). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
 
-# Video Studio Gateway — Public API Contract
+# Sergio Gateway — Public API Contract
 
 Version: 0.1.0 | OpenAPI: `GET /openapi.json`
 
 ## Overview
 
-The Video Studio Gateway is a trusted local backend that connects browser
+The Sergio Gateway is a trusted local backend that connects browser
 clients, the Pi coding agent RPC, and filesystem production state.
 
 - **Default**: loopback-only (`127.0.0.1`), ephemeral port
@@ -95,6 +95,36 @@ Client-initiated ping/pong:
 ### `GET /events` — Server-Sent Events (authenticated via Bearer header)
 
 SSE stream for simpler clients. Requires `Authorization: Bearer <token>`.
+
+### Films (authenticated)
+
+A film's units are addressed as `:film/units/:scene/:shot`, with `_` for the
+level itself: `/api/films/tide/units/_/_` is the film, `…/units/010-shore/_`
+a scene, `…/units/010-shore/020-close` a shot (ADR-0050). The library
+listing (`/api/channels`) lists films beside channels with `kind: "film"`,
+their scenes as series and their shots as episodes, and every episode route
+works on a film's unit.
+
+| Route | |
+|---|---|
+| `GET /api/films` · `POST /api/films` | The library's films · create one (never overwrites) |
+| `GET /api/film-formats` · `GET /api/cut-effects` | The delivery formats a film can choose · the picture and sound effects a cut can use, with their parameters |
+| `POST /api/films/:film/scenes` · `POST /api/films/:film/scenes/:scene/shots` | Create a scene · a shot |
+| `GET /api/films/:film/tree` | The film in running order: every scene and shot with its manifest, its cut, where its renders stand, what to do next, and the render in progress |
+| `GET` · `POST /api/films/:film/footage` · `PATCH /api/films/:film/footage/:clip` | The footage log · bring files on this machine in · change a clip's entry |
+| `GET` · `PUT …/units/:scene/:shot/manifest` | A unit's manifest · `{ set, order? }`, written only when the result holds |
+| `GET` · `PUT …/control` | The pipeline a unit runs and the ones it declares for the levels under it · `{ pipeline?, scenes?, shots? }` |
+| `GET` · `PUT …/cut` | The cut with its problems and status · `{ cut \| ops, expectedRevision }`: refused with `409 revision-conflict` when the cut moved on since it was read |
+| `GET …/cut/check` | What a render would refuse or warn about, files and effects included |
+| `POST …/cut/assemble` | Make the cut from what is under the unit, or bring it in step |
+| `POST …/cut/frame` | One composed frame as an image: `{ frame, width? }` |
+| `POST …/cut/render` | Start a render: `{ quality, from?, to?, cascade?, force? }`. Answers `202` at once; one render runs per film |
+| `DELETE /api/films/:film/render` | Stop the film's render in progress |
+
+A render reports over the event stream as `render.started`,
+`render.progress`, `render.completed` and `render.failed`; an edit as
+`cut.changed`. A refusal carries `{ error, message, problems }`, each problem
+with the path of what it is about in the cut.
 
 ## Error Responses
 

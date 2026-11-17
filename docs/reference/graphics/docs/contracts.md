@@ -1,4 +1,4 @@
-> Imported studio reference, based on [bfea2f8](https://github.com/phoebus-84/video-studio/tree/bfea2f80a4f8a10c999118a4db35b2820ac5c5fc) with local source edits. This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
+> Imported studio reference, based on [e2796c5](https://github.com/phoebus-84/video-studio/tree/e2796c57f66a019df41574d69bba41eb358e4e65). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
 
 # Graphics renderer contracts
 
@@ -95,7 +95,7 @@ for differences between rejection fingerprints and valid request hashes.
 
 ### Design tokens
 
-`@video-studio/studio-graphics-renderer/theme` exports:
+`@av/graphics/theme` exports:
 
 | Export | Description |
 |---|---|
@@ -138,7 +138,7 @@ interface ResolvedDesignTokens {
 
 ### FontRegistry
 
-`@video-studio/studio-graphics-renderer/font` exports:
+`@av/graphics/font` exports:
 
 | Export | Description |
 |---|---|
@@ -203,7 +203,7 @@ Format: `<prefix>_<32 hex chars>`.
 ### Snapshot testing
 
 ```typescript
-import { assertSnapshot } from '@video-studio/studio-graphics-renderer/test/harness/snapshot.js';
+import { assertSnapshot } from '@av/graphics/test/harness/snapshot.js';
 
 const snap = assertSnapshot(import.meta.url, 'my-snapshot', actualSvg);
 assert.ok(snap.matches);
@@ -212,7 +212,7 @@ assert.ok(snap.matches);
 ### Structural and pixel diff
 
 ```typescript
-import { svgPixelDiff, svgStructuralDiff } from '@video-studio/studio-graphics-renderer/test/harness/pixel-diff.js';
+import { svgPixelDiff, svgStructuralDiff } from '@av/graphics/test/harness/pixel-diff.js';
 
 assert.ok(svgStructuralDiff(svgA, svgB).equivalent);
 assert.ok(svgPixelDiff(svgA, svgB).equivalent);

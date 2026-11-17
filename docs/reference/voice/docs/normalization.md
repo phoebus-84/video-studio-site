@@ -1,4 +1,4 @@
-> Imported studio reference, based on [bfea2f8](https://github.com/phoebus-84/video-studio/tree/bfea2f80a4f8a10c999118a4db35b2820ac5c5fc) with local source edits. This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
+> Imported studio reference, based on [e2796c5](https://github.com/phoebus-84/video-studio/tree/e2796c57f66a019df41574d69bba41eb358e4e65). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
 
 # English spoken-text normalization
 
@@ -43,9 +43,9 @@ Lexicons are exact, locale-scoped inputs rather than source rewrites:
 ```python
 PronunciationLexicon(entries=(
     PronunciationEntry(
-        entry_id="jaromail",
-        display="JaroMail",
-        spoken="Jaro Mail",
+        entry_id="pgadmin",
+        display="pgAdmin",
+        spoken="P G admin",
         language="en-US",
     ),
     PronunciationEntry(

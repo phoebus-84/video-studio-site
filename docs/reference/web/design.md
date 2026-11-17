@@ -1,20 +1,20 @@
 ---
-name: Video Studio
+name: Sergio
 description: A precise localhost production workbench for supervising and correcting agent-created video.
 ---
 
-> Imported studio reference, based on [bfea2f8](https://github.com/phoebus-84/video-studio/tree/bfea2f80a4f8a10c999118a4db35b2820ac5c5fc) with local source edits. This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
+> Imported studio reference, based on [e2796c5](https://github.com/phoebus-84/video-studio/tree/e2796c57f66a019df41574d69bba41eb358e4e65). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
 
 
 <!-- SEED: re-run impeccable document once implementation exists to capture actual tokens and components. -->
 
-# Design System: Video Studio
+# Design System: Sergio
 
 ## Overview
 
 **Creative North Star: "The Provenance Workbench"**
 
-Video Studio should feel like a well-kept technical workbench where every production object has a place, a state, and a history. The structure is as legible as a source tree, while media receives the focused inspection space of an editing suite. The interface remains calm during long-running generation and becomes assertive only when a decision, blocker, conflict, or material consequence requires attention.
+Sergio should feel like a well-kept technical workbench where every production object has a place, a state, and a history. The structure is as legible as a source tree, while media receives the focused inspection space of an editing suite. The interface remains calm during long-running generation and becomes assertive only when a decision, blocker, conflict, or material consequence requires attention.
 
 The default follows the operating-system theme because the creator may work across changing ambient light during long desktop sessions. Light and dark themes are peers, not separate brands. Both use restrained tinted neutrals, a rare oxide-orange accent, and semantic state colors with non-color reinforcement.
 

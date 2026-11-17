@@ -1,6 +1,6 @@
 # Website repository
 
-- This is the independent Video Studio product website, not the production application.
+- This is the independent product website of Sergio, not the production application. The name is one constant, `brand.name` in `docs/.vitepress/theme/brand.mjs`; site-owned Markdown writes `%product%`.
 - Preserve the visual system in DESIGN.md and the product facts in PRODUCT.md.
 - Use npm ci, npm test, npm run build. Do not add workspace:, file: or sibling-checkout dependencies.
 - Source-owned website pages live in docs/. Imported technical pages are listed in data/studio-reference.json: change their source in the studio, then explicitly run reference:sync -- --from <checkout>. Never silently refresh during a build.

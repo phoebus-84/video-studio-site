@@ -1,4 +1,4 @@
-> Imported studio reference, based on [bfea2f8](https://github.com/phoebus-84/video-studio/tree/bfea2f80a4f8a10c999118a4db35b2820ac5c5fc) with local source edits. This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
+> Imported studio reference, based on [e2796c5](https://github.com/phoebus-84/video-studio/tree/e2796c57f66a019df41574d69bba41eb358e4e65). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
 
 # studio-graphics-renderer
 
@@ -10,7 +10,7 @@ Code frames, architecture diagrams, flow diagrams, title frames, callouts, compa
 
 ## Why separate from image generation
 
-Generated images are useful for illustrations but unreliable for exact code, labels, diagrams, and localized text. This module gives documentation episodes a precise visual path and gives fairy tales deterministic titles and captions.
+Generated images are useful for illustrations but unreliable for exact code, labels, diagrams, and localized text. This module gives documentation episodes a precise visual path and gives stories deterministic titles and captions.
 
 ## Safety
 
@@ -24,4 +24,4 @@ the distinction between cooperative deadlines and host-enforced isolation.
 
 ## Plan
 
-Run `bd list`, `bd graph`, and `bd show <id>`.
+Work is tracked once, for the whole repository, at its root; this module keeps no plan of its own.
