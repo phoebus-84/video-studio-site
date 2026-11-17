@@ -1,6 +1,6 @@
 ---
 title: Get started
-description: Install Video Studio, prove the local renderer works, and connect Pi or Claude Code. Keep optional generation services separate.
+description: Install %product%, prove the local renderer works, and connect Pi or Claude Code. Keep optional generation services separate.
 ---
 # Your first video starts here.
 
@@ -29,9 +29,9 @@ The local studio is developed on macOS; JavaScript packages are also checked on 
 
 ## 2. Install the workspace
 
-<CopyCommand label="Install Video Studio" command="git clone https://github.com/phoebus-84/video-studio.git&#10;cd video-studio&#10;mise install&#10;bun install&#10;npm run compose -- --profile=studio&#10;npm run doctor" />
+<CopyCommand label="Install %product%" command="git clone https://github.com/phoebus-84/video-studio.git&#10;cd video-studio&#10;mise install&#10;bun install&#10;npm run compose -- --profile=studio&#10;npm run doctor" />
 
-If mise asks you to trust the repository configuration, review `mise.toml` and run `mise trust`. Use the **Video Studio application repository** root for every command on this page—not the separate website repository.
+If mise asks you to trust the repository configuration, review `mise.toml` and run `mise trust`. Use the **%product% application repository** root for every command on this page—not the separate website repository.
 
 **What happens:** Bun installs the workspace dependencies and builds required packages. Composition wires the studio profile without the local MLX voice worker. Doctor reports what this machine can actually do.
 
@@ -59,7 +59,7 @@ The command prints the exact output path. Every run gets a new directory; it doe
 
 ## 4. Choose your agent
 
-Install and authenticate **one** agent separately. Model access is not included in Video Studio.
+Install and authenticate **one** agent separately. Model access is not included in %product%.
 
 ::: code-group
 ```bash [Claude Code]

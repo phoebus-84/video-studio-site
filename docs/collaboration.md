@@ -1,10 +1,10 @@
 ---
 title: "Collaboration, Git and S3"
-description: "Share a Video Studio channel through Git, version its creative files, and restore its media from S3-compatible storage with hash verification."
+description: "Share a %product% channel through Git, version its creative files, and restore its media from S3-compatible storage with hash verification."
 ---
 # A production your team can pick up.
 
-Video Studio is not tied to one person’s laptop or one agent conversation. **A channel can be its own Git repository.** Its scripts, specifications, templates and production records travel with it. Large media live outside Git, identified by hash and optionally shared through an S3-compatible remote.
+%product% is not tied to one person’s laptop or one agent conversation. **A channel can be its own Git repository.** Its scripts, specifications, templates and production records travel with it. Large media live outside Git, identified by hash and optionally shared through an S3-compatible remote.
 
 A collaborator gets the history **and** a way to restore the actual material—not a folder of screenshots and a request to reconstruct the edit.
 
@@ -16,7 +16,7 @@ A collaborator gets the history **and** a way to restore the actual material—n
 | **`media.lock.jsonl`** | Channel-relative media paths, SHA-256 hashes, sizes and relative symlink targets | The exact media versions associated with a revision of the work |
 | **S3-compatible storage** | Images, recordings, generated clips, fonts, Blender files and selected deliveries | Restore the bytes without putting heavy binaries in Git |
 
-The application repository and a channel repository are separate. Updating Video Studio should not turn a collaborator’s editorial work into an application-code change.
+The application repository and a channel repository are separate. Updating %product% should not turn a collaborator’s editorial work into an application-code change.
 
 ## Version the decisions, not just the final MP4
 

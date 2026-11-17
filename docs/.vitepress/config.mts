@@ -1,5 +1,6 @@
 import { defineConfig } from "vitepress";
 import { recipes } from "./theme/recipes.mjs";
+import { brand } from "./theme/brand.mjs";
 import { readFileSync, readdirSync, existsSync } from "node:fs";
 import { join, resolve } from "node:path";
 
@@ -47,18 +48,35 @@ function adrLinks() {
     });
 }
 
+// Site-owned Markdown writes the product's name as %product%: the one constant
+// in theme/brand.mjs fills it in, in the page and in its title and description.
+const named = (text: string) => text.replaceAll("%product%", brand.name);
+
 export default defineConfig({
-  title: "Video Studio",
+  title: brand.name,
   description:
-    "A local, agent-directed video production studio. Writing, visuals, voice and editing—with real files and human review.",
+    `${brand.name} is ${brand.descriptor}. It ${brand.purpose}`,
   base: process.env.DOCS_BASE || "/",
   appearance: false,
   head: [
     ["link", { rel: "icon", type: "image/svg+xml", href: `${process.env.DOCS_BASE || "/"}favicon.svg` }],
     ["meta", { name: "theme-color", content: "#f7f5ef" }],
     ["meta", { property: "og:type", content: "website" }],
-    ["meta", { property: "og:site_name", content: "Video Studio" }],
+    ["meta", { property: "og:site_name", content: brand.name }],
   ],
+  markdown: {
+    config(md) {
+      md.core.ruler.before("normalize", "product-name", (state) => {
+        state.src = named(state.src);
+      });
+    },
+  },
+  transformPageData(pageData) {
+    pageData.title = named(pageData.title);
+    pageData.description = named(pageData.description);
+    if (typeof pageData.frontmatter.title === "string") pageData.frontmatter.title = named(pageData.frontmatter.title);
+    if (typeof pageData.frontmatter.description === "string") pageData.frontmatter.description = named(pageData.frontmatter.description);
+  },
   transformHead({ pageData }) {
     return [
       ["meta", { property: "og:title", content: pageData.title }],
@@ -75,16 +93,17 @@ export default defineConfig({
 
   themeConfig: {
     logo: { src: "/favicon.svg", alt: "" },
-    siteTitle: "Video Studio",
+    siteTitle: brand.name,
     nav: [
+      { text: "Films", link: "/examples" },
+      { text: "Recipes", link: "/recipes/", activeMatch: "/recipes/" },
       { text: "How it works", link: "/how-it-works" },
       { text: "Collaboration", link: "/collaboration" },
-      { text: "Examples", link: "/examples" },
-      { text: "Recipes", link: "/recipes/", activeMatch: "/recipes/" },
+      { text: "Limits", link: "/limits" },
       { text: "Docs", link: "/guide" },
-      { text: "Get started", link: "/quick-start" },
+      { text: "Install", link: "/quick-start" },
     ],
-    socialLinks: [{ icon: "github", link: "https://github.com/phoebus-84/video-studio" }],
+    socialLinks: [{ icon: "github", link: brand.repository }],
 
     sidebar: [
       {
@@ -93,6 +112,7 @@ export default defineConfig({
           { text: "Quick start", link: "/quick-start" },
           { text: "How it works", link: "/how-it-works" },
           { text: "Collaboration, Git & S3", link: "/collaboration" },
+          { text: "The correction, shown", link: "/correction-shown" },
           { text: "Documentation overview", link: "/guide" },
           { text: "Install and composition", link: "/install" },
           { text: "Running the agent", link: "/running" },
@@ -106,6 +126,16 @@ export default defineConfig({
         items: [
           { text: "Browse all recipes", link: "/recipes/" },
           ...recipes.map(recipe => ({ text: recipe.title, link: `/recipes/${recipe.slug}` })),
+        ],
+      },
+      {
+        text: "Where it stands",
+        items: [
+          { text: "Limits", link: "/limits" },
+          { text: `${brand.name} and the others`, link: "/compare" },
+          { text: "Retake, the benchmark", link: "/retake" },
+          { text: "Changelog", link: "/changelog" },
+          { text: "Licence", link: "/licence" },
         ],
       },
       {

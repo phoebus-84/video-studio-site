@@ -3,6 +3,6 @@ layout: page
 sidebar: false
 aside: false
 title: Recipes
-description: Develop a channel, create recurring characters and prove a series. Practical guides to research, creative decisions and production with an agent.
+description: "One recipe per kind of film and per kind of preparation. Each says what you end with, what the agent runs, what it costs and where it goes wrong."
 ---
 <RecipesPage />

@@ -1,6 +1,6 @@
 # Video Studio website
 
-The English-language product website for [Video Studio](https://github.com/phoebus-84/video-studio): introduction, installation guide, collaboration, recipes and six selected real examples.
+The English-language product website for [Video Studio](https://github.com/phoebus-84/video-studio), which the site presents under the name set in `docs/.vitepress/theme/brand.mjs`: a cinematic first page, six films with their receipts, recipes, limits, an honest comparison, the benchmark's specification and the technical reference.
 
 **This is an independent Git project, not a studio workspace.** It needs Node 22+ and npm. Building it does not require the studio, a production library, FFmpeg, an agent, provider credentials or a sibling directory.
 
@@ -103,3 +103,11 @@ Homepage, gallery, recipes, collaboration, onboarding and maintenance pages belo
 ## Dependencies and rights
 
 Dependencies are locked in `package-lock.json`. Fraunces and Inter are self-hosted with their licence files in `docs/public/fonts/`. Run `npm audit` when updating dependencies; stable VitePress 1.6 currently carries upstream Vite/esbuild development-server advisories. Keep development servers private; do not serve untrusted projects or treat the development server as a production host. No unsupported major-version override is applied just to hide those advisories.
+
+## Where the name comes from
+
+The product's name is one constant, `brand.name` in
+`docs/.vitepress/theme/brand.mjs`. Site-owned Markdown writes it as
+`%product%`; the navigation, titles, home page and footer read the constant.
+The repository's URL, the commands and the tool names are not renamed, and the
+imported reference says what the application's own documentation says.
