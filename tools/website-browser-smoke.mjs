@@ -3,6 +3,7 @@ import {mkdir,writeFile} from 'node:fs/promises';
 import assert from 'node:assert/strict';
 import { showcase } from '../docs/showcase.mjs';
 import { recipes, recipePhases } from '../docs/.vitepress/theme/recipes.mjs';
+import { brand } from '../docs/.vitepress/theme/brand.mjs';
 import publication from '../data/public-media.json' with { type: 'json' };
 const releaseUrl = `https://github.com/${publication.repository}/releases/download/${publication.release}/`;
 const featured = showcase.filter(p => p.featured);
@@ -22,7 +23,8 @@ const overflow=async(label)=>{assert.ok(await page.evaluate(()=>document.documen
 await writeFile(folder+'/browser-results.json',JSON.stringify({passed:false,completed:false,startedAt:new Date().toISOString()},null,2));
 try {
  await go();
- await page.getByRole('heading',{name:/A production studio.*Directed by you/}).waitFor();
+ await page.getByRole('heading',{name:/Make episode twenty.*as good as.*episode one/}).waitFor();
+ assert.match(await page.title(), new RegExp('^'+brand.name+' — '));
  assert.equal(await page.locator('.screening video').count(),1,'Prepare showcase media with npm run media:prepare before the full browser smoke test.');
  await overflow('desktop home');
  await page.screenshot({path:folder+'/desktop.png',fullPage:true});
@@ -38,9 +40,16 @@ try {
  assert.equal(await page.locator('.screening video').evaluate(v=>v.paused),true);
  await page.getByRole('button',{name:'Copy Install the studio command'}).click();
  assert.match(await page.evaluate(()=>navigator.clipboard.readText()),/git clone/);
- await page.getByText('Is this a hosted, one-click video generator?',{exact:true}).click();
- assert.ok(await page.locator('.faq-section details').first().getAttribute('open')!==null);
- results.push('Home: selectors, video playback/reset, clipboard, FAQ, internal links');
+ // The second take is shown as it was rendered: two of six seconds made again.
+ await expect(page.locator('.correction .take-strip li')).toHaveCount(6);
+ await expect(page.locator('.correction .take-strip li.redone')).toHaveCount(2);
+ assert.ok(await page.locator('.correction .take-strip img').evaluateAll(async images=>{await Promise.all(images.map(i=>{i.loading='eager';return i.decode()}));return images.every(i=>i.naturalWidth===480);}),'the stills of the correction are published');
+ // Three films, each with a receipt whose first row is its length.
+ await expect(page.locator('.film-row')).toHaveCount(3);
+ await expect(page.locator('.film-row .receipt')).toHaveCount(3);
+ await expect(page.locator('.film-row .receipt dt').first()).toHaveText('Length');
+ await expect(page.locator('.home-page .not-yet')).toHaveCount(2);
+ results.push('Home: programme selectors, video playback/reset, the stills of the correction, three receipts, clipboard, internal links');
  await go('examples');
  await page.getByRole('button',{name:'Editable 3D',exact:true}).click();
  assert.equal(await page.locator('.project-feature').count(),1);
@@ -104,7 +113,7 @@ try {
  results.push('Recipes: grouped paths, search, empty state, focus after reset, filtered route and phase navigation');
  await go('quick-start');
  await page.screenshot({path:folder+'/quick-start-desktop.png',fullPage:true});
- await page.getByRole('button',{name:'Copy Install Video Studio command'}).click();
+ await page.getByRole('button',{name:'Copy Install '+brand.name+' command'}).click();
  assert.match(await page.evaluate(()=>navigator.clipboard.readText()),/\nmise install\n/);
  results.push('Quick start: command line breaks and copy');
  for (const recipe of recipes) {
@@ -140,6 +149,25 @@ try {
  const gatewayHref=await page.getByRole('link',{name:'start the gateway',exact:true}).getAttribute('href');
  await go(gatewayHref);
  assert.ok(await page.evaluate(()=>Boolean(document.getElementById(decodeURIComponent(location.hash.slice(1))))),'gateway prerequisite link must target an actual heading');
+ for (const [route, heading, text] of [
+  ['limits', 'What does not work yet', /It is not unattended/],
+  ['compare', brand.name+' and the others, honestly', /16 November 2026/],
+  ['retake', 'Retake', /Nothing on this page is a result/],
+  ['changelog', 'Changelog', /Needs action/],
+  ['licence', 'Licence', /films, their stills and their music are not covered/],
+  ['correction-shown', 'The correction, shown', /segmentsReused: 4, segmentsRendered: 2/],
+ ]) {
+  await go(route);
+  await expect(page.locator('main h1')).toHaveText(heading);
+  assert.match(await page.locator('main').innerText(), text, route);
+  await overflow(route);
+ }
+ await expect(page.locator('main .take-strip li.redone')).toHaveCount(2);
+ results.push('Where it stands: limits, comparison, benchmark specification, changelog, licence and the correction shown');
+ await go('examples');
+ await expect(page.locator('.project-feature .receipt')).toHaveCount(showcase.length);
+ await expect(page.locator('#nothing-is-only-one-thing .project-status')).toContainText('not an approved release');
+ assert.doesNotMatch(await page.locator('#jaromail .project-story dl').first().innerText(), /\bv\d\b|pointer/i, 'no version bookkeeping in what a visitor reads');
  await go('collaboration');
  assert.match(await page.locator('main').innerText(),/S3-compatible/);
  await page.screenshot({path:folder+'/collaboration-desktop.png',fullPage:true});
@@ -148,7 +176,7 @@ try {
  await page.screenshot({path:folder+'/mobile.png',fullPage:true});
  await page.screenshot({path:folder+'/mobile-top.png'});
  await page.getByRole('button',{name:'mobile navigation'}).click();
- await page.getByRole('link',{name:'Examples',exact:true}).last().click();
+ await page.getByRole('link',{name:'Films',exact:true}).last().click();
  await page.waitForURL('**/examples');
  await page.waitForTimeout(350); // Let VitePress’s mobile-menu leave transition finish before the capture.
  await page.evaluate(()=>scrollTo(0,0));
@@ -168,7 +196,7 @@ try {
  await go('quick-start');await overflow('mobile quick start');
  await page.screenshot({path:folder+'/quick-start-mobile.png',fullPage:true});
  await page.setViewportSize({width:320,height:720});
- for(const path of ['','examples','recipes/','quick-start','collaboration','architecture','guide',...recipes.map(recipe=>'recipes/'+recipe.slug)]){await go(path);await overflow('320 '+path);}
+ for(const path of ['','examples','recipes/','quick-start','collaboration','architecture','guide','limits','compare','retake','licence','correction-shown',...recipes.map(recipe=>'recipes/'+recipe.slug)]){await go(path);await overflow('320 '+path);}
  await page.emulateMedia({reducedMotion:'reduce'}); await go();
  assert.equal(await page.evaluate(()=>getComputedStyle(document.documentElement).scrollBehavior),'auto');
  assert.ok(await page.locator('video').evaluateAll(videos=>videos.every(v=>!v.autoplay && v.paused)));
