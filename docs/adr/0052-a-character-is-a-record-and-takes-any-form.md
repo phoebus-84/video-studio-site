@@ -1,4 +1,4 @@
-> Imported studio reference, based on [aea888a](https://github.com/phoebus-84/video-studio/tree/aea888a3b007ec8530cf98fb3abdb2f8dc6e9f63). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
+> Imported studio reference, based on [e2796c5](https://github.com/phoebus-84/video-studio/tree/e2796c57f66a019df41574d69bba41eb358e4e65). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
 
 # ADR-0052: A character is a record, and takes any form
 
@@ -10,10 +10,13 @@ Proposed. Implemented with it:
   cast resolved to what it pins;
 - the character tools (`pva_characters`, `pva_create_character`,
   `pva_update_character`, `pva_cast`) and the skills `character-development`
-  and `character-forms`.
+  and `character-forms`;
+- `model.generate`, the first of the capabilities that make a form: a 3D
+  model from one picture, by Tripo H3.1 through `@av/fal-media`
+  (`pva_generate_model`).
 
-Not implemented: the browser's view of a cast, and the capabilities that make
-a form (image to 3D model, automatic rigging, motion from text, motion from a
+Not implemented: the browser's view of a cast, and the other capabilities
+that make a form (automatic rigging, motion from text, motion from a
 generated video). They are named below so that each arrives as a provider
 behind a capability, not as a pipeline of its own.
 

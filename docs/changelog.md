@@ -1,11 +1,36 @@
-> Imported studio reference, based on [aea888a](https://github.com/phoebus-84/video-studio/tree/aea888a3b007ec8530cf98fb3abdb2f8dc6e9f63). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
+> Imported studio reference, based on [e2796c5](https://github.com/phoebus-84/video-studio/tree/e2796c57f66a019df41574d69bba41eb358e4e65). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
 
 # Changelog
 
 What changed for someone who uses the studio, newest first. How a release is
 cut and what its number promises: [contributing](./contributing.md#releases).
 
-## Unreleased — to be 0.2.0
+## Unreleased — to be 0.3.0
+
+### Needs action
+
+- **The product is called Sergio.** The name it had is gone from the code,
+  the documentation and what the tools say. Nothing a library keeps is
+  renamed: the tools are still `pva_*`, the variables `AVG_*`, the packages
+  `@av/*` and `@studio/*`, the manifests `studio.video/v1alpha1`. What moves:
+  - **The render engine's defaults.** The clone on an engine is looked for in
+    `~/sergio` and its cache in `~/.cache/sergio/render`. An engine whose
+    entry in `render-hosts.json` names `repo` and `cache` is not affected;
+    one that relied on the defaults moves its clone there, or names where it
+    is.
+  - **The archive cache** is `~/.cache/sergio/archive-media`. The old folder
+    can be deleted; the new one fills as media is fetched.
+  - **The gateway's `/health`** answers `service: "sergio-gateway"`.
+  - **The root package** is named `sergio`.
+
+### Documentation
+
+- **The README opens with what the studio is for, and what it is not.** The
+  architecture follows it. The running guide, the workspace layout and the
+  domain language now cover characters and casts, the revision an edit must
+  name, and the one render of a film at a time.
+
+## 0.2.0 — 2026-11-17
 
 The first release with a licence, and the first with a number that means
 something. `0.1.0` was never tagged: it is whatever `main` was before this.
@@ -31,6 +56,11 @@ something. `0.1.0` was never tagged: it is whatever `main` was before this.
   beside MLX.
 - **Speech through a ComfyUI server** (#98), with voice cloning and
   clean-then-clone.
+- **A photo that speaks, and ElevenLabs speech** (#96):
+  `pva_generate_avatar_speech` makes a talking clip from a photograph and an
+  audio file, only with a consent record the operator wrote for that
+  photograph; `pva_synthesize_speech` takes `provider: "elevenlabs"`, and its
+  word timings are reused by `pva_align_take` with no second paid call.
 - **Characters** (ADR-0052): a character is a record apart from how it
   appears, owned by a channel, a series or a film. It takes any form — a rig,
   sprites, a drawing made by code, a photograph, a dot, a sound, a voice alone
@@ -38,15 +68,15 @@ something. `0.1.0` was never tagged: it is whatever `main` was before this.
   casts it in a role, pinned to the release it wears. `pva_characters`,
   `pva_create_character`, `pva_update_character`, `pva_cast`, and the skills
   `character-development` and `character-forms`.
+- **A 3D model from one picture** (`model.generate`): `pva_generate_model`
+  asks Tripo H3.1 through fal for a textured model, on the episode's budget
+  at the price of what is asked, and says what came back — triangles,
+  materials, textures, its size and where its origin is, that it has no
+  skeleton, and when it is too heavy to rig. Run against the real service on
+  2026-11-17: a textured GLB, a quad FBX of 20,000 faces and a bare mesh,
+  each recorded on the ledger at its price.
 - **Retake** (`bench/retake`): the specification of a benchmark for what
   happens after the first take. No harness and no numbers yet.
-
-### Documentation
-
-- **The README opens with what the studio is for, and what it is not.** The
-  architecture follows it. The running guide, the workspace layout and the
-  domain language now cover characters and casts, the revision an edit must
-  name, and the one render of a film at a time.
 
 ### Fixed
 

@@ -7,11 +7,6 @@ import { ownedPath } from '../sync-reference.mjs';
 
 const read = path => readFile(new URL('../../' + path, import.meta.url), 'utf8');
 
-// True while the imported reference still comes from an application that carries
-// its old name. Set to false with the first sync from the renamed application:
-// the last test then covers every tracked file.
-const IMPORT_PENDING = true;
-
 test('what a visitor reads about a film is about the film, not about which file was selected', () => {
   // Version bookkeeping lives in sourceVersion, source and status; prose that says
   // "v03, not the earlier…" reads as noise to anyone who was not in the edit.
@@ -100,11 +95,6 @@ test('the site is licensed, and its licence does not reach the films', async () 
   assert.match(await read('docs/.vitepress/theme/components/SiteFooter.vue'), /films, their stills and their music are not covered/);
 });
 
-// Tools of a release newer than the imported snapshot. Each entry removes itself:
-// the test fails once the snapshot names the tool. pva_generate_model is in the
-// application's changelog for 0.2.0 (2026-11-17).
-const releasedSinceSnapshot = ['pva_generate_model'];
-
 test('recipes name real tools and say where they go wrong', async () => {
   const receipt = JSON.parse(await read('data/studio-reference.json'));
   const running = await read('docs/running.md');
@@ -115,12 +105,7 @@ test('recipes name real tools and say where they go wrong', async () => {
     assert.match(text, /^\*\*You end with:\*\*/m, file);
     assert.match(text, /^## Where it goes wrong$/m, file);
     for (const [tool] of text.matchAll(/\bpva_[a-z0-9_]+/g)) {
-      const known = running.includes(tool) || changelog.includes(tool) || receipt.gatewayTools.includes(tool);
-      if (releasedSinceSnapshot.includes(tool)) {
-        assert.ok(!known, `${tool} is in the imported reference now: take it out of releasedSinceSnapshot`);
-        continue;
-      }
-      assert.ok(known, `${file}: ${tool} is not a tool of the imported reference`);
+      assert.ok(running.includes(tool) || changelog.includes(tool) || receipt.gatewayTools.includes(tool), `${file}: ${tool} is not a tool of the imported reference`);
     }
   }
 });
@@ -139,7 +124,7 @@ test('a generated 3D model is shown for what it is: a statue until rigging and m
   assert.match(limits, /Rigging and motion are named in the design and not built/);
 });
 
-test('the old name is gone from the website’s own files, outside the GitHub addresses that have to work', async () => {
+test('the old name is gone from every tracked file, the imported reference included, outside the GitHub addresses that have to work', async () => {
   const { execFileSync } = await import('node:child_process');
   const root = new URL('../../', import.meta.url);
   let lines = [];
@@ -156,7 +141,6 @@ test('the old name is gone from the website’s own files, outside the GitHub ad
   const addresses = new RegExp([site, application, `${owner}.github.io/${name}`, `${owner}/${name}`, `/${name}/`].map(literal).join('|'), 'g');
   const left = lines.filter(Boolean).filter(line => {
     const [path] = line.split(':');
-    if (IMPORT_PENDING && ownedPath(path)) return false;
     return /video[ _-]?studio/i.test(line.slice(line.indexOf(':', path.length + 1) + 1).replace(addresses, ''));
   });
   assert.deepEqual(left, []);

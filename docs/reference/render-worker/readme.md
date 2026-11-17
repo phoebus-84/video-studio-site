@@ -1,4 +1,4 @@
-> Imported studio reference, based on [aea888a](https://github.com/phoebus-84/video-studio/tree/aea888a3b007ec8530cf98fb3abdb2f8dc6e9f63). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
+> Imported studio reference, based on [e2796c5](https://github.com/phoebus-84/video-studio/tree/e2796c57f66a019df41574d69bba41eb358e4e65). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
 
 # render-worker
 
@@ -6,9 +6,9 @@
 
 An engine is a Linux machine that renders episodes for another one over SSH. It holds a clone of this repository (without `library/`) and, inside it, an ignored `.engine/` folder with pinned tools: Node, a static FFmpeg and FFprobe, and the browser Remotion downloads. Pinned versions mean two engines produce the same render pieces, so they can share a cache.
 
-1. On the engine, create the clone: `git init ~/video-studio && git -C ~/video-studio config receive.denyCurrentBranch updateInstead`.
-2. From the controlling machine, push a commit to it: `git push ssh://<user>@<host>/~/video-studio HEAD:refs/heads/engine`, then on the engine `git -C ~/video-studio checkout -f engine`.
-3. On the engine, run `~/video-studio/packages/render-worker/setup.sh`. It installs the apt packages Chrome needs plus fonts (the only step that uses sudo; with a password, run it with `SETUP_SUDO_STDIN=1` and give the password on the first line of stdin), then Node, FFmpeg, Bun, `bun install` (Bun is pinned too, as the repository's package manager) and the browser. It can be repeated; finished steps are skipped. To change a version, edit the constants at its top.
+1. On the engine, create the clone: `git init ~/sergio && git -C ~/sergio config receive.denyCurrentBranch updateInstead`.
+2. From the controlling machine, push a commit to it: `git push ssh://<user>@<host>/~/sergio HEAD:refs/heads/engine`, then on the engine `git -C ~/sergio checkout -f engine`.
+3. On the engine, run `~/sergio/packages/render-worker/setup.sh`. It installs the apt packages Chrome needs plus fonts (the only step that uses sudo; with a password, run it with `SETUP_SUDO_STDIN=1` and give the password on the first line of stdin), then Node, FFmpeg, Bun, `bun install` (Bun is pinned too, as the repository's package manager) and the browser. It can be repeated; finished steps are skipped. To change a version, edit the constants at its top.
 4. It writes `.engine/env.sh`, which puts the pinned Node and FFmpeg first on `PATH` and sets `FFMPEG_PATH` and `FFPROBE_PATH`. `packages/render-worker/engine.sh <args>` sources it and runs the engine CLI; that is what the controlling machine calls.
 5. To tune the engine, add exports to `.engine/env.sh`; `setup.sh` keeps the `export AVG_…` lines when it runs again. `AVG_CHROMIUM_GL=angle` draws on the engine's GPU, `AVG_RENDER_CONCURRENCY` and `AVG_RENDER_BROWSERS` set its tabs and browsers ([Render memory](../../running.md#render-memory)). Measure before keeping a setting: on a GPU with 2 GB of video memory, four browsers of eight tabs ran out of memory, while four of four were the fastest.
 
@@ -22,11 +22,11 @@ Nothing about the machines is written in code.
 - **Settings.** `render-hosts.json` is `$AVG_RENDER_HOSTS`, else `library/.render/render-hosts.json` (a dot folder, so nothing takes it for a channel; it is the operator's machines, not code, so it stays out of git); every field is optional:
 
   ```json
-  { "user": "…", "repo": "~/video-studio", "cache": "~/.cache/video-studio/render",
+  { "user": "…", "repo": "~/sergio", "cache": "~/.cache/sergio/render",
     "hosts": { "<peer name>": { "address": "…", "user": "…", "repo": "…", "cache": "…" } } }
   ```
 
-  A host's own entry wins, then `AVG_RENDER_SSH_USER`, `AVG_RENDER_ENGINE_REPO` and `AVG_RENDER_ENGINE_CACHE`, then the file's defaults. With no user, `ssh` and its own config decide. The address is the entry's, else the peer's tailnet IPv4, else the name. `AVG_RENDER_SSH` names the ssh program. The clone defaults to `~/video-studio`, and the cache root to `$XDG_CACHE_HOME/video-studio/render`.
+  A host's own entry wins, then `AVG_RENDER_SSH_USER`, `AVG_RENDER_ENGINE_REPO` and `AVG_RENDER_ENGINE_CACHE`, then the file's defaults. With no user, `ssh` and its own config decide. The address is the entry's, else the peer's tailnet IPv4, else the name. `AVG_RENDER_SSH` names the ssh program. The clone defaults to `~/sergio`, and the cache root to `$XDG_CACHE_HOME/sergio/render`.
 
 A render goes like this:
 

@@ -1,4 +1,4 @@
-> Imported studio reference, based on [aea888a](https://github.com/phoebus-84/video-studio/tree/aea888a3b007ec8530cf98fb3abdb2f8dc6e9f63). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
+> Imported studio reference, based on [e2796c5](https://github.com/phoebus-84/video-studio/tree/e2796c57f66a019df41574d69bba41eb358e4e65). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
 
 # @studio/adapters
 
@@ -76,6 +76,6 @@ itself (ADR-0027).
 
 Readiness probes, cost estimates, asynchronous job submission, cancellation and
 recovery, and explicit per-episode provider bindings are the rest of the
-descriptor the [harness review](https://github.com/phoebus-84/video-studio/blob/aea888a3b007ec8530cf98fb3abdb2f8dc6e9f63/docs/harness-review.md) proposes. The
+descriptor the [harness review](https://github.com/phoebus-84/video-studio/blob/e2796c57f66a019df41574d69bba41eb358e4e65/docs/harness-review.md) proposes. The
 `vpr` CLI does not dispatch to adapters: `@studio/adapters` depends on
 `@studio/runtime`, so the CLI claims stages rather than performing them.

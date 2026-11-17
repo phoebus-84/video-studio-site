@@ -1,4 +1,4 @@
-> Imported studio reference, based on [aea888a](https://github.com/phoebus-84/video-studio/tree/aea888a3b007ec8530cf98fb3abdb2f8dc6e9f63). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
+> Imported studio reference, based on [e2796c5](https://github.com/phoebus-84/video-studio/tree/e2796c57f66a019df41574d69bba41eb358e4e65). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
 
 # Running the agent
 
@@ -8,7 +8,7 @@ on your machine; an installed package is not proof that every provider works.
 ## 0. Once: install and point at a library
 
 ```bash
-cd /path/to/video-studio
+cd /path/to/sergio
 mise install      # node, bun and python at the pinned versions
 bun install
 npm run doctor
@@ -501,9 +501,12 @@ then `character-forms`. What it does:
 
 The studio keeps, hashes and pins a form; it does not play one it does not
 understand (a `.blend`, an SVG component stay the job of the kit or tool that
-knows the medium), and it does not make one. Turning a picture into a model,
-a model into a rig, or words into motion are capabilities named in ADR-0052
-and not built. The browser studio has no view of a cast.
+knows the medium). Of the capabilities ADR-0052 names for making a form, one
+is built: `pva_generate_model` turns one picture into a 3D model (Tripo H3.1
+through fal, paid per model on the episode's budget). What comes back has no
+skeleton: it can be placed, turned and lit, not posed. Turning a model into a
+rig, and words or a video into motion, are not built. The browser studio has
+no view of a cast.
 
 ## 1b. The same agent in Claude Code
 

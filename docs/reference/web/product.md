@@ -1,4 +1,4 @@
-> Imported studio reference, based on [aea888a](https://github.com/phoebus-84/video-studio/tree/aea888a3b007ec8530cf98fb3abdb2f8dc6e9f63). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
+> Imported studio reference, based on [e2796c5](https://github.com/phoebus-84/video-studio/tree/e2796c57f66a019df41574d69bba41eb358e4e65). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
 
 # Product
 
@@ -16,7 +16,7 @@ A typical library contains 1 to 5 series with 10 to 15 episodes each. A heavy li
 
 ## Product Purpose
 
-Video Studio makes an agent-directed production legible and correctable without reducing it to a chat transcript. It projects the canonical filesystem workspace into a production-ready desktop interface where the creator can watch autopilot, inspect artifacts and media, understand blockers and staleness, compare immutable attempts, leave anchored feedback, and request precise reruns.
+Sergio makes an agent-directed production legible and correctable without reducing it to a chat transcript. It projects the canonical filesystem workspace into a production-ready desktop interface where the creator can watch autopilot, inspect artifacts and media, understand blockers and staleness, compare immutable attempts, leave anchored feedback, and request precise reruns.
 
 The default operating mode is exception supervision. A creator should be able to understand what Pi is doing, whether intervention is required, what an action will cost or invalidate, and which deliverable is current without continuously managing the pipeline. When deeper control is wanted, the same interface must support hands-on review at the stage, artifact, scene, asset, narration-segment, and render-attempt levels.
 

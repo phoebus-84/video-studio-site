@@ -1,6 +1,6 @@
-> Imported studio reference, based on [aea888a](https://github.com/phoebus-84/video-studio/tree/aea888a3b007ec8530cf98fb3abdb2f8dc6e9f63). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
+> Imported studio reference, based on [e2796c5](https://github.com/phoebus-84/video-studio/tree/e2796c57f66a019df41574d69bba41eb358e4e65). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
 
-# Video Studio MVP Shape Brief
+# Sergio MVP Shape Brief
 
 Status: Approved
 
@@ -8,7 +8,7 @@ Approved by the project owner on 2026-07-27 after an interactive discovery revie
 
 ## 1. Feature Summary
 
-Video Studio is a production-ready desktop web application for a technical solo creator supervising agent-directed video production on localhost. Creation begins in Pi; the studio projects the canonical workspace so the creator can monitor autopilot, inspect structured artifacts and media, review immutable attempts, understand blockers and staleness, and request precise corrections without navigating production as a chat transcript.
+Sergio is a production-ready desktop web application for a technical solo creator supervising agent-directed video production on localhost. Creation begins in Pi; the studio projects the canonical workspace so the creator can monitor autopilot, inspect structured artifacts and media, review immutable attempts, understand blockers and staleness, and request precise corrections without navigating production as a chat transcript.
 
 The default experience optimizes for exception supervision. It also supports hands-on work at any granularity, from one stage or script revision to one asset, narration segment, review anchor, or rerun plan.
 

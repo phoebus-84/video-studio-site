@@ -1,15 +1,15 @@
 ---
 name: pva-executive-producer
-description: Operate the Agentic Video Studio as executive producer. Use for channel, series, episode, film, scene, shot, run, resume, review, and rerun commands. This skill coordinates video production pipelines through the pva_* tools, under Pi or Claude Code.
+description: Operate Sergio, the studio, as executive producer. Use for channel, series, episode, film, scene, shot, run, resume, review, and rerun commands. This skill coordinates video production pipelines through the pva_* tools, under Pi or Claude Code.
 ---
 
-> Imported studio reference, based on [aea888a](https://github.com/phoebus-84/video-studio/tree/aea888a3b007ec8530cf98fb3abdb2f8dc6e9f63). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
+> Imported studio reference, based on [e2796c5](https://github.com/phoebus-84/video-studio/tree/e2796c57f66a019df41574d69bba41eb358e4e65). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
 
 
 # PVA Executive Producer
 
 This skill makes the agent — Pi, or Claude Code through the studio's MCP server — the
-executive producer for the Agentic Video Studio. It coordinates the full production
+executive producer for Sergio. It coordinates the full production
 lifecycle: channels, series and episodes; films, scenes and shots; pipeline runs,
 reviews, and reruns.
 
@@ -65,6 +65,15 @@ commands become available through the agent.
   `pva_generate_minimax_h3_video` (~$0.48/clip) for loops and small moving details; keep H3 for
   performances, references and long shots.
 
+- `pva_generate_avatar_speech` — A photo + 5–60 s audio to a talking video through
+  MiniMax H3 Max lip-sync. Check `pva_budget_status` first; prices and duration
+  surcharge are in the tool description. `imageSource` selects a shared channel
+  source; `imagePath` is relative to it, while `audioPath` stays episode-relative.
+  Writes `assets/video/<shotId>.mp4` and a provenance sidecar. A new spoken line
+  requires a new clip; shared look photos do not imply reusable dialogue. It makes a
+  person say words they did not say: it requires `likenessConsentPath`, a consent
+  record the operator wrote for that photograph, bound to it by `image_sha256`. Never
+  create or confirm that consent on the operator's behalf: without one, stop and ask.
 - `pva_synthesize_speech` — Local Qwen by default (MLX or Torch). Only when the
   operator asks for ComfyUI, use `provider: "comfyui-qwen"` (free;
   `pva_capability_status` says whether it answers): `voice` is a speaker or
@@ -75,6 +84,10 @@ commands become available through the agent.
   consent record bound to the reference hash or saved name. Never create or confirm
   that consent on the operator's behalf. Both Qwen paths need `pva_register_take`, then `pva_align_take`
   with an aligner: they return no word timings. Never switch provider on failure.
+  Only when ElevenLabs is asked for by name, use `provider: "elevenlabs"` with
+  `voiceId` (paid, spend ledger): its record keeps each word's timing, so after
+  `pva_register_take`, `pva_align_take` with `provider: "synthesis"` times the take
+  from it, with no second paid call.
 - `pva_clean_voice` — Clean only, on the same ComfyUI server: separate a recording's voice
   from music and noise (optional `start`/`duration` cut) into a new `assets/…wav`, with a
   `.clean.json` record. Nothing is cloned.
@@ -103,6 +116,9 @@ channel, a series or a film, not to an episode, and is the same next week:
   a form in any medium, and a form's files recorded as a release that is never edited.
 - `pva_cast` — who plays what in a series or a film, pinned to the release each wears;
   with `asks`, a script checked against what the cast can do.
+- `pva_generate_model` — a 3D model from one picture (Tripo H3.1 on fal, paid per
+  model, on the episode's budget): a character's model or a prop in the round, with no
+  skeleton. Approve the picture before paying for the model.
 
 Read the cast before writing a script. Load `character-development` to define a
 character and `character-forms` to give it a body.
