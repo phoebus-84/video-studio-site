@@ -1,93 +1,85 @@
 ---
 title: A place to spend an hour
-description: Build a long-form ambient video from a considered composition, localised motion, a verified master and a licensed soundtrack.
+description: "Build one room in moving layers, make and review a short looping master, then extend it to an hour under a soundtrack assembled from licensed music, without re-encoding the picture."
 ---
 # A place to spend an hour
 
-**Goal:** a long-form ambient film that remains calm without becoming a visibly repeated animated image.
+**You end with:** an hour-long film of one place, made from a short master
+that loops, under a soundtrack that does not repeat the way the picture does.
 
-[Watch the latest Kowloon delivery →](../examples#ambient-kowloon)
-
-The example is a one-hour Ambient Through Time production. Its channel-specific format belongs to the library; the recipe explains the method, not a bundled preset.
+<RecipeFilm id="ambient-kowloon" />
 
 ## Ingredients
 
-- An authenticated agent and working composition tools.
-- A coherent scene, made from original, licensed or deliberately generated material.
-- Motion sources or procedural animation for selected regions.
-- A soundtrack you can legally use, with its source credits.
-- Enough disk space for the master, intermediates and delivery.
+- %product% installed, an agent connected and the gateway running.
+- A place, a time and a viewing situation: on a television across a room is
+  not on a phone.
+- An image provider for the scene, and music you may use for an hour
+  ([borrow it with its licence](./research-and-materials)).
+- Disk space: an hour of video is large.
 
-**Costs:** agent access, optional generated imagery or motion, local render compute and any storage transfers. Inspect the budget before paid generation.
+**Costs:** what is generated is the short master: the picture and a few
+animated loops. The film above recorded $1.50 over 15 metered calls. The
+extension to an hour is a copy and a mix on your machine.
 
-## Start with a place and a viewing situation
+## 1. The place, then the atmosphere
 
 ```text
-Plan an ambient film set in a quiet room overlooking a rainy city.
-It should be comfortable to leave playing while reading.
-Keep the camera and most of the room still.
-Choose only a few moving regions, with different rhythms.
-Start with the visual plan and a short master, not a one-hour render.
-Use properly licensed music and preserve its attribution.
-Ask me to review the motion and soundtrack before extending the film.
+An ambient film: a room above a rainy city at night, seen from the sofa.
+One fixed composition. Three things alive in it: rain on the glass, an
+aquarium, a television. Everything else still.
+Research what such a room looked like before proposing the picture.
+Show me the still before animating anything.
 ```
 
-## Research the place, then choose the atmosphere
+Decide the still as a still. An hour magnifies what is wrong with it.
 
-A historical setting needs more than a date in the image prompt. Ask the agent to distinguish evidence from invention: architecture, objects, signage, light sources and sounds that belong to the period, versus atmosphere you are deliberately imagining.
+## 2. Layers that move on their own
 
-You can provide photographs, field recordings, a room sketch or a memory. The agent can find additional references and suitable licensed assets. Review a small annotated selection, not hundreds of loosely related images.
+The scene is one picture, with the live areas as separate loops laid over
+it. `pva_generate_wan_video` with `loop: true` gives the same picture as the
+end frame, so a loop closes.
 
-**Compare two treatments:** perhaps an intimate room looking out at the city, and a street-level view looking in. Ask what the viewer will notice first, where the eye can rest, and what will keep moving. Choose the experience before commissioning final imagery.
+Local sound is free: `pva_synthesize_sound` makes rain, wind, sea, fire and
+others on your machine, the same file for the same id. They are synthesised
+stand-ins, not recordings.
 
-For a recurring channel, record its limits: fixed viewpoints, historical plausibility, restrained movement, no abrupt interruptions. Let each room have its own identity within those standards.
+## 3. Review the master, not the hour
 
-[Build the research and material pack →](./research-and-materials)
+The master is short and complete, with its mix. Watch all of it, on the
+screen it is meant for, at the volume it will be heard. Look for the seam
+where a loop restarts, and for the event that happens too often.
 
-## Review the plate and sound separately
+Approve it before anything is extended.
 
-Start with a still. Mark where movement belongs and where nothing should move. Ask for a motion plan: each region’s source, treatment, approximate rhythm and interaction with the scene.
+## 4. Extend it
 
-Listen to soundtrack candidates away from the image. Check the rights, dramatic intensity and whether the music demands more attention than the intended viewing situation allows. You may prefer environmental sound without music.
+```text
+Extend the approved master to one hour, with the music in assets/music.
+```
 
-**Your decision:** “Keep the rain and distant traffic. The television is too prominent. Make the aquarium a small secondary movement, not another focal point.”
+`pva_extend_episode` repeats the master by stream copy, so the picture is not
+encoded again, under a music-only soundtrack drawn from the pieces you give:
+an order that never plays the same piece twice in a row, joined by
+crossfades or short gaps, levelled and mastered. It writes the long file with
+its plan and its report beside it. The episode's current delivery does not
+move.
 
-The agent should revise that plan before producing all the motion. A beautiful scene can still be exhausting company.
+Run it with `soundtrackOnly` while the master is still under review: the
+mastered soundtrack is cached, and the long version afterwards only copies.
 
-## Make the short master convincing
+## Where it goes wrong
 
-1. Establish the still composition: depth, light, focal point and quiet space.
-2. Animate selected regions without making the entire plate wobble.
-3. Check masks, edges, reflections and any interaction between moving elements.
-4. Inspect each loop seam; vary periods where the format supports it.
-5. Keep occasional events rare enough that they do not become the main attraction.
-6. Review the motion at normal playback speed, not only as a contact sheet.
+- **A visible seam.** A loop that does not close shows once a minute for an
+  hour. Fix the loop, not the crossfade.
+- **Twenty minutes of music for sixty.** The same three pieces return. Bring
+  more music than you think.
+- **A licence that forbids the use.** An hour-long monetised film under a
+  non-commercial track cannot be monetised. Check before the mix.
+- **Publishing size.** The hour above is 3.4 GB at full size; a host may
+  refuse it. Plan a smaller edition.
 
-The Kowloon example includes rain on the windows, distant traffic, neon, a television and an aquarium. Those are decisions for that room, not a requirement to fill every scene with movement.
+## Next
 
-## Extend only after review
-
-A successful short master is the basis for a long version. Check the extension plan, audio sequencing and final loudness. Avoid a conspicuous repeated musical phrase or an audible join at every visual cycle.
-
-An hour-long container is not proof of an hour of comfortable viewing. Sample the beginning, several joins, later sections and the end; inspect the actual final file’s duration and streams.
-
-## Turn one place into a series, if it earns it
-
-After living with the short master and the long version, write down what made them comfortable—or irritating. Was it the camera, contrast, movement density, loop timing or music?
-
-Use those findings for a second, different location. Keep the production standard, not a checklist requiring every room to contain the same objects. A [series format](./repeatable-series) can preserve the controls and checks while the research and atmosphere change.
-
-## Preserve the work
-
-Keep the scene spec, motion sources, masks or atlases, master, soundtrack plan, credits and final report. Label reproducible intermediates deliberately when configuring S3 storage; do not assume every large file can safely be thrown away.
-
-## Acceptance check
-
-- Motion stays local and convincing; the room does not drift.
-- Loop boundaries do not flash, jump or reset conspicuously.
-- Music remains comfortable and correctly credited.
-- The long render has the intended duration and sound.
-- The selected output is identified explicitly.
-- The sources can be restored by another collaborator.
-
-[Share the world, not a giant mystery folder →](../collaboration)
+A second place in the same series is a [format](./repeatable-series): the
+method stays, the room changes.
