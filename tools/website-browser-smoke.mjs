@@ -49,6 +49,10 @@ try {
  await expect(page.locator('.film-row .receipt')).toHaveCount(3);
  await expect(page.locator('.film-row .receipt dt').first()).toHaveText('Length');
  await expect(page.locator('.home-page .not-yet')).toHaveCount(2);
+ // One picture and the model made from it; marked as a statue until it can be rigged.
+ await expect(page.locator('.cast .model-strip li')).toHaveCount(5);
+ assert.ok(await page.locator('.cast .model-strip img').evaluateAll(async images=>{await Promise.all(images.map(i=>{i.loading='eager';return i.decode()}));return images.every(i=>i.naturalWidth===480);}),'the stills of the generated model are published');
+ await expect(page.locator('.model-made .not-yet')).toContainText('statue until rigging and motion exist');
  results.push('Home: programme selectors, video playback/reset, the stills of the correction, three receipts, clipboard, internal links');
  await go('examples');
  await page.getByRole('button',{name:'Editable 3D',exact:true}).click();
@@ -163,6 +167,10 @@ try {
   await overflow(route);
  }
  await expect(page.locator('main .take-strip li.redone')).toHaveCount(2);
+ await go('recipes/create-a-character');
+ await expect(page.locator('main .model-strip li')).toHaveCount(5);
+ assert.match(await page.locator('main').innerText(),/pva_generate_model/);
+ assert.match(await page.locator('main').innerText(),/No skeleton, no motion/);
  results.push('Where it stands: limits, comparison, benchmark specification, changelog, licence and the correction shown');
  await go('examples');
  await expect(page.locator('.project-feature .receipt')).toHaveCount(showcase.length);

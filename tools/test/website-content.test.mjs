@@ -7,6 +7,11 @@ import { ownedPath } from '../sync-reference.mjs';
 
 const read = path => readFile(new URL('../../' + path, import.meta.url), 'utf8');
 
+// True while the imported reference still comes from an application that carries
+// its old name. Set to false with the first sync from the renamed application:
+// the last test then covers every tracked file.
+const IMPORT_PENDING = true;
+
 test('what a visitor reads about a film is about the film, not about which file was selected', () => {
   // Version bookkeeping lives in sourceVersion, source and status; prose that says
   // "v03, not the earlier…" reads as noise to anyone who was not in the edit.
@@ -46,11 +51,11 @@ test('the product is named in one place', async () => {
   for (const path of owned) {
     assert.equal(ownedPath(path), false, path + ' is the website’s own page');
     const text = await read(path);
-    assert.doesNotMatch(text, new RegExp(`\\b${brand.name}\\b|Video Studio`), path + ' writes the name as %product%');
+    assert.doesNotMatch(text, new RegExp(`\\b${brand.name}\\b`), path + ' writes the name as %product%');
   }
   for (const path of ['HomePage.vue', 'SiteFooter.vue', 'ExamplesPage.vue', 'RecipesPage.vue']) {
     const text = await read('docs/.vitepress/theme/components/' + path);
-    assert.doesNotMatch(text, new RegExp(`>[^<{]*\\b(?:${brand.name}|Video Studio)\\b`), path + ' takes the name from brand.mjs');
+    assert.doesNotMatch(text, new RegExp(`>[^<{]*\\b${brand.name}\\b`), path + ' takes the name from brand.mjs');
   }
 });
 
@@ -118,4 +123,41 @@ test('recipes name real tools and say where they go wrong', async () => {
       assert.ok(known, `${file}: ${tool} is not a tool of the imported reference`);
     }
   }
+});
+
+test('a generated 3D model is shown for what it is: a statue until rigging and motion exist', async () => {
+  const home = await read('docs/.vitepress/theme/components/HomePage.vue');
+  assert.match(home, /<ModelStrip \/>/);
+  assert.match(home, /statue until rigging and motion exist/);
+  assert.doesNotMatch(home, /Not built yet\.<\/b> Making a 3D model/);
+  const recipe = await read('docs/recipes/create-a-character.md');
+  assert.match(recipe, /pva_generate_model/);
+  assert.match(recipe, /No skeleton, no motion/);
+  assert.match(recipe, /quad: true, faceLimit: 20000/);
+  for (const figure of ['1,434,958 triangles', '18,889 quads', '28,986 triangles', '$0.30', '$0.35', '$0.20']) assert.ok(recipe.includes(figure), figure);
+  const limits = await read('docs/limits.md');
+  assert.match(limits, /Rigging and motion are named in the design and not built/);
+});
+
+test('the old name is gone from the website’s own files, outside the GitHub addresses that have to work', async () => {
+  const { execFileSync } = await import('node:child_process');
+  const root = new URL('../../', import.meta.url);
+  let lines = [];
+  try {
+    lines = execFileSync('git', ['grep', '-I', '-i', '-n', '-E', 'video[ _-]?studio'], { cwd: root, encoding: 'utf8', maxBuffer: 32 * 1024 * 1024 }).trim().split('\n');
+  } catch (error) {
+    if (error.status !== 1) throw error; // 1: nothing found
+  }
+  // Where the repositories are today: the application's, this site's, and its Pages path.
+  const literal = text => text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const site = brand.siteRepository.replace('https://', '');
+  const application = brand.repository.replace('https://', '');
+  const [owner, name] = site.split('/').slice(1);
+  const addresses = new RegExp([site, application, `${owner}.github.io/${name}`, `${owner}/${name}`, `/${name}/`].map(literal).join('|'), 'g');
+  const left = lines.filter(Boolean).filter(line => {
+    const [path] = line.split(':');
+    if (IMPORT_PENDING && ownedPath(path)) return false;
+    return /video[ _-]?studio/i.test(line.slice(line.indexOf(':', path.length + 1) + 1).replace(addresses, ''));
+  });
+  assert.deepEqual(left, []);
 });
