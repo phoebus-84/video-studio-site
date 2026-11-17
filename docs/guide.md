@@ -16,7 +16,7 @@ Everything is here, in one place.
 
 | Document | What it answers |
 |---|---|
-| [Limits](./limits) | What does not work yet, and what was fixed in the release being prepared? |
+| [Limits](./limits) | What does not work yet, and what did release 0.2.0 fix? |
 | [Changelog](./changelog) | What changed for someone who uses the studio, and what needs action? |
 | [Retake](./retake) | How will it be measured against a model working alone? A specification; no results. |
 | [Compared with the others](./compare) | When is another tool the better choice? |

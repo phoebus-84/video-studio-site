@@ -1,13 +1,12 @@
 ---
 title: Limits
-description: "What %product% does not do yet, what it does only partly, and what was fixed in the release being prepared."
+description: "What %product% does not do yet, what it does only partly, and what release 0.2.0 fixed."
 ---
 # What does not work yet
 
 This page is the project's own review of itself, rewritten for someone
-deciding whether to install it. It is dated: **17 November 2026**, against the
-code that is about to become release 0.2.0. The [changelog](./changelog) says
-what moved since.
+deciding whether to install it. It is dated: **17 November 2026**, against
+release 0.2.0. The [changelog](./changelog) says what moved since.
 
 If one of these is the thing you need, [use something else](./compare) for now.
 
@@ -51,20 +50,24 @@ says what is rendering; it is not queued.
 
 ## Few providers, added by hand
 
-Generation goes through a short list chosen on purpose: fal.ai for images and
-video clips, OpenAI for images, Qwen3-TTS for speech on your own machine or
-through a ComfyUI server, ElevenLabs for word alignment. Adding a provider
+Generation goes through a short list chosen on purpose: fal.ai for images,
+video clips and 3D models, OpenAI for images, Qwen3-TTS for speech on your own
+machine or through a ComfyUI server, ElevenLabs for speech and word alignment. Adding a provider
 touches several files; there is no one-file plug-in.
 
 ComfyUI is used for speech only. Images and video through your own ComfyUI
 are not built.
 
-## Characters are records, not generators
+## A generated character stands still
 
 A character, its forms, their releases and a production's cast are kept,
-hashed and pinned ([recipe](./recipes/create-a-character)). The studio does
-not make a 3D model from a picture, rig it or generate its motion: those are
-named in the design and not built. The browser studio has no view of a cast.
+hashed and pinned ([recipe](./recipes/create-a-character)). Since 0.2.0 a 3D
+model can be made from one picture, for $0.20 to $0.65.
+
+What comes back has no skeleton and no motion. It can be placed, turned and
+lit, not posed. Rigging and motion are named in the design and not built: a
+generated model is a statue until they exist. The browser studio has no view
+of a cast.
 
 ## Receipts are assembled by hand
 
@@ -94,7 +97,7 @@ which is free for individuals and for companies of up to three people and
 needs a company licence beyond that. Installing %product% does not give you
 one.
 
-## Fixed in the release being prepared
+## Fixed in 0.2.0
 
 From the [changelog](./changelog), the faults that were found and closed:
 

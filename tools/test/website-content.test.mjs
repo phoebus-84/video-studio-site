@@ -95,6 +95,11 @@ test('the site is licensed, and its licence does not reach the films', async () 
   assert.match(await read('docs/.vitepress/theme/components/SiteFooter.vue'), /films, their stills and their music are not covered/);
 });
 
+// Tools of a release newer than the imported snapshot. Each entry removes itself:
+// the test fails once the snapshot names the tool. pva_generate_model is in the
+// application's changelog for 0.2.0 (2026-11-17).
+const releasedSinceSnapshot = ['pva_generate_model'];
+
 test('recipes name real tools and say where they go wrong', async () => {
   const receipt = JSON.parse(await read('data/studio-reference.json'));
   const running = await read('docs/running.md');
@@ -105,7 +110,12 @@ test('recipes name real tools and say where they go wrong', async () => {
     assert.match(text, /^\*\*You end with:\*\*/m, file);
     assert.match(text, /^## Where it goes wrong$/m, file);
     for (const [tool] of text.matchAll(/\bpva_[a-z0-9_]+/g)) {
-      assert.ok(running.includes(tool) || changelog.includes(tool) || receipt.gatewayTools.includes(tool), `${file}: ${tool} is not a tool of the imported reference`);
+      const known = running.includes(tool) || changelog.includes(tool) || receipt.gatewayTools.includes(tool);
+      if (releasedSinceSnapshot.includes(tool)) {
+        assert.ok(!known, `${tool} is in the imported reference now: take it out of releasedSinceSnapshot`);
+        continue;
+      }
+      assert.ok(known, `${file}: ${tool} is not a tool of the imported reference`);
     }
   }
 });

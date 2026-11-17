@@ -6,6 +6,7 @@ import { brand } from '../brand.mjs';
 import MediaFrame from './MediaFrame.vue';
 import FilmReceipt from './FilmReceipt.vue';
 import TakeStrip from './TakeStrip.vue';
+import ModelStrip from './ModelStrip.vue';
 import CopyCommand from './CopyCommand.vue';
 import ArrowIcon from './ArrowIcon.vue';
 import SiteFooter from './SiteFooter.vue';
@@ -98,13 +99,18 @@ const installation = `git clone ${brand.repository}.git ${brand.directory}\ncd $
           <p class="screen-label">Characters</p>
           <h2 id="cast-title">The same character, every episode.<br><em>Because it’s the same file.</em></h2>
           <p class="screen-lede">A character is a record: who it is, apart from how it appears. It takes any form (a rig, a puppet, sprites, a drawing made by code, a photograph, a dot, a sound, a voice and nothing else) and each form is released in a folder that is never edited. A series casts it in a role and pins the release it wears.</p>
-          <p class="not-yet"><b>Not built yet.</b> Making a 3D model from a picture, rigging it, generating its motion. Each will arrive as one capability; today a form is made with the tools you already have.</p>
           <a class="text-link" :href="withBase('/recipes/create-a-character')">Give a series its cast <ArrowIcon /></a>
         </div>
         <figure v-if="guide.available" class="cast-still">
           <img :src="withBase('/showcase/' + guide.id + '.jpg')" :alt="guide.visual" width="406" height="720" loading="lazy" decoding="async">
           <figcaption>The recurring guide of a poetry channel, in <a :href="withBase('/examples') + '#' + guide.id">Sonnet 18</a>.</figcaption>
         </figure>
+      </div>
+      <div class="page-width model-made">
+        <h3>One picture in. A model out.</h3>
+        <ModelStrip />
+        <p class="take-caption">A test figure, run against the real service on 17 November 2026. From one picture, a model with its textures came back in 2 min 20 s: 18,889 quads, 2.8 MB, $0.35 on the episode’s ledger. It can be placed, turned and lit. <a :href="withBase('/recipes/create-a-character') + '#_3-a-3d-form-from-one-picture'">How it was asked for</a></p>
+        <p class="not-yet"><b>Not built yet.</b> A skeleton, and motion. The model has neither: it is a statue until rigging and motion exist, and a script that asks it to walk is refused.</p>
       </div>
     </section>
 

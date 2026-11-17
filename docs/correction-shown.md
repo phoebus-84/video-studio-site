@@ -29,7 +29,7 @@ Decoding both files and comparing them frame by frame gave the same answer
 from the outside: of 144 frames, the 96 of seconds 0, 1, 4 and 5 are
 identical in the two takes, and the 48 of seconds 2 and 3 differ.
 
-Run on 17 November 2026, on the branch that becomes release 0.2.0.
+Run on 17 November 2026, on the code released as 0.2.0.
 
 ## Run it yourself
 

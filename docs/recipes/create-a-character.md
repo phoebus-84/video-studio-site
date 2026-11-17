@@ -1,6 +1,6 @@
 ---
 title: A character people recognise
-description: "Define a character as a record apart from how it appears, give it a form with a list of what it can do, release that form, and cast it in a series pinned to the release."
+description: "Define a character as a record apart from how it appears, give it a form with a list of what it can do (a 3D model made from one picture among them), release that form, and cast it in a series pinned to the release."
 ---
 # A character people recognise
 
@@ -10,8 +10,9 @@ each form that will not change under the episodes made with it.
 
 A character here is a record, not a 3D model. It can be a person, a fox, a
 lamp, a dot, a sound, a voice and nothing else. The studio keeps it, hashes
-it and pins it. It does not make it: there is no tool yet that turns a
-picture into a model, rigs it or animates it.
+it and pins it. One kind of form it can also make: a 3D model from one
+picture. That model has no skeleton and no motion; rigging and animating it
+are not built.
 
 ## Ingredients
 
@@ -23,9 +24,12 @@ picture into a model, rigs it or animates it.
 - For a real person's face, voice or name: their permission, in writing. For
   a synthetic voice made from a recording: the voice rights to do so.
 
+- For a 3D model: a fal.ai key, and an episode with a budget to make it in.
+
 **Costs:** the agent's model usage. Recording a character and casting it
 makes no paid API calls. Making a form may: generated pictures and synthetic
-voices are metered like any other.
+voices are metered like any other, and a 3D model costs $0.20 to $0.65 by
+what is asked of it.
 
 ## 1. Who it is, before how it looks
 
@@ -72,7 +76,69 @@ A release is a folder, `forms/<form>/<release>/` by default, recorded with
 the hash of its entry file and of its whole tree, what made it, and its
 licence. A release is never edited. A change is `v2`.
 
-## 3. Cast it
+## 3. A 3D form from one picture
+
+<ModelStrip />
+
+A test figure, made on 17 November 2026 against the real service. The model
+shown is the light one of the three below.
+
+Approve the picture first: one image of the character on a plain ground, in
+the view the model will be built from. This is where its identity is
+decided, and the model is paid for.
+
+```text
+Make a 3D model of the guide from assets/images/guide-front.jpg, in the
+episode inventions/ep001. It will be rigged later: ask for a quad mesh of
+about 20,000 faces. Tell me the price before you call it.
+```
+
+The agent calls `pva_generate_model` with the episode, a `modelId`, the
+`imagePath` and a `texture`. It asks Tripo H3.1 through fal.ai, reserves the
+price on the episode's budget before the call, and says what came back:
+triangles, materials, textures, its size, where its origin is, that it has no
+skeleton, and when it is too heavy to rig.
+
+| Asked for | Price |
+|---|---|
+| No textures | $0.20 |
+| Standard textures | $0.30 |
+| Detailed textures | $0.40 |
+| Detailed geometry | + $0.20 |
+| A quad mesh (`quad: true`) | + $0.05 |
+
+The three runs of that day, from the one picture:
+
+| Asked for | Came back | Time | Ledger |
+|---|---|---|---|
+| Standard textures | GLB, 41 MB, 1,434,958 triangles | 2 min 20 s | $0.30 |
+| Quad mesh, `faceLimit: 20000` | FBX, 2.8 MB, 18,889 quads, textures inside | 2 min 20 s | $0.35 |
+| No textures, `faceLimit: 30000` | GLB, 0.9 MB, 28,986 triangles | 1 min 18 s | $0.20 |
+
+fal reports no cost for these calls, so each was settled at its estimate.
+
+What to know before you use one:
+
+- **Say how heavy.** Left to itself the service returns more than a million
+  triangles: fine for a still, useless for a rig. For a figure that will be
+  rigged, ask for `quad: true, faceLimit: 20000`.
+- **Place it.** It is one unit tall with its origin at its middle, and these
+  three faced +x. Lift it, turn it and scale it once, and say which in the
+  form's note.
+- **It is a statue.** No skeleton, no motion. It can be placed, turned and
+  lit; it cannot be posed.
+
+The model lands in the episode's `assets/models/`. To make it the
+character's, the agent copies the model, its preview and its provenance into
+`characters/<id>/forms/<form>/<release>/` and records that folder as a
+release of a form whose medium is `model-3d`. Its `can` lists the views it
+has and no actions, because it has none.
+
+In the test, the model was released, cast in a series, and a second release
+taken by casting again. A script that asked the form to “walk” was refused:
+the form lists no actions.
+
+## 4. Cast it
 
 ```text
 Cast the guide as "host" in the series inventions, wearing the puppet.
@@ -86,7 +152,7 @@ The same character can hold different roles in different productions.
 Another owner's character is named `owner/id` and read where it lives, never
 copied.
 
-## 4. Check a script against the cast
+## 5. Check a script against the cast
 
 ```text
 Check the cast of inventions: the host is asked to point, to read and to
@@ -103,8 +169,12 @@ record. `pva_characters` shows one character in full, or lists an owner's.
 - **It does not play a form.** A `.blend` or an SVG component is kept, hashed
   and pinned; drawing it stays the job of the kit or the tool that knows the
   medium.
-- **It does not make one.** No image-to-model, no automatic rigging, no
-  generated motion. Generated reference pictures help consistency; they
+- **It does not rig or animate.** A generated model has no skeleton, and
+  there is no tool for automatic rigging or for motion, from text or from a
+  video. Until there is, a 3D form made here stands still.
+- **Nothing else is specific to characters.** A pose sheet is made with the
+  image tools, a puppet by a Blender script, a drawn component by hand.
+  Generated reference pictures help consistency; they
   do not guarantee it, and a new angle still has to be looked at.
 - **It does not judge a permission.** It warns of a photograph on a character
   that states no likeness. Whether you may use a face or a voice is yours to
@@ -115,6 +185,11 @@ record. `pva_characters` shows one character in full, or lists an owner's.
 
 - **A form that promises too much.** A `can` list copied from a wish list
   makes the script check pass and the shot fail.
+- **A million triangles.** A model asked for with no `faceLimit` is too heavy
+  to rig and slow to render. Ask for the weight you need; a second model is
+  a second price.
+- **A model generated before the picture is right.** The picture is cheap and
+  the model is not. Change the picture.
 - **Editing a released folder.** The next `verify` reports files that no
   longer match their record. Make a new release instead.
 - **A voice without its rights.** Cloning a voice needs a recorded consent;

@@ -88,6 +88,6 @@ Stated in advance:
 - The judges: how many reviewers, how they are found, and the rubric of the
   automatic judge.
 
-The specification, its tasks and its measures are in `bench/retake` in the
-[application's repository](https://github.com/phoebus-84/video-studio), from
-release 0.2.0.
+The specification, its tasks and its measures are in the application's
+repository, from release 0.2.0:
+[bench/retake](https://github.com/phoebus-84/video-studio/tree/main/bench/retake).
