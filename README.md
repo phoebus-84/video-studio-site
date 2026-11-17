@@ -104,6 +104,22 @@ Homepage, gallery, recipes, collaboration, onboarding and maintenance pages belo
 
 Dependencies are locked in `package-lock.json`. Fraunces and Inter are self-hosted with their licence files in `docs/public/fonts/`. Run `npm audit` when updating dependencies; stable VitePress 1.6 currently carries upstream Vite/esbuild development-server advisories. Keep development servers private; do not serve untrusted projects or treat the development server as a production host. No unsupported major-version override is applied just to hide those advisories.
 
+## Licence
+
+The code and the text of this website are licensed under the GNU Affero
+General Public License, version 3: see [`LICENSE`](LICENSE).
+
+**The films, their stills and their music are not covered by that licence.**
+Every film, excerpt, poster frame, caption file and soundtrack shown on the
+site keeps its own credits and licence, listed with each film on the films
+page and in the release's credits file. Some may be used only under
+conditions (one soundtrack is CC BY-NC-SA). The preview media is not in this
+repository.
+
+The fonts keep their own licences, in `docs/public/fonts/`. The imported
+technical reference under `docs/` is a snapshot of the application's
+documentation and carries the application's licence.
+
 ## Where the name comes from
 
 The product's name is one constant, `brand.name` in
