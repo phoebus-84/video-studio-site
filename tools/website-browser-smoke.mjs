@@ -54,12 +54,14 @@ try {
  await expect(page.locator('.cast .model-strip li')).toHaveCount(11);
  await expect(page.locator('.cast .model-strip.cells-6 li')).toHaveCount(6);
  assert.ok(await page.locator('.cast .model-strip img').evaluateAll(async images=>{await Promise.all(images.map(i=>{i.loading='eager';return i.decode()}));return images.every(i=>i.naturalWidth===480);}),'the stills of the generated model and of its rig are published');
- await expect(page.locator('.model-made .not-yet')).toContainText('Motion you ask for');
+ await expect(page.locator('.model-made .not-yet')).toContainText('A face, and company');
+ // The filmed walk: its poster and its file are published, and it is the size it says.
+ assert.ok(await page.locator('.cast .shot-film video').evaluate(async video=>{const [film,poster]=await Promise.all([fetch(video.src),fetch(video.poster)]);return film.ok&&film.headers.get('content-type').includes('video')&&poster.ok;}),'the filmed shot is published');
  // Music: the piece's code, a player for it, and no overflow from the code.
  await expect(page.locator('.score .score-code')).toContainText('setcpm(120/4)');
  assert.ok(await page.locator('.score audio').evaluate(async audio=>{const response=await fetch(audio.src);return response.ok&&response.headers.get('content-type').includes('audio');}),'the rendered piece is published');
  // What changed lately, newest first, ending at the changelog.
- await expect(page.locator('.lately-list li')).toHaveCount(4);
+ await expect(page.locator('.lately-list li')).toHaveCount(6);
  await expect(page.locator('.lately .text-link')).toHaveAttribute('href', /changelog/);
  results.push('Home: programme selectors, video playback/reset, the stills of the correction, three receipts, clipboard, internal links');
  await go('examples');
@@ -176,8 +178,11 @@ try {
  }
  await expect(page.locator('main .take-strip li.redone')).toHaveCount(2);
  await go('recipes/create-a-character');
- // The model (5 cells), the rig's poses (6), the figure drawn two ways (2), the walk (6).
- await expect(page.locator('main .model-strip li')).toHaveCount(19);
+ // The model (5 cells), the rig's poses (6), the figure drawn two ways (2), the walk (6), the generated wave (4).
+ await expect(page.locator('main .model-strip li')).toHaveCount(23);
+ await expect(page.locator('main .model-strip.cells-4 li')).toHaveCount(4);
+ assert.ok(await page.locator('main .shot-film video').evaluate(async video=>{const film=await fetch(video.src);return film.ok&&film.headers.get('content-type').includes('video');}),'the filmed shot is published in the recipe');
+ assert.match(await page.locator('main').innerText(),/pva_rig_shot/);
  await expect(page.locator('main .model-strip.cells-2 li')).toHaveCount(2);
  assert.ok(await page.locator('main .model-strip img').evaluateAll(async images=>{await Promise.all(images.map(i=>{i.loading='eager';return i.decode()}));return images.every(i=>i.naturalWidth===480);}),'every still of the model and its rig is published');
  await overflow('characters recipe');

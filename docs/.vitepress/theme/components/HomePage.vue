@@ -8,6 +8,7 @@ import FilmReceipt from './FilmReceipt.vue';
 import TakeStrip from './TakeStrip.vue';
 import ModelStrip from './ModelStrip.vue';
 import RigStrip from './RigStrip.vue';
+import ShotFilm from './ShotFilm.vue';
 import CopyCommand from './CopyCommand.vue';
 import ArrowIcon from './ArrowIcon.vue';
 import SiteFooter from './SiteFooter.vue';
@@ -114,7 +115,10 @@ const installation = `git clone ${brand.repository}.git ${brand.directory}\ncd $
         <h3>Then a skeleton. Then it is posed, and looked at.</h3>
         <RigStrip show="poses" />
         <p class="take-caption">A second test figure, 18 November 2026. Its model was given a skeleton by a rigging service in about twenty seconds, for $0.20 on the episode’s ledger, and then put in seven known poses on your own machine, at no cost, with a count of how far each pulled its surface out of shape. Six rigs were made that day and all six passed the check at rest. It was the poses that told them apart. <a :href="withBase('/recipes/create-a-character') + '#_4-a-skeleton-and-the-poses-that-test-it'">The six rigs, pose by pose</a></p>
-        <p class="not-yet"><b>Not built yet.</b> Motion you ask for. One of the two rigging services adds a walk and a run; nothing else moves a character yet, the rig has no face, and placing it in a shot is still a Blender script the agent writes. <a :href="withBase('/limits') + '#a-generated-character-barely-moves'">What is missing</a></p>
+        <h3>Then it moves. Then it is filmed.</h3>
+        <ShotFilm />
+        <p class="take-caption">The second figure with its textures, 18 November 2026. Three seconds of film from one request, rendered locally in about twenty seconds, at no cost: the camera was asked for in words (three-quarter, the whole figure, following it) and no script was written by hand. This walk came with the rig. A motion can also be picked by name from a free catalogue, carried over from another skeleton, or asked for in a sentence for $0.08. <a :href="withBase('/recipes/create-a-character') + '#_5-give-it-motion'">How it was asked for</a></p>
+        <p class="not-yet"><b>Not built yet.</b> A face, and company. A generated rig has no bones for the mouth or the eyes, so the character cannot speak. And it is filmed alone on an empty stage: a set, or a second character beside it, is still a Blender scene the agent builds. <a :href="withBase('/limits') + '#a-generated-character-acts-alone-and-has-no-face'">What is missing</a></p>
       </div>
     </section>
 
@@ -123,7 +127,7 @@ const installation = `git clone ${brand.repository}.git ${brand.directory}\ncd $
         <div>
           <p class="screen-label">Music</p>
           <h2 id="score-title">The score is a text file.<br><em>So it can be corrected like one.</em></h2>
-          <p class="screen-lede">Music is written as <a :href="'https://strudel.cc'">Strudel</a> code and rendered on your machine, at no cost and with no service: a bed under a voice at the episode’s length, a cue on a cut, a loop for an hour. Each part has a name, so “the bass is too loud after the second chorus” is a change to one line.</p>
+          <p class="screen-lede">Music here is procedural: the agent writes it as <a :href="'https://strudel.cc'">Strudel</a> code and your machine renders it, at no cost and with no service. A bed under a voice at the episode’s length, a cue on a cut, a loop for an hour, a riser or an impact for a scene. Each part has a name, so “the bass is too loud after the second chorus” is a change to one line.</p>
           <p class="screen-lede">The agent cannot hear, and is told so. Every render comes with measurements it mixes by (loudness, the peak and when it falls, the spectrum by band, each part alone) and with what a person should listen for.</p>
           <a class="text-link" :href="withBase('/recipes/music-in-code')">Write a score in code <ArrowIcon /></a>
         </div>
@@ -178,6 +182,8 @@ low:   note("d2").struct("~ x").s("sine").attack(.005).decay(1.8).sustain(0).rel
         <p class="screen-label">Lately</p>
         <h2 id="lately-title">What changed,<br><em>and when.</em></h2>
         <ol class="lately-list">
+          <li><p class="lately-when"><b>On the main branch</b>18 November 2026 · to be 0.3.0</p><div><h3>A rigged character, filmed</h3><p>One request films a rig playing a clip, on your machine and at no cost, from a camera asked for in a shot’s words. A picture becomes a model, a rig, a motion and footage with no script written by hand. <a :href="withBase('/recipes/create-a-character') + '#_6-film-it'">Film it</a></p></div></li>
+          <li><p class="lately-when"><b>On the main branch</b>18 November 2026 · to be 0.3.0</p><div><h3>Motion for a rig, three ways</h3><p>Clips picked by name from a free catalogue, a clip carried from one skeleton to another, and a person’s motion asked for in a sentence. <a :href="withBase('/recipes/create-a-character') + '#_5-give-it-motion'">Give it motion</a></p></div></li>
           <li><p class="lately-when"><b>On the main branch</b>18 November 2026 · to be 0.3.0</p><div><h3>A skeleton for a generated model, and a sheet of poses to judge it by</h3><p>Two rigging services behind one tool, a check of every rig before it is used, and the rig posed and measured on your machine. <a :href="withBase('/recipes/create-a-character')">A character people recognise</a></p></div></li>
           <li><p class="lately-when"><b>On the main branch</b>17 November 2026 · to be 0.3.0</p><div><h3>Music written as code</h3><p>A piece is a file of Strudel code, checked without a sound and rendered locally with its measurements; the browser studio plays it on the same engine. <a :href="withBase('/recipes/music-in-code')">Write a score in code</a></p></div></li>
           <li><p class="lately-when"><b>On the main branch</b>17 November 2026 · to be 0.3.0</p><div><h3>It is called {{ brand.name }}</h3><p>The name it had is gone from the code and from what the tools say. Two default folders moved with it; the changelog says which.</p></div></li>

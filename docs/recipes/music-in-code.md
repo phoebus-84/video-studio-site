@@ -1,6 +1,6 @@
 ---
 title: Write a score in code
-description: "Have the agent write music as Strudel code, check it without a sound, render it on your machine at no cost, and mix it by measurements. Then listen: the agent cannot."
+description: "Procedural music: have the agent write a piece as Strudel code, check it without a sound, render it on your machine at no cost, and mix it by measurements. Then listen: the agent cannot."
 ---
 # Write a score in code
 

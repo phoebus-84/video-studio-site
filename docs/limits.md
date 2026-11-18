@@ -59,40 +59,51 @@ touches several files; there is no one-file plug-in.
 ComfyUI is used for speech only. Images and video through your own ComfyUI
 are not built.
 
-## A generated character barely moves
+## A generated character acts alone, and has no face
 
 A character, its forms, their releases and a production's cast are kept,
 hashed and pinned ([recipe](./recipes/create-a-character)). Since 0.2.0 a 3D
 model can be made from one picture, for $0.20 to $0.65. On the main branch
-that model can be given a skeleton for $0.20, and the rig posed and measured
-on your machine before it is used.
+that model can be given a skeleton for $0.20, posed and measured on your
+machine, given a motion (picked by name, carried from another skeleton, or
+asked for in a sentence for $0.08) and filmed into a clip of video, with no
+script written by hand.
 
-What is missing is most of what makes it act:
+What is missing:
 
-- **Motion.** One of the two rigging services adds a walk and a run to a
-  two-legged rig. Nothing else moves a character: there is no motion from
-  words, no clip chosen by name, no way to carry a clip from one skeleton to
-  another.
-- **A shot.** The studio keeps a rig, hashes it and pins it; it does not
-  place it in a scene. Getting a rigged character into a film is still a
-  Blender script the agent writes.
 - **A face.** A generated rig has bones for the body and the fingers and
   none for the face. The character cannot speak or change expression.
-- **Other bodies.** Skeletons for a quadruped, a bird, a dragon and a body
-  described in words are offered by one service and have not been tried.
-- **Textures.** Every rig made so far was of an untextured model. Whether
-  a model's textures come back intact from rigging is not yet known.
-- **Judgement.** A rig is checked at rest and measured in seven poses. The
-  numbers say where to look; whether the character still looks right is for
-  a person, and how the character was drawn decides more than the service
-  that rigs it.
+- **A set, and company.** A rig is filmed alone on an empty stage, in front
+  of one colour. A place, a second character, a camera that moves on its own
+  are still a Blender scene the agent writes.
+- **A motion that fits the body.** A motion made for a person's proportions
+  puts the hand of a character with a large head inside its face, and
+  nothing corrects it. Fingers are not carried from one skeleton to another.
+- **All that was asked.** Asked for a wave and then a bow, the motion
+  service gave the wave. A generated motion is a person's motion only, and
+  has to be played and looked at before it is used.
+- **Other bodies.** Skeletons and stock clips for a quadruped, a bird, a
+  dragon and a body described in words are offered by one service and have
+  not been tried. A clip is carried by name between two-legged bodies only;
+  any other needs a map of its bones, and none was made for a real animal.
+- **Motion from a video.** For a creature no stock clip fits, the skill
+  describes filming the model and copying a generated video onto its
+  skeleton. It is a method, not a tool.
+- **A release in one step.** Recording a rig, its clips and its sheet as a
+  character's form is still files copied by the agent and one call. A model
+  arrives facing sideways with its origin at its middle, and every scene
+  turns and lifts it again.
+- **Judgement.** A rig is checked at rest and measured in seven poses. A
+  clip and a shot are not measured at all. The numbers say where to look;
+  whether the character still looks right is for a person, and how the
+  character was drawn decides more than the service that rigs it.
 
 The browser studio has no view of a cast.
 
 ## Music is written by something that cannot hear
 
-Music is code the agent writes and your machine renders
-([recipe](./recipes/music-in-code)). The agent works from measurements and is
+Music is procedural: [Strudel](https://strudel.cc) code the agent writes and
+your machine renders ([recipe](./recipes/music-in-code)). The agent works from measurements and is
 told never to say how a piece sounds. Whether it is good is judged by a
 person, by ear, and nobody has judged the examples that way.
 
