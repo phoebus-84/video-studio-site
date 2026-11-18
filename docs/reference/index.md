@@ -1,10 +1,10 @@
-> Imported studio reference, based on [e728acc](https://github.com/phoebus-84/video-studio/tree/e728accfa468a736558b34b8032bcacfee52218b). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
+> Imported studio reference, based on [3f8895a](https://github.com/phoebus-84/video-studio/tree/3f8895af15f019d98afe93a6af8753128060a747). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
 
 # Component reference
 
 - [blender](./blender/readme.md) — Editable 3D scenes, keyframes and Geometry Nodes; background Eevee/Cycles previews and animations. Poly Haven asset acquisition with provenance.
 - [voice](./voice/readme.md) — Local Qwen speech synthesis and consented voice cloning with MLX or PyTorch (CPU, CUDA, ROCm). Usable on its own; knows nothing about episodes or pipelines.
-- [fal-media](./fal-media/readme.md) — Tracked image, video, 3D model and rigging jobs against fal.ai, with provenance and cost. Video is MiniMax H3; 3D models are Tripo H3.1; rigs are Hyper3D and Meshy.
+- [fal-media](./fal-media/readme.md) — Tracked image, video, 3D model, rigging and motion jobs against fal.ai, with provenance and cost. Video is MiniMax H3; 3D models are Tripo H3.1; rigs are Hyper3D and Meshy; motion from words is Hunyuan Motion.
 - [comfyui-speech](./comfyui-speech/readme.md) — Speech from the Qwen3-TTS nodes of a ComfyUI server: preset speakers, cloned and saved voices, and cleaning a reference before cloning it. Optional at run time: without a server address, speech stays with the other providers.
 - [codex-image](./codex-image/readme.md) — Image generation and editing through an OpenAI ChatGPT/Codex subscription, or the Images API. A second provider for image.generate, billed against a plan rather than per image.
 - [graphics](./graphics/readme.md) — Deterministic SVG/PNG rendering of code frames, diagrams, callouts and titles.

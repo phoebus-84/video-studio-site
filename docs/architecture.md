@@ -1,10 +1,10 @@
-> Imported studio reference, based on [e728acc](https://github.com/phoebus-84/video-studio/tree/e728accfa468a736558b34b8032bcacfee52218b). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
+> Imported studio reference, based on [3f8895a](https://github.com/phoebus-84/video-studio/tree/3f8895af15f019d98afe93a6af8753128060a747). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
 
 # Architecture
 
 This page describes the current responsibilities and boundaries. It is not a
 promise of unattended, one-prompt production. See the
-[harness review](https://github.com/phoebus-84/video-studio/blob/e728accfa468a736558b34b8032bcacfee52218b/docs/harness-review.md) for implementation gaps and the
+[harness review](https://github.com/phoebus-84/video-studio/blob/3f8895af15f019d98afe93a6af8753128060a747/docs/harness-review.md) for implementation gaps and the
 [running guide](./running.md) for prerequisites.
 
 ## Product boundary
@@ -46,6 +46,7 @@ Stages request provider-neutral capabilities (`studio/contracts/src/vocabulary.m
 - `video.generate`: fal — MiniMax H3, Wan 2.2 and FLUX 3 Max clips;
 - `model.generate`: fal — a 3D model from one picture, by Tripo H3.1;
 - `rig.create`: fal — a skeleton and weights for a model, by Hyper3D or Meshy, examined when it arrives;
+- `motion.generate`: fal — a person's motion from a sentence, by Hunyuan Motion, carried to the rig that will play it;
 - `speech.synthesize`: the local Qwen3-TTS worker with MLX or PyTorch CPU/CUDA/ROCm (`packages/voice`);
 - `speech.align`: the same worker's MLX-only aligner, or ElevenLabs when asked (`@av/elevenlabs`);
 - `graphics.render`: deterministic SVG, diagram and code-frame renderer;
@@ -101,7 +102,7 @@ compilation is not a future placeholder.
   a universal billing or safety boundary.
 
 Review the actual film and audio. See [revision checks](./running.md#comparing-two-versions)
-and the [harness review](https://github.com/phoebus-84/video-studio/blob/e728accfa468a736558b34b8032bcacfee52218b/docs/harness-review.md) for the limits of sampled evidence,
+and the [harness review](https://github.com/phoebus-84/video-studio/blob/3f8895af15f019d98afe93a6af8753128060a747/docs/harness-review.md) for the limits of sampled evidence,
 same-user access and execution guarantees.
 
 ## Files, history and collaboration

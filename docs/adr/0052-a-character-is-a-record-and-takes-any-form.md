@@ -1,4 +1,4 @@
-> Imported studio reference, based on [e728acc](https://github.com/phoebus-84/video-studio/tree/e728accfa468a736558b34b8032bcacfee52218b). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
+> Imported studio reference, based on [3f8895a](https://github.com/phoebus-84/video-studio/tree/3f8895af15f019d98afe93a6af8753128060a747). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
 
 # ADR-0052: A character is a record, and takes any form
 
@@ -17,12 +17,18 @@ Proposed. Implemented with it:
 - `rig.create`: a skeleton and weights for a model, by Hyper3D or Meshy
   through `@av/fal-media` (`pva_rig_model`), with the exam a generated rig
   sits before it is released, and the sheet of known poses it is looked at
-  in (`pva_rig_sheet`, by `@av/blender`).
+  in (`pva_rig_sheet`, by `@av/blender`);
+- `motion.generate`: a person's motion from a sentence, by Hunyuan Motion
+  through `@av/fal-media` (`pva_generate_motion`); and, with no capability
+  of their own because nothing is generated, a clip carried from one
+  skeleton to another (`pva_retarget_clip`) and stock clips asked for with a
+  rig (`pva_stock_clips`, `clips` on `pva_rig_model`);
+- a rigged character filmed playing a clip (`pva_rig_shot`, by `@av/blender`):
+  one character on an empty stage, as a clip of video like any other.
 
-Not implemented: the browser's view of a cast, and the capability that makes
-a form move (`motion.generate`: motion from text, motion from a generated
-video, clips from a library retargeted to a rig). It is named below so that
-it arrives as a provider behind a capability, not as a pipeline of its own.
+Not implemented: the browser's view of a cast; motion from a generated
+video, for a body that is not a person's; a face; and a character placed by
+the studio in a set, or beside another.
 
 ## Context
 
