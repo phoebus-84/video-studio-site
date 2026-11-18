@@ -117,8 +117,10 @@ test('a generated 3D model is shown with the skeleton it can be given, the motio
   assert.match(home, /all six passed the check at rest/);
   assert.match(home, /Then it moves\. Then it is filmed\./);
   assert.match(home, /<ShotFilm \/>/);
-  assert.match(home, /Not built yet\.<\/b> A face, and company/);
-  assert.doesNotMatch(home, /Motion you ask for|placing it in a shot is still a Blender script/);
+  assert.match(home, /Then two of them, in a place\./);
+  assert.match(home, /<ShotFilm show="meeting" \/>/);
+  assert.match(home, /Not built yet\.<\/b> A face, and touch/);
+  assert.doesNotMatch(home, /Motion you ask for|placing it in a shot is still a Blender script|a second character beside it, is still a Blender scene/);
   assert.doesNotMatch(home, /statue until rigging and motion exist/);
   const recipe = await read('docs/recipes/create-a-character.md');
   assert.match(recipe, /pva_generate_model/);
@@ -131,7 +133,12 @@ test('a generated 3D model is shown with the skeleton it can be given, the motio
   for (const figure of ['| 810 | 685 | 27 | 19 | 40 | 16 |', '| 3 | 1 | 0 | 0 | 40 | 0 |', '| 19 | 2 | 4 | 9 | 1 | 0 |', 'tear at most 26', '$1.40']) assert.ok(recipe.includes(figure), figure);
   assert.match(recipe, /All\s+six passed the examination at rest/);
   // Motion and the shot: the four tools, what the real runs gave, and what is still missing.
-  for (const tool of ['pva_stock_clips', 'pva_retarget_clip', 'pva_generate_motion', 'pva_rig_shot']) assert.ok(recipe.includes(tool), tool);
+  for (const tool of ['pva_stock_clips', 'pva_retarget_clip', 'pva_generate_motion', 'pva_rig_shot', 'pva_release_model', 'pva_stage_shot']) assert.ok(recipe.includes(tool), tool);
+  // The release and the scene: what the real runs gave.
+  for (const figure of ['79 milliseconds', '0.95 metres tall', '5.96 seconds here, 0.83 m/s', '89% of the shot']) assert.ok(recipe.includes(figure), figure);
+  assert.match(recipe, /<ShotFilm show="meeting" \/>/);
+  assert.match(recipe, /Nobody touches anything/);
+  assert.doesNotMatch(recipe, /Releasing a rig takes more than one step|It does not build a set/);
   for (const figure of ['113 clips', '$0.08', '$0.28', '3.08\nseconds of film', 'byte for byte']) assert.ok(recipe.includes(figure), figure);
   assert.match(recipe, /The wave came\. In those six moments no bow can be seen/);
   assert.match(recipe, /<ShotFilm \/>/);
@@ -140,17 +147,19 @@ test('a generated 3D model is shown with the skeleton it can be given, the motio
   assert.match(recipe, /A generated rig has no face/);
   assert.doesNotMatch(recipe, /no clip chosen by name|It is the only\s+motion there is|textures are untried/);
   const limits = await read('docs/limits.md');
-  assert.match(limits, /A generated character acts alone, and has no face/);
-  assert.match(limits, /filmed alone on an empty stage/);
-  assert.doesNotMatch(limits, /barely moves|no motion from\s+words|Whether\s+a model's textures come back intact/);
-  assert.match(home, /#a-generated-character-acts-alone-and-has-no-face/);
+  assert.match(limits, /A generated character has no face, and touches nothing/);
+  assert.match(limits, /no contact between a body and the set/);
+  assert.doesNotMatch(limits, /barely moves|no motion from\s+words|Whether\s+a model's textures come back intact|acts alone|A release in one step/);
+  assert.match(home, /#a-generated-character-has-no-face-and-touches-nothing/);
   assert.doesNotMatch(limits, /Rigging and motion are named in the design and not built/);
   const strip = await read('docs/.vitepress/theme/components/RigStrip.vue');
   for (const [, file] of strip.matchAll(/file: '([a-z]+(?:-[a-z]+)*)'/g)) await read(`docs/public/proof/${file}.jpg`);
   for (const moment of [0, 1, 2, 3, 4, 5]) await read(`docs/public/proof/walk-${moment}.jpg`);
   for (const moment of [0, 1, 2, 3]) await read(`docs/public/proof/motion-wave-${moment}.jpg`);
   const shot = await read('docs/.vitepress/theme/components/ShotFilm.vue');
-  for (const file of ['shot-walk.mp4', 'shot-walk.jpg']) { assert.ok(shot.includes(`withBase('/proof/${file}')`), file); await read(`docs/public/proof/${file}`); }
+  assert.match(shot, /withBase\('\/proof\/' \+ film\.file \+ '\.mp4'\)/);
+  for (const [, file] of shot.matchAll(/file: '([a-z]+(?:-[a-z]+)*)'/g)) for (const kind of ['mp4', 'jpg']) await read(`docs/public/proof/${file}.${kind}`);
+  assert.equal([...shot.matchAll(/file: '/g)].length, 2);
 });
 
 test('music written as code is shown with a piece, its measurements and what nobody has judged', async () => {
@@ -189,8 +198,8 @@ test('what changed lately is on the home page and in the navigation, and points 
   assert.match(home, /withBase\('\/changelog'\)/);
   assert.match(await read('docs/.vitepress/config.mts'), /\{ text: "Changelog", link: "\/changelog" \}/);
   const changelog = await read('docs/changelog.md');
-  for (const entry of ['Music written as code', 'A skeleton for a 3D model', 'A rig posed and looked at', 'Motion for a rig', 'A rigged character, filmed']) assert.ok(changelog.includes(entry), entry);
-  for (const entry of ['A rigged character, filmed', 'Motion for a rig, three ways']) assert.ok(home.includes(entry), entry);
+  for (const entry of ['Music written as code', 'A skeleton for a 3D model', 'A rig posed and looked at', 'Motion for a rig', 'A rigged character, filmed', 'released as a character\'s form in one step', 'Characters in one picture, and in a place']) assert.ok(changelog.includes(entry), entry);
+  for (const entry of ['Characters in one picture, and in a place', 'A rig released as a character’s form in one step', 'A rigged character, filmed', 'Motion for a rig, three ways']) assert.ok(home.includes(entry), entry);
 });
 
 test('the old name is gone from every tracked file, the imported reference included, outside the GitHub addresses that have to work', async () => {
