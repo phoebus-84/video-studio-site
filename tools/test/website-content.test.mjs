@@ -145,12 +145,24 @@ test('music written as code is shown with a piece, its measurements and what nob
   await read('docs/public/proof/sting.mp3');
   const recipe = await read('docs/recipes/music-in-code.md');
   for (const tool of ['pva_music_check', 'pva_music_render', 'pva_music']) assert.ok(recipe.includes(tool), tool);
+  // The site is served under a base path: a player written into Markdown with a root address plays nothing.
+  assert.match(recipe, /<ScoreAudio \/>/);
+  assert.match(await read('docs/.vitepress/theme/components/ScoreAudio.vue'), /withBase\('\/proof\/sting\.mp3'\)/);
   for (const figure of ['-18.0 LUFS', 'peak -3.0 dBFS at 1.02 s', '18 events']) assert.ok(recipe.includes(figure), figure);
   assert.match(recipe, /Nobody has judged the music/);
   assert.match(recipe, /no piano, no drum kit/i);
   assert.match(recipe, /AGPL-3\.0-or-later/);
   const limits = await read('docs/limits.md');
   assert.match(limits, /Music is written by something that cannot hear/);
+});
+
+test('no site-owned page names a media file from the root: the site is served under a base path', async () => {
+  const pages = [
+    ...(await readdir(new URL('../../docs/', import.meta.url))).filter(file => file.endsWith('.md')).map(file => `docs/${file}`),
+    ...(await readdir(new URL('../../docs/recipes/', import.meta.url))).filter(file => file.endsWith('.md')).map(file => `docs/recipes/${file}`),
+  ];
+  assert.ok(pages.length > 20);
+  for (const file of pages) assert.doesNotMatch(await read(file), /<(?:audio|video|source|img)\b[^>]*\s(?:src|poster)="\//, file);
 });
 
 test('what changed lately is on the home page and in the navigation, and points at the imported changelog', async () => {

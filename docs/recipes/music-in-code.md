@@ -9,7 +9,7 @@ rendered from it at the loudness you asked for, the same piece as stems, and
 a record of what was measured. The piece can be changed one part at a time
 and rendered again.
 
-<audio controls preload="none" src="/proof/sting.mp3">A five-second piece, as an MP3.</audio>
+<ScoreAudio />
 
 *Five seconds, six parts, eighteen events, rendered on 18 November 2026. Its
 code is [below](#what-a-piece-looks-like).*

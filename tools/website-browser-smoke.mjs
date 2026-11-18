@@ -184,6 +184,9 @@ try {
  assert.match(await page.locator('main').innerText(),/pva_rig_sheet/);
  assert.match(await page.locator('main').innerText(),/pva_generate_model/);
  assert.match(await page.locator('main').innerText(),/No skeleton, no motion/);
+ await go('recipes/music-in-code');
+ assert.ok(await page.locator('main audio').first().evaluate(async audio=>{const response=await fetch(audio.src);return response.ok&&response.headers.get('content-type').includes('audio');}),'the piece of the music recipe is published where its player looks for it');
+ await overflow('music recipe');
  results.push('Where it stands: limits, comparison, benchmark specification, changelog, licence and the correction shown');
  await go('examples');
  await expect(page.locator('.project-feature .receipt')).toHaveCount(showcase.length);
