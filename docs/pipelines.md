@@ -1,4 +1,4 @@
-> Imported studio reference, based on [3f8895a](https://github.com/phoebus-84/video-studio/tree/3f8895af15f019d98afe93a6af8753128060a747). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
+> Imported studio reference, based on [f43b0ee](https://github.com/phoebus-84/video-studio/tree/f43b0ee50bedc4f78721e4aaf24300243d5cac78). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
 
 # Pipeline model
 
@@ -73,7 +73,7 @@ descriptor. The agent's pipeline tools reach that service only through the
 gateway, so with no gateway running they fail. A declared gate holds a
 stage's completion, not the production tools: `pva_generate_image` and the
 other capability tools are bounded by the spend ledger, not by a gate. See the
-[harness review](https://github.com/phoebus-84/video-studio/blob/3f8895af15f019d98afe93a6af8753128060a747/docs/harness-review.md) before unattended execution.
+[harness review](https://github.com/phoebus-84/video-studio/blob/f43b0ee50bedc4f78721e4aaf24300243d5cac78/docs/harness-review.md) before unattended execution.
 
 ## The film families
 
