@@ -1,8 +1,8 @@
-> Imported studio reference, based on [e728acc](https://github.com/phoebus-84/video-studio/tree/e728accfa468a736558b34b8032bcacfee52218b). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
+> Imported studio reference, based on [3f8895a](https://github.com/phoebus-84/video-studio/tree/3f8895af15f019d98afe93a6af8753128060a747). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
 
 # fal-media
 
-> Tracked image, video, 3D model and rigging jobs against fal.ai, with provenance and cost. Video is MiniMax H3; 3D models are Tripo H3.1; rigs are Hyper3D and Meshy.
+> Tracked image, video, 3D model, rigging and motion jobs against fal.ai, with provenance and cost. Video is MiniMax H3; 3D models are Tripo H3.1; rigs are Hyper3D and Meshy; motion from words is Hunyuan Motion.
 
 |  |  |
 |---|---|
@@ -10,7 +10,7 @@
 | Package | `@av/fal-media` |
 | Kind | node |
 | Tier | **reusable** — usable outside this project |
-| Capabilities | `image.generate`, `image.edit`, `video.generate`, `model.generate`, `rig.create` |
+| Capabilities | `image.generate`, `image.edit`, `video.generate`, `model.generate`, `rig.create`, `motion.generate` |
 | Requires | `FAL_KEY` in the environment |
 | In profiles | `full`, `studio`, `headless` |
 

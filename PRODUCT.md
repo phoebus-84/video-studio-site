@@ -24,7 +24,7 @@ Independent VitePress website in its own Git repository, using Node 22 and npm. 
 
 ## Capabilities and Constraints
 
-- Packages cover graphics, archive media, audio edits, speech, generated imagery, Blender and composition.
+- Packages cover graphics, archive media, audio edits, speech, generated imagery, 3D models with their rigs, motion and filmed shots, music written as code, Blender and composition.
 - Optional capabilities require their own software, hardware, authentication or provider fees. Local MLX speech requires Apple Silicon.
 - Only the operator grants production approvals. Agents request them.
 - Generated production media is never committed to git. Website derivatives remain ignored and are prepared explicitly from selected sources.

@@ -1,6 +1,6 @@
 ---
 title: Write a score in code
-description: "Have the agent write music as Strudel code, check it without a sound, render it on your machine at no cost, and mix it by measurements. Then listen: the agent cannot."
+description: "Procedural music: have the agent write a piece as Strudel code, check it without a sound, render it on your machine at no cost, and mix it by measurements. Then listen: the agent cannot."
 ---
 # Write a score in code
 
@@ -9,7 +9,7 @@ rendered from it at the loudness you asked for, the same piece as stems, and
 a record of what was measured. The piece can be changed one part at a time
 and rendered again.
 
-<audio controls preload="none" src="/proof/sting.mp3">A five-second piece, as an MP3.</audio>
+<ScoreAudio />
 
 *Five seconds, six parts, eighteen events, rendered on 18 November 2026. Its
 code is [below](#what-a-piece-looks-like).*

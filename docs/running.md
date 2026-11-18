@@ -1,4 +1,4 @@
-> Imported studio reference, based on [e728acc](https://github.com/phoebus-84/video-studio/tree/e728accfa468a736558b34b8032bcacfee52218b). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
+> Imported studio reference, based on [3f8895a](https://github.com/phoebus-84/video-studio/tree/3f8895af15f019d98afe93a6af8753128060a747). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
 
 # Running the agent
 
@@ -581,8 +581,14 @@ skeleton, and can be placed, turned and lit, not posed. `pva_rig_model` gives
 a model a skeleton and weights (Hyper3D or Meshy through fal, paid per rig)
 and examines the rig before it answers; `pva_rig_sheet` then poses it in
 Blender, at no cost, and renders the poses and the clips on sheets to read
-before the rig is released. Turning words or a video into motion is not
-built. The browser studio has no view of a cast.
+before the rig is released. A rig gets its motion three ways: stock clips
+asked for with it (`pva_stock_clips` lists them), a clip carried from
+another skeleton (`pva_retarget_clip`, local), and a person's motion made
+from a sentence (`pva_generate_motion`, Hunyuan Motion through fal, paid per
+motion). `pva_rig_shot` then films the character playing a clip, locally,
+into a clip of video like any other: one character on an empty stage.
+Motion from a video, a face, and a character placed in a set or beside
+another are not built. The browser studio has no view of a cast.
 
 ## 1b. The same agent in Claude Code
 

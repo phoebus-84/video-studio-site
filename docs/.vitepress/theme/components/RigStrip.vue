@@ -1,6 +1,7 @@
 <script setup>
 // A generated model given a skeleton, as it was posed on 18 November 2026:
-// two test figures, rigged on the real services and posed by pva_rig_sheet.
+// two test figures, rigged on the real services and posed by pva_rig_sheet,
+// and a motion made for one of them, played on the same sheet.
 // The stills are tiles of the tool's own sheets, labels and all; the figures
 // have no textures because the test did not pay for them.
 // docs/recipes/create-a-character.md gives the runs.
@@ -23,6 +24,12 @@ const strips = {
   walk: {
     label: 'Six moments of the walk that came with a rig.',
     cells: [0, 1, 2, 3, 4, 5].map(moment => ({ file: 'walk-' + moment, label: (moment * 0.17).toFixed(2) + ' s', alt: moment === 0 ? 'The untextured model in mid-stride, seen from three-quarter.' : '' })),
+  },
+  // A motion asked for in a sentence (pva_generate_motion), on the first figure:
+  // four of the six moments of the sheet it was played on.
+  wave: {
+    label: 'Four moments of a motion asked for in a sentence: a wave of the right hand.',
+    cells: [0, 1, 2, 3].map(moment => ({ file: 'motion-wave-' + moment, label: (moment * 0.66).toFixed(2) + ' s', alt: moment === 1 ? 'The untextured model of a boy in a long coat, seen from three-quarter, with its right hand raised beside its face.' : moment === 0 ? 'The same model standing with its arms down.' : '' })),
   },
   // The same engine, the same pose, the two ways the figure was drawn.
   drawn: {

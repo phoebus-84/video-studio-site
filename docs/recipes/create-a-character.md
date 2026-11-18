@@ -1,6 +1,6 @@
 ---
 title: A character people recognise
-description: "Define a character as a record apart from how it appears, give it a form with a list of what it can do (a 3D model made from one picture, given a skeleton and posed, among them), release that form, and cast it in a series pinned to the release."
+description: "Define a character as a record apart from how it appears, give it a form with a list of what it can do (a 3D model made from one picture, given a skeleton, a motion and filmed, among them), release that form, and cast it in a series pinned to the release."
 ---
 # A character people recognise
 
@@ -10,9 +10,9 @@ each form that will not change under the episodes made with it.
 
 A character here is a record, not a 3D model. It can be a person, a fox, a
 lamp, a dot, a sound, a voice and nothing else. The studio keeps it, hashes
-it and pins it. One kind of form it can also make: a 3D model from one
-picture, which it can then give a skeleton and pose. A walk and a run can
-come with the skeleton; any other motion is not built.
+it and pins it. One kind of form it can also make from start to finish: a 3D
+model from one picture, given a skeleton, posed, given a motion and filmed
+into a clip of video. It has no face, and it is filmed alone.
 
 ## Ingredients
 
@@ -24,14 +24,16 @@ come with the skeleton; any other motion is not built.
 - For a real person's face, voice or name: their permission, in writing. For
   a synthetic voice made from a recording: the voice rights to do so.
 
-- For a 3D model or its skeleton: a fal.ai key, and an episode with a budget
-  to make it in. To pose a rig: Blender on the machine.
+- For a 3D model, its skeleton or a motion asked for in a sentence: a fal.ai
+  key, and an episode with a budget to make it in. To pose a rig, carry a
+  clip to it or film it: Blender on the machine.
 
 **Costs:** the agent's model usage. Recording a character and casting it
 makes no paid API calls. Making a form may: generated pictures and synthetic
 voices are metered like any other, a 3D model costs $0.20 to $0.65 by
-what is asked of it, and a skeleton for it $0.20. Posing a rig runs on your
-machine and costs nothing.
+what is asked of it, a skeleton for it $0.20, and a motion from a sentence
+$0.08. Posing a rig, carrying a clip to it and filming it run on your
+machine and cost nothing.
 
 ## 1. Who it is, before how it looks
 
@@ -216,17 +218,122 @@ Ten rigs made by hand, measured the same way, tear at most 26.
 - **The numbers say where to look.** They do not see a hand passing through
   a hat, or a face that no longer looks like the character. Open the sheet.
 
+**Rig the model you mean to show.** A textured model was sent to both
+services afterwards: its three texture files came back byte for byte, and
+the material with them.
+
 A rig is released as a form whose medium is `rig-3d`. Its `can` lists the
-clips that came with it as actions, and nothing it has no clip for.
-
-<RigStrip show="walk" />
-
-The walk one service adds to its rigs, on the second figure. It is the only
-motion there is: a rig moves as far as its clips go.
+clips it has as actions, and nothing it has no clip for.
 
 The whole test, both figures: $1.40 on the ledgers of two episodes.
 
-## 5. Cast it
+## 5. Give it motion
+
+A rig moves as far as its clips go. Each clip is a file beside the rig,
+`<rig>.clip.<name>.glb`: the rig's own body with one motion in it. There are
+three ways to get one, in rising order of cost.
+
+```text
+Show me the stock clips for a human body that are jumps. Then rig the
+guide's model again with "walking" and "big jump".
+```
+
+**Pick it by name, with the rig.** `pva_stock_clips` lists what one rigging
+service has, at no cost: 113 clips for a human body (walks, runs, jumps,
+gestures, sports, reactions) and clips for eight kinds of animal, each with
+its length and whether it can be repeated. Name up to ten in `clips` on
+`pva_rig_model` and they arrive with the rig, filed under their names, at no
+price beyond the rig's. The other service adds a walk and a run to every
+rig, and nothing by name:
+
+<RigStrip show="walk" />
+
+```text
+Carry the walk of the other rig onto this one.
+```
+
+**Carry it from another skeleton.** `pva_retarget_clip` runs on your machine,
+in Blender, at no cost. The source is any `.glb` or `.fbx` of the episode
+with a skeleton and a motion in it: a clip one service made for another rig,
+a motion from a library. Bones are paired by the part they play, and each
+turn is copied as it is seen from outside the body, from the rest pose. So
+the two skeletons may name, point and size their bones differently, and
+rest in different poses.
+
+```text
+Make the guide wave hello with the right hand, then bow. Four seconds. Tell
+me the price first, and show me the sheet.
+```
+
+**Ask for it in a sentence.** `pva_generate_motion` asks a motion service
+for a person's motion: $0.08, reserved on the episode's budget before the
+call. What comes back is kept in `assets/motion/` and carried to the rig.
+
+<RigStrip show="wave" />
+
+That request, on the first test figure: four of the six moments of the sheet
+it was played on. The wave came. In those six moments no bow can be seen. A
+generated motion may not be all that was asked: ask again, or ask for one
+thing a clip.
+
+**Play every clip before it is used.** `pva_rig_sheet` shows six moments of
+each clip from two sides. Feet that slide, a hand through the body, a limb
+bent the wrong way are seen there. They are not measured.
+
+- **Only two-legged bodies are carried by name.** Any other needs a map of
+  its bones, and none was tried on a real animal.
+- **Nothing fits a motion to a body.** A motion made for a person's
+  proportions puts the hand of a character with a large head inside its
+  face.
+- **The fingers and the face are not carried.**
+
+The motion tests: $0.28. A rig with two stock clips for $0.20, a motion for
+$0.08.
+
+## 6. Film it
+
+<ShotFilm />
+
+The second figure with its textures, 18 November 2026: the walk three times
+over, three-quarter, the whole figure, 1280×720 at 24 frames a second. 3.08
+seconds of film, rendered in about twenty seconds.
+
+```text
+Film the guide walking, in the episode inventions/ep001: three-quarter, the
+whole figure, the walk three times. The film is 1280 by 720 at 24 frames a
+second.
+```
+
+`pva_rig_shot` films the rig playing one of its clips, on your machine, in
+Blender, at no cost. The clip lands in `assets/video/<shotId>.mp4` with no
+sound, where generated clips are kept, and goes on a timeline or in a cut
+like any other.
+
+- **The camera is asked for in a shot's words.** From the `front`,
+  `three-quarter`, the `side` or the `back`; `full` for the whole body,
+  `medium` for the waist up, `close` for the head and shoulders. The camera,
+  the light and the floor are made from the body's own size and the way it
+  faces.
+- **It follows the body** as it travels, unless told to stay. Then a walk
+  crosses the frame and leaves it.
+- **Behind it is one colour.** Without the floor and its shadow, the
+  character can be laid over something else in the edit.
+- **A clip that travels jumps back when it repeats.** Loop one that plays on
+  the spot, and let the edit move the picture.
+
+The second shot of the test asked for the waist up in a tall frame, and came
+back with the figure's ears and shoulders cut: the framing was measured by
+height alone. It now holds a share of the body's width as well.
+
+It is one character on an empty stage. A set, two characters in one picture,
+a camera that moves on its own, a light that means something: that is still
+a scene the agent builds in Blender.
+
+**Look at what was filmed.** A hand through the head, a body that sinks into
+the floor, a walk that slides are seen by whoever looks. Nothing measures
+them.
+
+## 7. Cast it
 
 ```text
 Cast the guide as "host" in the series inventions, wearing the puppet.
@@ -240,7 +347,7 @@ The same character can hold different roles in different productions.
 Another owner's character is named `owner/id` and read where it lives, never
 copied.
 
-## 6. Check a script against the cast
+## 8. Check a script against the cast
 
 ```text
 Check the cast of inventions: the host is asked to point, to read and to
@@ -257,16 +364,20 @@ record. `pva_characters` shows one character in full, or lists an owner's.
 - **It does not play a form.** A `.blend` or an SVG component is kept, hashed
   and pinned; drawing it stays the job of the kit or the tool that knows the
   medium.
-- **It does not animate.** A rig moves by the clips it has: a walk and a
-  run from one service, and nothing else. There is no motion from text or
-  from a video, no clip chosen by name, and no way to carry a clip from one
-  skeleton to another.
-- **It does not place a rig in a shot.** The rig is kept and pinned; putting
-  it in a scene is a Blender script the agent writes.
+- **It does not animate by hand.** A rig moves by the clips it has: stock
+  clips, a clip carried from another skeleton, a motion asked for in a
+  sentence. There is no keyframing a performance, and no tool that takes a
+  motion from a video.
+- **It does not build a set.** A rig is filmed alone on an empty stage. A
+  place, a second character or a camera move is a Blender scene the agent
+  writes.
 - **A generated rig has no face.** No bones for the mouth or the eyes: the
   character cannot speak or change expression.
-- **Other bodies and textures are untried.** Every rig so far was of a
-  two-legged, untextured model.
+- **Other bodies are untried.** Every rig so far was of a two-legged model.
+- **Releasing a rig takes more than one step.** The agent copies the rig, its
+  clips and its sheet into the character's folder and records it. A model
+  arrives facing sideways with its origin at its middle, and each scene
+  still has to turn and lift it.
 - **Nothing else is specific to characters.** A pose sheet is made with the
   image tools, a puppet by a Blender script, a drawn component by hand.
   Generated reference pictures help consistency; they
@@ -290,6 +401,9 @@ record. `pva_characters` shows one character in full, or lists an owner's.
   limbs. Decide in the picture whether the character needs them.
 - **A rig released because it passed.** All six test rigs passed at rest.
   Pose it and look.
+- **A motion used because it arrived.** Asked for a wave and a bow, the
+  service gave a wave. Play the clip on the sheet before a shot depends on
+  it.
 - **Editing a released folder.** The next `verify` reports files that no
   longer match their record. Make a new release instead.
 - **A voice without its rights.** Cloning a voice needs a recorded consent;

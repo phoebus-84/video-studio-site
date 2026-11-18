@@ -51,6 +51,8 @@ A short explainer needs different pacing from an illustrated story. Give the age
 
 Use existing images and recordings when they already work. Add generated media when it serves the project. A scene can come from Blender, a licensed archive, generated imagery or footage you shot yourself.
 
+Music and designed sound can be made the same way, with no service: the agent [writes them as code](./recipes/music-in-code), your machine renders them, and each render comes with the measurements the agent mixes by, because it cannot hear.
+
 Providers are explicit choices. Missing software, credentials or capabilities are reported; the system should not silently choose a cheaper or different substitute.
 
 ### Compose and review
