@@ -1,12 +1,13 @@
 ---
 title: Limits
-description: "What %product% does not do yet, what it does only partly, and what release 0.2.0 fixed."
+description: "What %product% does not do yet, what it does only partly, what changed since release 0.2.0 and what that release fixed."
 ---
 # What does not work yet
 
 This page is the project's own review of itself, rewritten for someone
-deciding whether to install it. It is dated: **17 November 2026**, against
-release 0.2.0. The [changelog](./changelog) says what moved since.
+deciding whether to install it. It is dated: **18 November 2026**, against
+the main branch, which is release 0.2.0 and what was merged after it. The
+[changelog](./changelog) says what moved, release by release.
 
 If one of these is the thing you need, [use something else](./compare) for now.
 
@@ -51,23 +52,53 @@ says what is rendering; it is not queued.
 ## Few providers, added by hand
 
 Generation goes through a short list chosen on purpose: fal.ai for images,
-video clips and 3D models, OpenAI for images, Qwen3-TTS for speech on your own
+video clips, 3D models and their skeletons, OpenAI for images, Qwen3-TTS for speech on your own
 machine or through a ComfyUI server, ElevenLabs for speech and word alignment. Adding a provider
 touches several files; there is no one-file plug-in.
 
 ComfyUI is used for speech only. Images and video through your own ComfyUI
 are not built.
 
-## A generated character stands still
+## A generated character barely moves
 
 A character, its forms, their releases and a production's cast are kept,
 hashed and pinned ([recipe](./recipes/create-a-character)). Since 0.2.0 a 3D
-model can be made from one picture, for $0.20 to $0.65.
+model can be made from one picture, for $0.20 to $0.65. On the main branch
+that model can be given a skeleton for $0.20, and the rig posed and measured
+on your machine before it is used.
 
-What comes back has no skeleton and no motion. It can be placed, turned and
-lit, not posed. Rigging and motion are named in the design and not built: a
-generated model is a statue until they exist. The browser studio has no view
-of a cast.
+What is missing is most of what makes it act:
+
+- **Motion.** One of the two rigging services adds a walk and a run to a
+  two-legged rig. Nothing else moves a character: there is no motion from
+  words, no clip chosen by name, no way to carry a clip from one skeleton to
+  another.
+- **A shot.** The studio keeps a rig, hashes it and pins it; it does not
+  place it in a scene. Getting a rigged character into a film is still a
+  Blender script the agent writes.
+- **A face.** A generated rig has bones for the body and the fingers and
+  none for the face. The character cannot speak or change expression.
+- **Other bodies.** Skeletons for a quadruped, a bird, a dragon and a body
+  described in words are offered by one service and have not been tried.
+- **Textures.** Every rig made so far was of an untextured model. Whether
+  a model's textures come back intact from rigging is not yet known.
+- **Judgement.** A rig is checked at rest and measured in seven poses. The
+  numbers say where to look; whether the character still looks right is for
+  a person, and how the character was drawn decides more than the service
+  that rigs it.
+
+The browser studio has no view of a cast.
+
+## Music is written by something that cannot hear
+
+Music is code the agent writes and your machine renders
+([recipe](./recipes/music-in-code)). The agent works from measurements and is
+told never to say how a piece sounds. Whether it is good is judged by a
+person, by ear, and nobody has judged the examples that way.
+
+The engine has oscillators and noise: no piano, no drum kit, no sampled
+instrument unless the recording is already in your workspace. Rendering
+needs a Chrome on the machine.
 
 ## Receipts are assembled by hand
 

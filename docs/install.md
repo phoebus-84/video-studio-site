@@ -1,4 +1,4 @@
-> Imported studio reference, based on [e2796c5](https://github.com/phoebus-84/video-studio/tree/e2796c57f66a019df41574d69bba41eb358e4e65). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
+> Imported studio reference, based on [e728acc](https://github.com/phoebus-84/video-studio/tree/e728accfa468a736558b34b8032bcacfee52218b). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
 
 # Install and composition
 
@@ -10,6 +10,7 @@
 | Bun | dependency installation | the workspace lockfile is a `bun.lock` |
 | FFmpeg + ffprobe | `video.compose`, `media.probe`, `graphics.animate` | `brew install ffmpeg` |
 | Headless Chrome | `video.compose` (Remotion renders in it) | nothing to install: Remotion downloads `chrome-headless-shell` into `node_modules/.remotion` on the first render; `npm run doctor` says whether it is there |
+| A Chrome for music | `pva_music_render`, `pva_music_check` (Strudel is rendered in it, ADR-0053) | nothing to install once a video has been rendered: Remotion's is used. Before that, any Chrome or Chromium on the machine, or the one `STRUDEL_CHROME_PATH` names; `npm run doctor` shows which under `music` |
 | ImageMagick | vector animation in the agent | `brew install imagemagick` |
 | Python 3.12 | `packages/voice` (local speech) | MLX on Apple Silicon; PyTorch for CPU/CUDA/ROCm — see [portable backends](./reference/voice/docs/backends.md) |
 | Blender 4.2–4.x or 5.2.x LTS | `scene.create`, `scene.render` | 5.2.1 live tested; bundled Python; set `BLENDER_BIN` if needed |
@@ -84,7 +85,7 @@ Composition writes **`composed.json`**, the answer to "what is actually wired
 here?" — the active components, which capability each provides, and what is
 missing at composition time. Blender tools enforce their selected binding; older
 agent/gateway paths are not yet uniformly composition-driven (see
-[harness review](https://github.com/phoebus-84/video-studio/blob/e2796c57f66a019df41574d69bba41eb358e4e65/docs/harness-review.md)). `doctor` rechecks live requirements rather
+[harness review](https://github.com/phoebus-84/video-studio/blob/e728accfa468a736558b34b8032bcacfee52218b/docs/harness-review.md)). `doctor` rechecks live requirements rather
 than trusting the stored readiness snapshot.
 
 Two rules it will not break:

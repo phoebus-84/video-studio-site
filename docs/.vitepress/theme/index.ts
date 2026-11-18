@@ -6,6 +6,7 @@ import MediaFrame from './components/MediaFrame.vue';
 import CopyCommand from './components/CopyCommand.vue';
 import TakeStrip from './components/TakeStrip.vue';
 import ModelStrip from './components/ModelStrip.vue';
+import RigStrip from './components/RigStrip.vue';
 import RecipeFilm from './components/RecipeFilm.vue';
 import './style.css';
 
@@ -19,6 +20,7 @@ export default {
     app.component('CopyCommand', CopyCommand);
     app.component('TakeStrip', TakeStrip);
     app.component('ModelStrip', ModelStrip);
+    app.component('RigStrip', RigStrip);
     app.component('RecipeFilm', RecipeFilm);
   }
 };
