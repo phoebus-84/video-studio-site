@@ -7,6 +7,7 @@ import MediaFrame from './MediaFrame.vue';
 import FilmReceipt from './FilmReceipt.vue';
 import TakeStrip from './TakeStrip.vue';
 import ModelStrip from './ModelStrip.vue';
+import RigStrip from './RigStrip.vue';
 import CopyCommand from './CopyCommand.vue';
 import ArrowIcon from './ArrowIcon.vue';
 import SiteFooter from './SiteFooter.vue';
@@ -110,7 +111,38 @@ const installation = `git clone ${brand.repository}.git ${brand.directory}\ncd $
         <h3>One picture in. A model out.</h3>
         <ModelStrip />
         <p class="take-caption">A test figure, run against the real service on 17 November 2026. From one picture, a model with its textures came back in 2 min 20 s: 18,889 quads, 2.8 MB, $0.35 on the episode’s ledger. It can be placed, turned and lit. <a :href="withBase('/recipes/create-a-character') + '#_3-a-3d-form-from-one-picture'">How it was asked for</a></p>
-        <p class="not-yet"><b>Not built yet.</b> A skeleton, and motion. The model has neither: it is a statue until rigging and motion exist, and a script that asks it to walk is refused.</p>
+        <h3>Then a skeleton. Then it is posed, and looked at.</h3>
+        <RigStrip show="poses" />
+        <p class="take-caption">A second test figure, 18 November 2026. Its model was given a skeleton by a rigging service in about twenty seconds, for $0.20 on the episode’s ledger, and then put in seven known poses on your own machine, at no cost, with a count of how far each pulled its surface out of shape. Six rigs were made that day and all six passed the check at rest. It was the poses that told them apart. <a :href="withBase('/recipes/create-a-character') + '#_4-a-skeleton-and-the-poses-that-test-it'">The six rigs, pose by pose</a></p>
+        <p class="not-yet"><b>Not built yet.</b> Motion you ask for. One of the two rigging services adds a walk and a run; nothing else moves a character yet, the rig has no face, and placing it in a shot is still a Blender script the agent writes. <a :href="withBase('/limits') + '#a-generated-character-barely-moves'">What is missing</a></p>
+      </div>
+    </section>
+
+    <section class="screen score" aria-labelledby="score-title">
+      <div class="page-width score-grid">
+        <div>
+          <p class="screen-label">Music</p>
+          <h2 id="score-title">The score is a text file.<br><em>So it can be corrected like one.</em></h2>
+          <p class="screen-lede">Music is written as <a :href="'https://strudel.cc'">Strudel</a> code and rendered on your machine, at no cost and with no service: a bed under a voice at the episode’s length, a cue on a cut, a loop for an hour. Each part has a name, so “the bass is too loud after the second chorus” is a change to one line.</p>
+          <p class="screen-lede">The agent cannot hear, and is told so. Every render comes with measurements it mixes by (loudness, the peak and when it falls, the spectrum by band, each part alone) and with what a person should listen for.</p>
+          <a class="text-link" :href="withBase('/recipes/music-in-code')">Write a score in code <ArrowIcon /></a>
+        </div>
+        <div>
+          <pre class="score-code" aria-label="Three of the six parts of a five-second piece written as code"><code><i>// A logo sting: a one-second rising run into a chord that lands at 1.0 s.</i>
+setcpm(120/4)
+run:   n("0 2 4 7 9 11 14 16").scale("D4:major").fast(2).mask("1 0")
+         .s("triangle").lpf(3000).decay(.12).sustain(.2).release(.1)
+         .gain(saw.range(.25, .6).fast(2)).pan(saw.range(.3, .7).fast(2))
+chord: n("[0,4,7,9,11]").scale("D3:major").struct("~ x")
+         .s("supersaw").lpf(4000).attack(.005).decay(2).sustain(0).release(1.2)
+         .room(.5).rsize(3).gain(.32)
+low:   note("d2").struct("~ x").s("sine").attack(.005).decay(1.8).sustain(0).release(1).gain(.42)
+<i>// and three more: a whoosh, a thump, a bell. Six parts, eighteen events.</i></code></pre>
+          <figure class="score-play">
+            <audio controls preload="none" :src="withBase('/proof/sting.mp3')">The five-second piece, as an MP3.</audio>
+            <figcaption>That piece, rendered on 18 November 2026: five seconds, brought to −18 LUFS. The code says the chord lands at one second; the measurement puts the peak at 1.02 s. Nobody has mixed it by ear.</figcaption>
+          </figure>
+        </div>
       </div>
     </section>
 
@@ -138,6 +170,20 @@ const installation = `git clone ${brand.repository}.git ${brand.directory}\ncd $
           <li><h3>You want proof it beats the model on its own.</h3><p>There is none yet. Anyone can get a first take; the test for the second is written down before it is run, and it has produced no number.</p></li>
         </ul>
         <div class="elsewhere-links"><a class="text-link" :href="withBase('/compare')">{{ brand.name }} and the others <ArrowIcon /></a><a class="text-link" :href="withBase('/limits')">What does not work yet <ArrowIcon /></a><a class="text-link" :href="withBase('/retake')">Retake, the benchmark <ArrowIcon /></a></div>
+      </div>
+    </section>
+
+    <section class="screen lately" aria-labelledby="lately-title">
+      <div class="page-width">
+        <p class="screen-label">Lately</p>
+        <h2 id="lately-title">What changed,<br><em>and when.</em></h2>
+        <ol class="lately-list">
+          <li><p class="lately-when"><b>On the main branch</b>18 November 2026 · to be 0.3.0</p><div><h3>A skeleton for a generated model, and a sheet of poses to judge it by</h3><p>Two rigging services behind one tool, a check of every rig before it is used, and the rig posed and measured on your machine. <a :href="withBase('/recipes/create-a-character')">A character people recognise</a></p></div></li>
+          <li><p class="lately-when"><b>On the main branch</b>17 November 2026 · to be 0.3.0</p><div><h3>Music written as code</h3><p>A piece is a file of Strudel code, checked without a sound and rendered locally with its measurements; the browser studio plays it on the same engine. <a :href="withBase('/recipes/music-in-code')">Write a score in code</a></p></div></li>
+          <li><p class="lately-when"><b>On the main branch</b>17 November 2026 · to be 0.3.0</p><div><h3>It is called {{ brand.name }}</h3><p>The name it had is gone from the code and from what the tools say. Two default folders moved with it; the changelog says which.</p></div></li>
+          <li><p class="lately-when"><b>Release 0.2.0</b>17 November 2026</p><div><h3>A licence, films, and a 3D model from one picture</h3><p>The first release with a number that means something: films produced at three levels, speech beyond Apple Silicon, a photograph that speaks with a consent record, and five faults closed. <a :href="withBase('/limits') + '#fixed-in-0-2-0'">What 0.2.0 fixed</a></p></div></li>
+        </ol>
+        <a class="text-link" :href="withBase('/changelog')">The whole changelog, with what needs action <ArrowIcon /></a>
       </div>
     </section>
 

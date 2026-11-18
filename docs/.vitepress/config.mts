@@ -100,6 +100,7 @@ export default defineConfig({
       { text: "How it works", link: "/how-it-works" },
       { text: "Collaboration", link: "/collaboration" },
       { text: "Limits", link: "/limits" },
+      { text: "Changelog", link: "/changelog" },
       { text: "Docs", link: "/guide" },
       { text: "Install", link: "/quick-start" },
     ],

@@ -110,18 +110,56 @@ test('recipes name real tools and say where they go wrong', async () => {
   }
 });
 
-test('a generated 3D model is shown for what it is: a statue until rigging and motion exist', async () => {
+test('a generated 3D model is shown with the skeleton it can be given, and with what still does not move it', async () => {
   const home = await read('docs/.vitepress/theme/components/HomePage.vue');
   assert.match(home, /<ModelStrip \/>/);
-  assert.match(home, /statue until rigging and motion exist/);
-  assert.doesNotMatch(home, /Not built yet\.<\/b> Making a 3D model/);
+  assert.match(home, /<RigStrip show="poses" \/>/);
+  assert.match(home, /all six passed the check at rest/);
+  assert.match(home, /Not built yet\.<\/b> Motion you ask for/);
+  assert.doesNotMatch(home, /statue until rigging and motion exist/);
   const recipe = await read('docs/recipes/create-a-character.md');
   assert.match(recipe, /pva_generate_model/);
   assert.match(recipe, /No skeleton, no motion/);
   assert.match(recipe, /quad: true, faceLimit: 20000/);
   for (const figure of ['1,434,958 triangles', '18,889 quads', '28,986 triangles', '$0.30', '$0.35', '$0.20']) assert.ok(recipe.includes(figure), figure);
+  // The rig: both tools, the six runs with their figures, and what is still missing.
+  for (const tool of ['pva_rig_model', 'pva_rig_sheet']) assert.ok(recipe.includes(tool), tool);
+  for (const show of ['poses', 'drawn', 'walk']) assert.ok(recipe.includes(`<RigStrip show="${show}" />`), show);
+  for (const figure of ['| 810 | 685 | 27 | 19 | 40 | 16 |', '| 3 | 1 | 0 | 0 | 40 | 0 |', '| 19 | 2 | 4 | 9 | 1 | 0 |', 'tear at most 26', '$1.40']) assert.ok(recipe.includes(figure), figure);
+  assert.match(recipe, /All\s+six passed the examination at rest/);
+  assert.match(recipe, /It does not animate/);
   const limits = await read('docs/limits.md');
-  assert.match(limits, /Rigging and motion are named in the design and not built/);
+  assert.match(limits, /A generated character barely moves/);
+  assert.match(limits, /no motion from\s+words/);
+  assert.doesNotMatch(limits, /Rigging and motion are named in the design and not built/);
+  const strip = await read('docs/.vitepress/theme/components/RigStrip.vue');
+  for (const [, file] of strip.matchAll(/file: '([a-z]+(?:-[a-z]+)*)'/g)) await read(`docs/public/proof/${file}.jpg`);
+  for (const moment of [0, 1, 2, 3, 4, 5]) await read(`docs/public/proof/walk-${moment}.jpg`);
+});
+
+test('music written as code is shown with a piece, its measurements and what nobody has judged', async () => {
+  const home = await read('docs/.vitepress/theme/components/HomePage.vue');
+  assert.match(home, /The score is a text file/);
+  assert.match(home, /The agent cannot hear/);
+  assert.match(home, /\/proof\/sting\.mp3/);
+  await read('docs/public/proof/sting.mp3');
+  const recipe = await read('docs/recipes/music-in-code.md');
+  for (const tool of ['pva_music_check', 'pva_music_render', 'pva_music']) assert.ok(recipe.includes(tool), tool);
+  for (const figure of ['-18.0 LUFS', 'peak -3.0 dBFS at 1.02 s', '18 events']) assert.ok(recipe.includes(figure), figure);
+  assert.match(recipe, /Nobody has judged the music/);
+  assert.match(recipe, /no piano, no drum kit/i);
+  assert.match(recipe, /AGPL-3\.0-or-later/);
+  const limits = await read('docs/limits.md');
+  assert.match(limits, /Music is written by something that cannot hear/);
+});
+
+test('what changed lately is on the home page and in the navigation, and points at the imported changelog', async () => {
+  const home = await read('docs/.vitepress/theme/components/HomePage.vue');
+  assert.match(home, /id="lately-title"/);
+  assert.match(home, /withBase\('\/changelog'\)/);
+  assert.match(await read('docs/.vitepress/config.mts'), /\{ text: "Changelog", link: "\/changelog" \}/);
+  const changelog = await read('docs/changelog.md');
+  for (const entry of ['Music written as code', 'A skeleton for a 3D model', 'A rig posed and looked at']) assert.ok(changelog.includes(entry), entry);
 });
 
 test('the old name is gone from every tracked file, the imported reference included, outside the GitHub addresses that have to work', async () => {

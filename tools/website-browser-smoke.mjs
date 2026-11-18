@@ -49,10 +49,18 @@ try {
  await expect(page.locator('.film-row .receipt')).toHaveCount(3);
  await expect(page.locator('.film-row .receipt dt').first()).toHaveText('Length');
  await expect(page.locator('.home-page .not-yet')).toHaveCount(2);
- // One picture and the model made from it; marked as a statue until it can be rigged.
- await expect(page.locator('.cast .model-strip li')).toHaveCount(5);
- assert.ok(await page.locator('.cast .model-strip img').evaluateAll(async images=>{await Promise.all(images.map(i=>{i.loading='eager';return i.decode()}));return images.every(i=>i.naturalWidth===480);}),'the stills of the generated model are published');
- await expect(page.locator('.model-made .not-yet')).toContainText('statue until rigging and motion exist');
+ // One picture and the model made from it (5 cells), then the rig made from a second picture in five poses (6 cells).
+ await expect(page.locator('.cast .model-strip')).toHaveCount(2);
+ await expect(page.locator('.cast .model-strip li')).toHaveCount(11);
+ await expect(page.locator('.cast .model-strip.cells-6 li')).toHaveCount(6);
+ assert.ok(await page.locator('.cast .model-strip img').evaluateAll(async images=>{await Promise.all(images.map(i=>{i.loading='eager';return i.decode()}));return images.every(i=>i.naturalWidth===480);}),'the stills of the generated model and of its rig are published');
+ await expect(page.locator('.model-made .not-yet')).toContainText('Motion you ask for');
+ // Music: the piece's code, a player for it, and no overflow from the code.
+ await expect(page.locator('.score .score-code')).toContainText('setcpm(120/4)');
+ assert.ok(await page.locator('.score audio').evaluate(async audio=>{const response=await fetch(audio.src);return response.ok&&response.headers.get('content-type').includes('audio');}),'the rendered piece is published');
+ // What changed lately, newest first, ending at the changelog.
+ await expect(page.locator('.lately-list li')).toHaveCount(4);
+ await expect(page.locator('.lately .text-link')).toHaveAttribute('href', /changelog/);
  results.push('Home: programme selectors, video playback/reset, the stills of the correction, three receipts, clipboard, internal links');
  await go('examples');
  await page.getByRole('button',{name:'Editable 3D',exact:true}).click();
@@ -168,7 +176,12 @@ try {
  }
  await expect(page.locator('main .take-strip li.redone')).toHaveCount(2);
  await go('recipes/create-a-character');
- await expect(page.locator('main .model-strip li')).toHaveCount(5);
+ // The model (5 cells), the rig's poses (6), the figure drawn two ways (2), the walk (6).
+ await expect(page.locator('main .model-strip li')).toHaveCount(19);
+ await expect(page.locator('main .model-strip.cells-2 li')).toHaveCount(2);
+ assert.ok(await page.locator('main .model-strip img').evaluateAll(async images=>{await Promise.all(images.map(i=>{i.loading='eager';return i.decode()}));return images.every(i=>i.naturalWidth===480);}),'every still of the model and its rig is published');
+ await overflow('characters recipe');
+ assert.match(await page.locator('main').innerText(),/pva_rig_sheet/);
  assert.match(await page.locator('main').innerText(),/pva_generate_model/);
  assert.match(await page.locator('main').innerText(),/No skeleton, no motion/);
  results.push('Where it stands: limits, comparison, benchmark specification, changelog, licence and the correction shown');

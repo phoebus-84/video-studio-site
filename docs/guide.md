@@ -16,7 +16,7 @@ Everything is here, in one place.
 
 | Document | What it answers |
 |---|---|
-| [Limits](./limits) | What does not work yet, and what did release 0.2.0 fix? |
+| [Limits](./limits) | What does not work yet, what changed since release 0.2.0, and what did that release fix? |
 | [Changelog](./changelog) | What changed for someone who uses the studio, and what needs action? |
 | [Retake](./retake) | How will it be measured against a model working alone? A specification; no results. |
 | [Compared with the others](./compare) | When is another tool the better choice? |
@@ -40,10 +40,11 @@ Reusable outside this project. They know nothing about episodes or pipelines.
 |---|---|
 | [remotion-composer](./packages/remotion-composer) | `video.compose`: layered episode timelines |
 | [render-worker](./packages/render-worker) | renders that timeline on other machines; optional |
-| [blender](./packages/blender) | `scene.create`, `scene.render` |
+| [blender](./packages/blender) | `scene.create`, `scene.render`; a rig posed and rendered on a sheet |
 | [voice](./packages/voice) | `speech.synthesize`; the worker also supports alignment |
 | [comfyui-speech](./packages/comfyui-speech) | speech through the Qwen3-TTS nodes of a ComfyUI server; optional |
-| [fal-media](./packages/fal-media) | `image.generate`, `image.edit`, `video.generate` |
+| [fal-media](./packages/fal-media) | `image.generate`, `image.edit`, `video.generate`, `model.generate`, `rig.create` |
+| [strudel](./packages/strudel) | music written as Strudel code, checked and rendered offline; AGPL-3.0-or-later |
 | [codex-image](./packages/codex-image) | `image.generate`, `image.edit` |
 | [graphics](./packages/graphics) | `graphics.render` |
 | [infographics](./packages/infographics) | `graphics.animate` |
