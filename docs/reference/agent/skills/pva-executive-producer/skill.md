@@ -3,7 +3,7 @@ name: pva-executive-producer
 description: Operate Sergio, the studio, as executive producer. Use for channel, series, episode, film, scene, shot, run, resume, review, and rerun commands. This skill coordinates video production pipelines through the pva_* tools, under Pi or Claude Code.
 ---
 
-> Imported studio reference, based on [e2796c5](https://github.com/phoebus-84/video-studio/tree/e2796c57f66a019df41574d69bba41eb358e4e65). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
+> Imported studio reference, based on [e728acc](https://github.com/phoebus-84/video-studio/tree/e728accfa468a736558b34b8032bcacfee52218b). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
 
 
 # PVA Executive Producer
@@ -92,6 +92,14 @@ commands become available through the agent.
   from music and noise (optional `start`/`duration` cut) into a new `assets/…wav`, with a
   `.clean.json` record. Nothing is cloned.
 
+- `pva_music_check`, `pva_music_render`, `pva_music` — music and designed sound
+  written as Strudel code in `music/<name>.strudel`, rendered here at $0: a bed
+  under a voice, a cue, an ambient loop, a sting, a riser, one instrument, stems.
+  You write the piece with your file tools and mix it by the numbers the render
+  returns; you cannot hear it. Load `strudel-music` before writing one
+  (`strudel-sounds` for instruments and effects, `strudel-forms` for structure).
+  For a recording — a real piano, an orchestra, a voice — use `find-archive-media`.
+
 ### Films
 
 A request for a film, a short, a trailer, a music video, a documentary — one work,
@@ -119,6 +127,11 @@ channel, a series or a film, not to an episode, and is the same next week:
 - `pva_generate_model` — a 3D model from one picture (Tripo H3.1 on fal, paid per
   model, on the episode's budget): a character's model or a prop in the round, with no
   skeleton. Approve the picture before paying for the model.
+- `pva_rig_model` — a skeleton and weights for a 3D model (Hyper3D or Meshy on fal,
+  paid per rig), examined before it answers: a rig that fails the exam is not released.
+- `pva_rig_sheet` — a rig posed and looked at (Blender, local, free): seven known poses
+  from three sides on one sheet, its clips over six moments, and how far each pulled
+  the surface out of shape. Read it before a rig is released.
 
 Read the cast before writing a script. Load `character-development` to define a
 character and `character-forms` to give it a body.

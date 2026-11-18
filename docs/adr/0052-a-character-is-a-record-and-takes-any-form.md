@@ -1,4 +1,4 @@
-> Imported studio reference, based on [e2796c5](https://github.com/phoebus-84/video-studio/tree/e2796c57f66a019df41574d69bba41eb358e4e65). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
+> Imported studio reference, based on [e728acc](https://github.com/phoebus-84/video-studio/tree/e728accfa468a736558b34b8032bcacfee52218b). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
 
 # ADR-0052: A character is a record, and takes any form
 
@@ -13,12 +13,16 @@ Proposed. Implemented with it:
   and `character-forms`;
 - `model.generate`, the first of the capabilities that make a form: a 3D
   model from one picture, by Tripo H3.1 through `@av/fal-media`
-  (`pva_generate_model`).
+  (`pva_generate_model`);
+- `rig.create`: a skeleton and weights for a model, by Hyper3D or Meshy
+  through `@av/fal-media` (`pva_rig_model`), with the exam a generated rig
+  sits before it is released, and the sheet of known poses it is looked at
+  in (`pva_rig_sheet`, by `@av/blender`).
 
-Not implemented: the browser's view of a cast, and the other capabilities
-that make a form (automatic rigging, motion from text, motion from a
-generated video). They are named below so that each arrives as a provider
-behind a capability, not as a pipeline of its own.
+Not implemented: the browser's view of a cast, and the capability that makes
+a form move (`motion.generate`: motion from text, motion from a generated
+video, clips from a library retargeted to a rig). It is named below so that
+it arrives as a provider behind a capability, not as a pipeline of its own.
 
 ## Context
 

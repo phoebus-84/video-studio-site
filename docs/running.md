@@ -1,4 +1,4 @@
-> Imported studio reference, based on [e2796c5](https://github.com/phoebus-84/video-studio/tree/e2796c57f66a019df41574d69bba41eb358e4e65). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
+> Imported studio reference, based on [e728acc](https://github.com/phoebus-84/video-studio/tree/e728accfa468a736558b34b8032bcacfee52218b). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
 
 # Running the agent
 
@@ -115,6 +115,8 @@ authority on its parameters.
   `pva_write_narration_manifest`, `pva_register_take`, `pva_align_take`,
   `pva_verify_take`, `pva_edit_audio`, `pva_analyze_audio`,
   `pva_synthesize_nonverbal_audio`, `pva_synthesize_sound`.
+- **Music:** `pva_music_check`, `pva_music_render`, `pva_music`. See
+  [Music written as code](#music-written-as-code).
 - **3D:** `pva_blender_probe`, `pva_blender_create_scene`,
   `pva_blender_render`.
 - **Series episodes:** `pva_init_spec`, `pva_upgrade_spec`,
@@ -395,6 +397,77 @@ any other and gets its timing with `pva_align_take` `provider: "derived"`.
 `pva_analyze_audio` measures any file. The skill is `audio-editing`; the
 engine is `@av/audio-edit`.
 
+### Music written as code
+
+Music is written, not generated: a piece is a file of
+[Strudel](https://strudel.cc) code, `music/<name>.strudel` in an episode, a
+channel source or a film unit, and the studio renders it locally at $0
+(ADR-0053). The agent writes and edits the file; so can you, in the studio or
+in an editor.
+
+```js
+setcpm(96/4)                       // 96 bpm: a cycle is a 4/4 bar
+drums: s("sbd*2").gain(.7)
+bass: note("<a1 f1 c2 g1>").s("sawtooth").lpf(380).decay(.25).sustain(.2)
+keys: n("<[0,2,4] [-2,0,2]>").scale("A3:minor").s("triangle").room(.35)
+```
+
+Each labelled statement is a **part**. Three tools work on a piece:
+
+- `pva_music_check` evaluates it without a sound: its tempo, how many events
+  each part plays in every cycle, their notes and sounds, and what is wrong (a
+  syntax error, a sound that does not exist, a silent part, a control the
+  engine ignores, two reverbs asked of one orbit). It also takes `code`, to
+  try something before saving it.
+- `pva_music_render` writes a WAV (48 kHz stereo, 24-bit):
+  - the whole piece or a stretch: `from`, and `cycles` or `seconds`;
+  - every part or some: `only`, `mute`; with `stems`, each part alone too,
+    at the gain it has in the mix;
+  - with a `tail` for reverb to ring out, or as a seamless `loop`;
+  - brought to −18 LUFS with one gain, its peaks under −1 dBFS (`loudness`,
+    `peak` to change them), never compressed.
+
+  The file goes to `assets/sounds/<piece>.wav` unless `output` says
+  otherwise — `music/…` for a film's score, `assets/audio/…` for a scene's
+  sound. `<file>.music.json` beside it names the piece and the file by hash
+  and holds what was measured: the level and where the highest peak is, the
+  spectrum by band, the stereo image, the level through time, the same for
+  each stem, and what to listen for — a loop that does not come round, an
+  ending cut while it sounds, peaks that kept it well under its loudness.
+- `pva_music` lists a workspace's pieces and what was rendered from each,
+  and which renders went stale when the piece changed.
+
+The agent cannot hear: it mixes by those numbers, and tells you what to
+listen for. The skills are `strudel-music`, `strudel-sounds` and
+`strudel-forms`; the engine is `@av/strudel`.
+
+Two things to know:
+
+- **The engine's sounds are synthesized.** Strudel's usual drum machines and
+  pianos are sample packs on other people's servers, of mixed licence, and
+  are not fetched: a piece that names `bd` or `piano` does not check. A piece
+  can load the workspace's own audio files as samples
+  (`samples({ rain: 'assets/sounds/rain.wav' })`), and a render records which
+  it used. `network: true` on a tool lets a piece fetch a pack; what it took
+  is recorded, and its licence is yours to check.
+- **Rendering needs a Chrome.** Remotion's is used once a video has been
+  rendered; otherwise any Chrome or Chromium on the machine, or the one
+  `STRUDEL_CHROME_PATH` names. `npm run doctor` shows which, under `music`.
+
+In the web studio, a `.strudel` file opens with a player around its text:
+`Ctrl+Enter` plays the text as it stands (and replaces what is playing),
+`Ctrl+.` stops. The events are drawn part by part as it plays, parts can be
+silenced or soloed, and **Render to a file** renders the saved piece. The
+**Music** tab of an episode, a film, a scene or a shot lists the pieces with
+their renders, to hear and compare.
+
+From the shell, without the studio:
+
+```bash
+npx strudel-render check library/…/music/theme.strudel --cycles 8
+npx strudel-render render library/…/music/theme.strudel -o /tmp/theme.wav --cycles 16 --tail 3 --stems
+```
+
 ### Verifying a take
 
 Before a take is used, ask the agent to verify it (`pva_verify_take`). The
@@ -501,12 +574,15 @@ then `character-forms`. What it does:
 
 The studio keeps, hashes and pins a form; it does not play one it does not
 understand (a `.blend`, an SVG component stay the job of the kit or tool that
-knows the medium). Of the capabilities ADR-0052 names for making a form, one
-is built: `pva_generate_model` turns one picture into a 3D model (Tripo H3.1
-through fal, paid per model on the episode's budget). What comes back has no
-skeleton: it can be placed, turned and lit, not posed. Turning a model into a
-rig, and words or a video into motion, are not built. The browser studio has
-no view of a cast.
+knows the medium). Of the capabilities ADR-0052 names for making a form, two
+are built. `pva_generate_model` turns one picture into a 3D model (Tripo H3.1
+through fal, paid per model on the episode's budget): what comes back has no
+skeleton, and can be placed, turned and lit, not posed. `pva_rig_model` gives
+a model a skeleton and weights (Hyper3D or Meshy through fal, paid per rig)
+and examines the rig before it answers; `pva_rig_sheet` then poses it in
+Blender, at no cost, and renders the poses and the clips on sheets to read
+before the rig is released. Turning words or a video into motion is not
+built. The browser studio has no view of a cast.
 
 ## 1b. The same agent in Claude Code
 
@@ -1215,6 +1291,7 @@ the same absolute path for every process that needs to be the operator.
 | `AVG_HEADLESS` | unset (the gateway sets `1` for Pi) | Any value but empty or `0` makes `vpr` an agent without reading the operator key |
 | `FAL_KEY` | — | Required for `image.generate` / `image.edit` |
 | `AVG_TTS_WORKER_URL` | local worker | Speech synthesis endpoint |
+| `STRUDEL_CHROME_PATH` | Remotion's Chrome, else Playwright's or the machine's | The Chrome music is rendered with |
 | `AVG_AGENT_BACKEND` | `pi` | Which agent the gateway runs per episode: `pi` or `claude` |
 | `AVG_CLAUDE_MODEL` | Claude Code's default | Model of the gateway's Claude sessions |
 | `AVG_CLAUDE_PERMISSION_MODE` | `dontAsk` | Permission mode of the gateway's Claude sessions |

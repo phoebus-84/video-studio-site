@@ -1,10 +1,10 @@
-> Imported studio reference, based on [e2796c5](https://github.com/phoebus-84/video-studio/tree/e2796c57f66a019df41574d69bba41eb358e4e65). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
+> Imported studio reference, based on [e728acc](https://github.com/phoebus-84/video-studio/tree/e728accfa468a736558b34b8032bcacfee52218b). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
 
 # Component reference
 
 - [blender](./blender/readme.md) — Editable 3D scenes, keyframes and Geometry Nodes; background Eevee/Cycles previews and animations. Poly Haven asset acquisition with provenance.
 - [voice](./voice/readme.md) — Local Qwen speech synthesis and consented voice cloning with MLX or PyTorch (CPU, CUDA, ROCm). Usable on its own; knows nothing about episodes or pipelines.
-- [fal-media](./fal-media/readme.md) — Tracked image, video and 3D model generation jobs against fal.ai, with provenance and cost. Video is MiniMax H3; 3D models are Tripo H3.1.
+- [fal-media](./fal-media/readme.md) — Tracked image, video, 3D model and rigging jobs against fal.ai, with provenance and cost. Video is MiniMax H3; 3D models are Tripo H3.1; rigs are Hyper3D and Meshy.
 - [comfyui-speech](./comfyui-speech/readme.md) — Speech from the Qwen3-TTS nodes of a ComfyUI server: preset speakers, cloned and saved voices, and cleaning a reference before cloning it. Optional at run time: without a server address, speech stays with the other providers.
 - [codex-image](./codex-image/readme.md) — Image generation and editing through an OpenAI ChatGPT/Codex subscription, or the Images API. A second provider for image.generate, billed against a plan rather than per image.
 - [graphics](./graphics/readme.md) — Deterministic SVG/PNG rendering of code frames, diagrams, callouts and titles.
@@ -13,6 +13,7 @@
 - [video-composer](./video-composer/readme.md) — Compiles a typed edit timeline into an FFmpeg filter graph; probes and QAs the result.
 - [remotion-composer](./remotion-composer/readme.md) — Renders a layered, kit-based edit timeline (studio.video/v1alpha2) with Remotion, then normalises loudness with FFmpeg. A second provider for video.compose.
 - [render-worker](./render-worker/readme.md) — Renders a remotion-composer edit timeline on other machines over SSH, or shares its one-second segments among several: code by git push, files by content hash, the video back, checked. Optional at run time: without a host, a render stays on this machine.
+- [strudel](./strudel/readme.md) — Music written as Strudel code, checked without a sound and rendered offline by the pinned Strudel engine in a headless Chrome: parts, stretches of cycles, tails, seamless loops, stems, and measurements of what was made. Optional at run time: without a Chrome, everything else works. AGPL-3.0-or-later, as Strudel is.
 - [contracts](./contracts/readme.md) — Canonical schemas, vocabulary and bindings. Every other studio piece depends on it.
 - [series](./series/readme.md) — Series compilers: a pinned episode spec and its measured narration, compiled into an edit timeline.
 - [episode](./episode/readme.md) — An episode on disk, produced: its edit timeline built or compiled from its spec, checked against its series' rules, rendered.

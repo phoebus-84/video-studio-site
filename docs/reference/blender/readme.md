@@ -1,4 +1,4 @@
-> Imported studio reference, based on [e2796c5](https://github.com/phoebus-84/video-studio/tree/e2796c57f66a019df41574d69bba41eb358e4e65). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
+> Imported studio reference, based on [e728acc](https://github.com/phoebus-84/video-studio/tree/e728accfa468a736558b34b8032bcacfee52218b). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
 
 # @av/blender
 
@@ -10,6 +10,8 @@ No studio imports, cloud-rendering dependency, add-on installation or MCP server
 - Eevee and Cycles; explicit CPU/GPU selection for Cycles, no fallback.
 - Keyframes, Geometry Nodes, Asset Browser marking via normal Blender Python.
 - Poly Haven metadata search and bounded, checksum-verified CC0 downloads.
+- A rigged `.glb` posed and rendered on a sheet, with how far each pose
+  pulled its surface out of shape (`@av/blender/rig-sheet`).
 - Exclusive attempt directories, source hashes, logs, cancellation and timeouts.
 
 ## Setup
@@ -28,7 +30,7 @@ From this package directory, after the workspace's `bun install`:
 ```bash
 npm run cli -- --probe
 npm test                 # fake-process tests; no Blender needed
-npm run test:live        # actual Eevee/Cycles + Geometry Nodes smoke test
+npm run test:live        # actual Eevee/Cycles + Geometry Nodes smoke test, and a rig posed
 ```
 
 In Sergio: `npm run compose -- --profile=blender`, then `npm run doctor`.
@@ -47,6 +49,43 @@ asset marking, layered-action keyframes, Eevee/Cycles stills, 48-frame MP4 and f
 video decoding. Blender 5 uses `BLENDER_EEVEE` and action slot/channel bags; 4.x
 compatibility paths remain in place. This is not a claim that every Blender
 feature or GPU backend has been exercised.
+
+## A rig, posed and looked at
+
+A rig that is right at rest and wrong the moment it moves is the usual way an
+automatic rig fails. `rigSheet` puts a rigged binary glTF in known poses and
+renders what it looks like:
+
+```ts
+import { rigSheet } from "@av/blender/rig-sheet";
+
+const { report, outputDir } = await rigSheet({
+  rigPath: "figure.glb",
+  outputDir: "/tmp/figure-sheet-001",   // new; never written over
+  faces: "+z",                           // which way the body faces in its file
+  actions: ["Walk"],                     // clips inside the rig, by name
+  clips: [{ name: "run", path: "figure.run.glb" }],
+});
+```
+
+- `poses.png`: one column a pose, the first the rest pose; rows are the
+  front, three-quarter and the side. A two-legged body, read from its bones'
+  names, gets seven poses: arms up, arms down, reach, step, wide, head turn,
+  bow. The arms are set to a height, so an A-pose and a T-pose end in the
+  same place. Any other body has each of its largest limbs swung.
+- `poses` of your own replace them: turns of named bones about the body's
+  axes — `front`, `up`, `side` — through the bone's head. Never about a
+  bone's own axes: two rigs point their bones in different ways.
+- `clip.<name>.png`: six moments of a clip from two sides, the camera
+  following the body.
+- `sheet.json`: the bones, each pose's turns, and for every pose and clip the
+  share of the surface's edges strained (pulled to half as long again, or
+  pressed to two thirds) and the number torn (pulled to three times their
+  length). Ten hand-made two-legged rigs measured this way stay under 1%
+  strained; a coarse body (a fox of 1,700 edges) shows more.
+
+It runs no code that came with the model, so it asks for no `trustedInput`.
+`npm run test:live` poses a small figure built by the test.
 
 ## Standalone workflow
 
