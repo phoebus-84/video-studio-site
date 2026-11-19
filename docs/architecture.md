@@ -1,10 +1,10 @@
-> Imported studio reference, based on [3f8895a](https://github.com/phoebus-84/video-studio/tree/3f8895af15f019d98afe93a6af8753128060a747). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
+> Imported studio reference, based on [9aef661](https://github.com/phoebus-84/video-studio/tree/9aef661ac127f5234a4f4889e3215c0c8b4e1fb2). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
 
 # Architecture
 
 This page describes the current responsibilities and boundaries. It is not a
 promise of unattended, one-prompt production. See the
-[harness review](https://github.com/phoebus-84/video-studio/blob/3f8895af15f019d98afe93a6af8753128060a747/docs/harness-review.md) for implementation gaps and the
+[harness review](https://github.com/phoebus-84/video-studio/blob/9aef661ac127f5234a4f4889e3215c0c8b4e1fb2/docs/harness-review.md) for implementation gaps and the
 [running guide](./running.md) for prerequisites.
 
 ## Product boundary
@@ -102,7 +102,7 @@ compilation is not a future placeholder.
   a universal billing or safety boundary.
 
 Review the actual film and audio. See [revision checks](./running.md#comparing-two-versions)
-and the [harness review](https://github.com/phoebus-84/video-studio/blob/3f8895af15f019d98afe93a6af8753128060a747/docs/harness-review.md) for the limits of sampled evidence,
+and the [harness review](https://github.com/phoebus-84/video-studio/blob/9aef661ac127f5234a4f4889e3215c0c8b4e1fb2/docs/harness-review.md) for the limits of sampled evidence,
 same-user access and execution guarantees.
 
 ## Files, history and collaboration

@@ -1,4 +1,4 @@
-> Imported studio reference, based on [3f8895a](https://github.com/phoebus-84/video-studio/tree/3f8895af15f019d98afe93a6af8753128060a747). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
+> Imported studio reference, based on [9aef661](https://github.com/phoebus-84/video-studio/tree/9aef661ac127f5234a4f4889e3215c0c8b4e1fb2). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
 
 # ADR-0033: Blender is a reusable scene provider with editable handoffs
 
@@ -42,4 +42,4 @@ Automated creation and human-native editing share the same source/render contrac
 The package is useful outside Sergio and testable with fake processes.
 Long-lived workers, simulation baking, complete external dependency packaging,
 frame-resume and revision-bound human approval are not implemented by this ADR.
-See the [harness review](https://github.com/phoebus-84/video-studio/blob/3f8895af15f019d98afe93a6af8753128060a747/docs/harness-review.md) for the integration gaps and priorities.
+See the [harness review](https://github.com/phoebus-84/video-studio/blob/9aef661ac127f5234a4f4889e3215c0c8b4e1fb2/docs/harness-review.md) for the integration gaps and priorities.

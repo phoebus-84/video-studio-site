@@ -1,4 +1,4 @@
-> Imported studio reference, based on [3f8895a](https://github.com/phoebus-84/video-studio/tree/3f8895af15f019d98afe93a6af8753128060a747). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
+> Imported studio reference, based on [9aef661](https://github.com/phoebus-84/video-studio/tree/9aef661ac127f5234a4f4889e3215c0c8b4e1fb2). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
 
 # ADR-0052: A character is a record, and takes any form
 
@@ -24,11 +24,20 @@ Proposed. Implemented with it:
   skeleton to another (`pva_retarget_clip`) and stock clips asked for with a
   rig (`pva_stock_clips`, `clips` on `pva_rig_model`);
 - a rigged character filmed playing a clip (`pva_rig_shot`, by `@av/blender`):
-  one character on an empty stage, as a clip of video like any other.
+  one character on an empty stage, as a clip of video like any other, named
+  by a rig of the episode or by a role of the cast;
+- a model or a rig released as a form in one step (`pva_release_model`):
+  the figure stood in its file — facing +z, on y 0, at the character's
+  height — by one node above its scene's roots, and its clips, sheets and
+  records copied and put on the character's record;
+- characters staged in one picture (`pva_stage_shot`, by `@av/blender`):
+  roles of the cast or rigs of the episode on the marks of a set, each doing
+  one thing after another, a walk taken at the pace read from its clip, and
+  what a single frame does not show measured and said.
 
 Not implemented: the browser's view of a cast; motion from a generated
-video, for a body that is not a person's; a face; and a character placed by
-the studio in a set, or beside another.
+video, for a body that is not a person's; a face; and contact — a hand on a
+door, an object carried, two bodies that touch.
 
 ## Context
 

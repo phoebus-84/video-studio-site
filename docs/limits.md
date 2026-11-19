@@ -59,23 +59,30 @@ touches several files; there is no one-file plug-in.
 ComfyUI is used for speech only. Images and video through your own ComfyUI
 are not built.
 
-## A generated character acts alone, and has no face
+## A generated character has no face, and touches nothing
 
 A character, its forms, their releases and a production's cast are kept,
 hashed and pinned ([recipe](./recipes/create-a-character)). Since 0.2.0 a 3D
 model can be made from one picture, for $0.20 to $0.65. On the main branch
 that model can be given a skeleton for $0.20, posed and measured on your
 machine, given a motion (picked by name, carried from another skeleton, or
-asked for in a sentence for $0.08) and filmed into a clip of video, with no
-script written by hand.
+asked for in a sentence for $0.08), released as a character's form at its
+own height, and filmed: alone, or with other characters on a set, each
+doing one thing after another. No script is written by hand.
 
 What is missing:
 
 - **A face.** A generated rig has bones for the body and the fingers and
   none for the face. The character cannot speak or change expression.
-- **A set, and company.** A rig is filmed alone on an empty stage, in front
-  of one colour. A place, a second character, a camera that moves on its own
-  are still a Blender scene the agent writes.
+- **Touch.** Characters stand, walk, turn and play their clips beside each
+  other. Nobody opens a door, carries an object or takes a hand: there is
+  no contact between a body and the set, or another body.
+- **A way round.** A walk is a straight line from one place to the next,
+  through whatever stands on it. Two characters in one place are reported,
+  not prevented.
+- **Something to do while standing.** A body with no clip left to play
+  returns to the pose it was rigged in, which for a generated rig is arms
+  held away from the body. It needs a standing clip.
 - **A motion that fits the body.** A motion made for a person's proportions
   puts the hand of a character with a large head inside its face, and
   nothing corrects it. Fingers are not carried from one skeleton to another.
@@ -89,14 +96,10 @@ What is missing:
 - **Motion from a video.** For a creature no stock clip fits, the skill
   describes filming the model and copying a generated video onto its
   skeleton. It is a method, not a tool.
-- **A release in one step.** Recording a rig, its clips and its sheet as a
-  character's form is still files copied by the agent and one call. A model
-  arrives facing sideways with its origin at its middle, and every scene
-  turns and lifts it again.
 - **Judgement.** A rig is checked at rest and measured in seven poses. A
-  clip and a shot are not measured at all. The numbers say where to look;
-  whether the character still looks right is for a person, and how the
-  character was drawn decides more than the service that rigs it.
+  scene is measured by where each body's chest is: in the picture, behind
+  the set, in another's place. Whether a character still looks right, and
+  whether a scene plays, is for a person.
 
 The browser studio has no view of a cast.
 

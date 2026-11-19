@@ -1,6 +1,6 @@
 ---
 title: A character people recognise
-description: "Define a character as a record apart from how it appears, give it a form with a list of what it can do (a 3D model made from one picture, given a skeleton, a motion and filmed, among them), release that form, and cast it in a series pinned to the release."
+description: "Define a character as a record apart from how it appears, give it a form with a list of what it can do (a 3D model made from one picture, given a skeleton, a motion, released in one step and filmed alone or with others on a set, among them), and cast it in a series pinned to the release."
 ---
 # A character people recognise
 
@@ -11,8 +11,9 @@ each form that will not change under the episodes made with it.
 A character here is a record, not a 3D model. It can be a person, a fox, a
 lamp, a dot, a sound, a voice and nothing else. The studio keeps it, hashes
 it and pins it. One kind of form it can also make from start to finish: a 3D
-model from one picture, given a skeleton, posed, given a motion and filmed
-into a clip of video. It has no face, and it is filmed alone.
+model from one picture, given a skeleton, posed, given a motion, released
+at its own height, and filmed: alone, or with others on a set. It has no
+face, and it touches nothing.
 
 ## Ingredients
 
@@ -26,14 +27,14 @@ into a clip of video. It has no face, and it is filmed alone.
 
 - For a 3D model, its skeleton or a motion asked for in a sentence: a fal.ai
   key, and an episode with a budget to make it in. To pose a rig, carry a
-  clip to it or film it: Blender on the machine.
+  clip to it, film it or stage a scene: Blender on the machine.
 
 **Costs:** the agent's model usage. Recording a character and casting it
 makes no paid API calls. Making a form may: generated pictures and synthetic
 voices are metered like any other, a 3D model costs $0.20 to $0.65 by
 what is asked of it, a skeleton for it $0.20, and a motion from a sentence
-$0.08. Posing a rig, carrying a clip to it and filming it run on your
-machine and cost nothing.
+$0.08. Posing a rig, carrying a clip to it, releasing it, filming it and
+staging a scene run on your machine and cost nothing.
 
 ## 1. Who it is, before how it looks
 
@@ -126,18 +127,17 @@ What to know before you use one:
 - **Say how heavy.** Left to itself the service returns more than a million
   triangles: fine for a still, useless for a rig. For a figure that will be
   rigged, ask for `quad: true, faceLimit: 20000`.
-- **Place it.** It is one unit tall with its origin at its middle, and these
-  three faced +x. Lift it, turn it and scale it once, and say which in the
-  form's note.
+- **Do not place it by hand.** It is one unit tall with its origin at its
+  middle, and these three faced +x. Releasing it (step 7) turns it, puts it
+  on the ground and sizes it once, in its file.
 - **It is a statue.** No skeleton, no motion. It can be placed, turned and
   lit; it cannot be posed until it is given a skeleton, which is the next
   step.
 
-The model lands in the episode's `assets/models/`. To make it the
-character's, the agent copies the model, its preview and its provenance into
-`characters/<id>/forms/<form>/<release>/` and records that folder as a
-release of a form whose medium is `model-3d`. Its `can` lists the views it
-has and no actions, because it has none.
+The model lands in the episode's `assets/models/`. `pva_release_model`
+(step 7) makes it the character's: a release of a form whose medium is
+`model-3d`. Its `can` lists the views it has and no actions, because it has
+none.
 
 In the test, the model was released, cast in a series, and a second release
 taken by casting again. A script that asked the form to “walk” was refused:
@@ -325,15 +325,55 @@ The second shot of the test asked for the waist up in a tall frame, and came
 back with the figure's ears and shoulders cut: the framing was measured by
 height alone. It now holds a share of the body's width as well.
 
-It is one character on an empty stage. A set, two characters in one picture,
-a camera that moves on its own, a light that means something: that is still
-a scene the agent builds in Blender.
+It is one character on an empty stage. Two in one picture, or one in a
+place, is step 9. A rig still in its episode is filmed by its path, which is
+how the shot above was made; once it is released and cast, it is filmed by
+its role.
 
 **Look at what was filmed.** A hand through the head, a body that sinks into
 the floor, a walk that slides are seen by whoever looks. Nothing measures
 them.
 
-## 7. Cast it
+## 7. Release it in one step
+
+```text
+Release that rig as the guide's form, 1.2 metres tall. Then show me the
+character.
+```
+
+`pva_release_model` takes the rig, or a model with no skeleton, from the
+episode that made it and makes it the character's. It runs on your machine,
+at no cost, in a fraction of a second.
+
+- **It stands the figure once, in its file**: facing the front, its feet on
+  the ground, its middle over the origin, as tall as you say in metres. One
+  node above everything in the file carries the turn, the size and the move.
+  The body, its textures and its clips stay the bytes the services returned,
+  and no scene has to turn or lift the figure again.
+- **Give it its height.** A generated figure is one unit tall whatever it is.
+  Two characters in one picture are in proportion only if each was released
+  at its own height.
+- **What lands in the character's folder**, under
+  `forms/<form>/<release>/`: the rig, its clips, the pose sheets, the picture
+  it was made from, the record of what made the model, the rig and each
+  clip, and a `form.json` that names every file's source by its hash.
+- **What goes on the character's record**: the form (`rig-3d`, or `model-3d`
+  with no skeleton), its actions read from the clips, and the release with
+  what made it.
+
+It refuses a rig that failed its examination, and one that was not posed
+since its file last changed. A clip becomes an action only when it was
+played on the rig's sheet. The others are left out and named.
+
+The test, on the textured figure rigged by one service with the walk carried
+from the other's rig: eleven files, 9.3 MB, 79 milliseconds. A second
+release added a wave. The other service's rig of the same figure was
+released as a second character, 0.95 metres tall.
+
+A release is never edited. Another clip or a better rig is another release,
+and a role keeps the one it pinned until it is cast again.
+
+## 8. Cast it
 
 ```text
 Cast the guide as "host" in the series inventions, wearing the puppet.
@@ -347,7 +387,57 @@ The same character can hold different roles in different productions.
 Another owner's character is named `owner/id` and read where it lives, never
 copied.
 
-## 8. Check a script against the cast
+## 9. Put two of them in a place
+
+<ShotFilm show="meeting" />
+
+The two characters of the test on a street set, 18 November 2026: ten
+seconds, with a camera that goes with them.
+
+```text
+Film the host and the apprentice meeting, in the episode inventions/ep001,
+on the street set. The host walks in from the left mark to the lamp, turns
+to the apprentice and waves. The apprentice waits by the door for three
+seconds, then runs to him. Three-quarter, the two of them in full.
+```
+
+`pva_stage_shot` films several characters in one picture, on a set or on an
+empty stage, on your machine, at no cost. Each player is a role of the cast.
+It starts at a place, and does one thing after another: plays a clip, goes
+to another place while a clip plays, turns to someone, waits.
+
+- **A stage is laid out as it is seen from the front**, in metres: to the
+  right, and away from the audience. A place is a mark of the set by name, or
+  two numbers.
+- **The set is a Blender scene** the agent builds
+  ([recipe](./blender-scene)), with no character in it. An object named
+  `mark.lamp` is a place called `lamp`. The set brings its own light, and its
+  own camera when you ask for it.
+- **A walk takes the time its clip says.** The pace is read from the foot
+  that is on the ground, so the body is moved as far as its feet step: 4.95
+  metres in 5.96 seconds here, 0.83 m/s. The same walk on the same figure
+  one metre tall measures 0.70. Give the walk a time of its own and it is
+  taken in that time, and you are told the feet slide.
+- **The camera** is the set's, or asked for in words about the players it is
+  on. It goes with them and keeps its framing: it comes nearer as two walk
+  towards each other.
+
+**It says what one frame does not show.** For each player, the share of the
+shot it was in the picture and the share something of the set stood between
+it and the camera; pairs that came to stand in one place; a body moved
+faster or slower than its clip walks. In a first take of this scene, with
+the set's own camera, the host was in the picture for 89% of the shot: he
+walks in from outside it.
+
+**Look at the film.** In this one the host's wave was made for a person's
+proportions, and his hand goes to a head too large for it; he leans back as
+he waves. The tool measures where each body's chest is.
+
+Nobody touches anything. A hand on a door, an object carried, two bodies in
+contact are not built. A player walks in a straight line from one place to
+the next, and through whatever stands on that line.
+
+## 10. Check a script against the cast
 
 ```text
 Check the cast of inventions: the host is asked to point, to read and to
@@ -368,16 +458,13 @@ record. `pva_characters` shows one character in full, or lists an owner's.
   clips, a clip carried from another skeleton, a motion asked for in a
   sentence. There is no keyframing a performance, and no tool that takes a
   motion from a video.
-- **It does not build a set.** A rig is filmed alone on an empty stage. A
-  place, a second character or a camera move is a Blender scene the agent
-  writes.
+- **Nobody touches anything.** Characters stand, walk, turn and play their
+  clips beside each other and in a set. A hand on a door, an object carried
+  and two bodies in contact are still a Blender scene the agent writes.
+- **It does not plan a way.** A walk is a straight line between two places.
 - **A generated rig has no face.** No bones for the mouth or the eyes: the
   character cannot speak or change expression.
 - **Other bodies are untried.** Every rig so far was of a two-legged model.
-- **Releasing a rig takes more than one step.** The agent copies the rig, its
-  clips and its sheet into the character's folder and records it. A model
-  arrives facing sideways with its origin at its middle, and each scene
-  still has to turn and lift it.
 - **Nothing else is specific to characters.** A pose sheet is made with the
   image tools, a puppet by a Blender script, a drawn component by hand.
   Generated reference pictures help consistency; they
@@ -401,6 +488,11 @@ record. `pva_characters` shows one character in full, or lists an owner's.
   limbs. Decide in the picture whether the character needs them.
 - **A rig released because it passed.** All six test rigs passed at rest.
   Pose it and look.
+- **Two characters released at one unit each.** A child as tall as a
+  grown man. Give each its height when it is released.
+- **A walk given a time.** Asked to cross the street in two seconds, a body
+  is moved faster than its feet step. Leave the time out, or expect to be
+  told.
 - **A motion used because it arrived.** Asked for a wave and a bow, the
   service gave a wave. Play the clip on the sheet before a shot depends on
   it.

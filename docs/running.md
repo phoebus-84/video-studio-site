@@ -1,4 +1,4 @@
-> Imported studio reference, based on [3f8895a](https://github.com/phoebus-84/video-studio/tree/3f8895af15f019d98afe93a6af8753128060a747). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
+> Imported studio reference, based on [9aef661](https://github.com/phoebus-84/video-studio/tree/9aef661ac127f5234a4f4889e3215c0c8b4e1fb2). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
 
 # Running the agent
 
@@ -585,10 +585,18 @@ before the rig is released. A rig gets its motion three ways: stock clips
 asked for with it (`pva_stock_clips` lists them), a clip carried from
 another skeleton (`pva_retarget_clip`, local), and a person's motion made
 from a sentence (`pva_generate_motion`, Hunyuan Motion through fal, paid per
-motion). `pva_rig_shot` then films the character playing a clip, locally,
-into a clip of video like any other: one character on an empty stage.
-Motion from a video, a face, and a character placed in a set or beside
-another are not built. The browser studio has no view of a cast.
+motion). `pva_release_model` makes the rig the character's in one step: it
+stands the figure in its file (facing +z, feet on the ground, at the height
+given), copies it with its clips, sheets and records into the character's
+folder, and records the release. `pva_rig_shot` then films a role of the
+cast, or a rig still in the episode, playing a clip, locally, into a clip of
+video like any other: one character on an empty stage. `pva_stage_shot`
+films several in one picture, on a set (a `.blend` with marks) or on an
+empty stage: each stands on a mark and does one thing after another, a walk
+goes at the pace read from its clip, and the tool says who was out of the
+picture, hidden by the set, in another's place, or sliding.
+Motion from a video, a face, and contact between a character and anything
+else are not built. The browser studio has no view of a cast.
 
 ## 1b. The same agent in Claude Code
 
