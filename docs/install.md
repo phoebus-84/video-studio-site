@@ -1,4 +1,4 @@
-> Imported studio reference, based on [f43b0ee](https://github.com/phoebus-84/video-studio/tree/f43b0ee50bedc4f78721e4aaf24300243d5cac78). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
+> Imported studio reference, based on [9aef661](https://github.com/phoebus-84/video-studio/tree/9aef661ac127f5234a4f4889e3215c0c8b4e1fb2). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
 
 # Install and composition
 
@@ -85,7 +85,7 @@ Composition writes **`composed.json`**, the answer to "what is actually wired
 here?" — the active components, which capability each provides, and what is
 missing at composition time. Blender tools enforce their selected binding; older
 agent/gateway paths are not yet uniformly composition-driven (see
-[harness review](https://github.com/phoebus-84/video-studio/blob/f43b0ee50bedc4f78721e4aaf24300243d5cac78/docs/harness-review.md)). `doctor` rechecks live requirements rather
+[harness review](https://github.com/phoebus-84/video-studio/blob/9aef661ac127f5234a4f4889e3215c0c8b4e1fb2/docs/harness-review.md)). `doctor` rechecks live requirements rather
 than trusting the stored readiness snapshot.
 
 Two rules it will not break:
