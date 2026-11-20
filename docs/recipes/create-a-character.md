@@ -215,8 +215,10 @@ Ten rigs made by hand, measured the same way, tear at most 26.
   two halves of the table.
 - **The tool asks `hyper3d` for `core` skinning.** The service's own default
   tore the surface more than ten times as often on both figures.
-- **The numbers say where to look.** They do not see a hand passing through
-  a hat, or a face that no longer looks like the character. Open the sheet.
+- **The numbers say where to look.** The sheet also says, pose by pose,
+  when a hand goes into the head or the body, one hand into the other, or
+  one leg into the other, and how deep. It does not see a face that no
+  longer looks like the character. Open the sheet.
 
 **Rig the model you mean to show.** A textured model was sent to both
 services afterwards: its three texture files came back byte for byte, and
@@ -277,14 +279,17 @@ generated motion may not be all that was asked: ask again, or ask for one
 thing a clip.
 
 **Play every clip before it is used.** `pva_rig_sheet` shows six moments of
-each clip from two sides. Feet that slide, a hand through the body, a limb
-bent the wrong way are seen there. They are not measured.
+each clip from two sides, and watches the whole clip for a hand that goes
+into the head or the body: how deep, from when and for how long. Feet that
+slide and a limb bent the wrong way are seen there, not measured.
 
 - **Only two-legged bodies are carried by name.** Any other needs a map of
   its bones, and none was tried on a real animal.
 - **Nothing fits a motion to a body.** A motion made for a person's
   proportions puts the hand of a character with a large head inside its
-  face.
+  face. The sheet finds it: a generated wave takes the right hand of the
+  host of step 9 into his head by 8.9% of his height, for two and a half
+  seconds. Nothing keeps the hand out yet.
 - **The fingers and the face are not carried.**
 
 The motion tests: $0.28. A rig with two stock clips for $0.20, a motion for
@@ -330,9 +335,9 @@ place, is step 9. A rig still in its episode is filmed by its path, which is
 how the shot above was made; once it is released and cast, it is filmed by
 its role.
 
-**Look at what was filmed.** A hand through the head, a body that sinks into
-the floor, a walk that slides are seen by whoever looks. Nothing measures
-them.
+**Look at what was filmed.** A body that sinks into the floor and a walk
+that slides are seen by whoever looks: nothing measures them. A hand in the
+head is measured on the rig's sheet, which plays the same clips.
 
 ## 7. Release it in one step
 
@@ -391,8 +396,9 @@ copied.
 
 <ShotFilm show="meeting" />
 
-The two characters of the test on a street set, 18 November 2026: ten
-seconds, with a camera that goes with them.
+The two characters of the test on a street set: ten seconds, with a camera
+that goes with them. Filmed on 18 November 2026, and again on 19 November
+once a character with nothing to play stood with its arms down.
 
 ```text
 Film the host and the apprentice meeting, in the episode inventions/ep001,
@@ -421,17 +427,24 @@ to another place while a clip plays, turns to someone, waits.
 - **The camera** is the set's, or asked for in words about the players it is
   on. It goes with them and keeps its framing: it comes nearer as two walk
   towards each other.
+- **A player with nothing to do stands.** Before its first clip, between two
+  and after the last, a two-legged body has its arms down beside it, as low
+  as its own body lets them. The apprentice waits by the door like that. A
+  body whose bones are not read as a two-legged body's stays in the pose it
+  was rigged in, and you are told.
 
 **It says what one frame does not show.** For each player, the share of the
 shot it was in the picture and the share something of the set stood between
 it and the camera; pairs that came to stand in one place; a body moved
-faster or slower than its clip walks. In a first take of this scene, with
-the set's own camera, the host was in the picture for 89% of the shot: he
-walks in from outside it.
+faster or slower than its clip walks; a part of a body that went into
+another, a hand into a head, in centimetres, from when and for how long. In
+a first take of this scene, with the set's own camera, the host was in the
+picture for 89% of the shot: he walks in from outside it.
 
 **Look at the film.** In this one the host's wave was made for a person's
-proportions, and his hand goes to a head too large for it; he leans back as
-he waves. The tool measures where each body's chest is.
+proportions, and his hand goes into a head too large for it; he leans back
+as he waves. The tool says so: his right hand 10.7 cm into his head, from
+7.17 seconds for 2.46. It finds the hand; it does not keep it out.
 
 Nobody touches anything. A hand on a door, an object carried, two bodies in
 contact are not built. A player walks in a straight line from one place to
