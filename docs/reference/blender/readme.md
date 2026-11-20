@@ -1,4 +1,4 @@
-> Imported studio reference, based on [9aef661](https://github.com/phoebus-84/video-studio/tree/9aef661ac127f5234a4f4889e3215c0c8b4e1fb2). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
+> Imported studio reference, based on [7f73c14](https://github.com/phoebus-84/video-studio/tree/7f73c14cedca6c53bd96e135865f619e70c2af69). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
 
 # @av/blender
 
@@ -12,6 +12,8 @@ No studio imports, cloud-rendering dependency, add-on installation or MCP server
 - Poly Haven metadata search and bounded, checksum-verified CC0 downloads.
 - A rigged `.glb` posed and rendered on a sheet, with how far each pose
   pulled its surface out of shape (`@av/blender/rig-sheet`).
+- A clip in a `.glb` or an `.fbx` read as turns from the rest pose, to be
+  carried to another skeleton (`@av/blender/clip-sample`).
 - Exclusive attempt directories, source hashes, logs, cancellation and timeouts.
 
 ## Setup
@@ -86,6 +88,91 @@ const { report, outputDir } = await rigSheet({
 
 It runs no code that came with the model, so it asks for no `trustedInput`.
 `npm run test:live` poses a small figure built by the test.
+
+## A motion, read out of a file
+
+`sampleClip` plays a clip held in a `.glb` or an `.fbx` and returns what
+every bone did:
+
+```ts
+import { sampleClip } from "@av/blender/clip-sample";
+
+const clip = await sampleClip({ path: "walk.fbx", outputDir: "/tmp/walk-sample-001" });
+clip.rotations["LeftUpLeg"][12]; // x y z w: the turn from its rest pose, in the world
+clip.positions["Hips"][12];      // where the bone starts in that frame
+```
+
+Turns are measured from the rest pose and in the world, not in a bone's own
+axes, and everything is written in glTF's axes (y up) whatever the file's
+were. That is what carrying a motion from one skeleton to another needs: two
+rigs name, point and size their bones differently, and a turn in the world
+means the same on both. The carrying itself is arithmetic and is not here.
+
+## A rigged character, filmed
+
+`rigShot` lights a rigged body on a plain ground and renders it playing the
+one clip its file holds, from a camera asked for in the words a shot is
+described in:
+
+```ts
+import { rigShot } from "@av/blender/rig-shot";
+
+const { mediaPath, report } = await rigShot({
+  path: "figure.clip.walking.glb",   // the body with one motion; or the rig, to film it standing
+  outputDir: "/tmp/figure-shot-001",
+  camera: "three-quarter",           // front, three-quarter, side, back
+  framing: "full",                   // full, medium (waist up), close (head and shoulders)
+  loops: 3, width: 1280, height: 720, fps: 24,
+});
+```
+
+The camera, the light and the ground are made from the body's own size and
+the way it faces; the camera keeps the body in frame as it travels unless
+`follow` is false. Frames are rendered with Eevee and joined by FFmpeg into
+an H.264 file with no sound. No script comes with a request, so it asks for
+no `trustedInput`. One character on an empty stage.
+
+## Characters on a set, filmed
+
+`stageShot` puts several rigged bodies in one picture and, when a set is
+given, in a place. Each player stands on a mark, turned the way it is told,
+and does one thing after another:
+
+```ts
+import { stageShot } from "@av/blender/stage-shot";
+
+const { mediaPath, report } = await stageShot({
+  outputDir: "/tmp/street-001",
+  set: "street.blend",                       // metres, z up, front towards -y; without it, an empty stage
+  camera: "set",                             // or { view: "three-quarter", framing: "wide", on: ["guide"], follow: true }
+  players: [
+    { name: "guide", path: "guide.glb", at: "left",
+      does: [{ clip: "guide.walking.glb", to: "lamp" }, { towards: "child" }, { clip: "guide.wave.glb" }] },
+    { name: "child", path: "child.glb", at: "door", towards: "guide",
+      does: [{ seconds: 3 }, { clip: "child.running.glb", to: [1.5, 2.1] }] },
+  ],
+});
+```
+
+- **A stage** is laid out as it is seen from the front: x to the right, y
+  away from the audience, in metres. A place is `[x, y]`, or the name of a
+  mark: an object of the set called `mark.<name>`, whose own -y is the way a
+  player stands on it. A place in metres stands on the set's floor there.
+- **A walk goes at its clip's pace.** The pace is read from the joint that
+  stays down and goes backwards under the body, and the way takes as long
+  as that says unless `seconds` is given. A clip that carries the body by
+  itself is kept on the way.
+- **The camera** is the set's own, or made from the size of the players it
+  is on and where they stand. It goes with them and keeps its framing,
+  nearer as they come together; told to stay, it holds everywhere they go.
+- **The report** says, for each player, what it did and when, the pace and
+  the speed of each way, the share of the shot its chest was in the picture
+  and the share the set hid it; and the pairs that came to stand in one
+  place.
+
+The set's own Python is not run, and no script comes with a request. Nobody
+touches anything: there is no contact between a body and the set, or
+another body.
 
 ## Standalone workflow
 

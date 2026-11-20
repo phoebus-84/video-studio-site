@@ -1,4 +1,4 @@
-> Imported studio reference, based on [9aef661](https://github.com/phoebus-84/video-studio/tree/9aef661ac127f5234a4f4889e3215c0c8b4e1fb2). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
+> Imported studio reference, based on [7f73c14](https://github.com/phoebus-84/video-studio/tree/7f73c14cedca6c53bd96e135865f619e70c2af69). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
 
 # @studio/cast
 
@@ -28,7 +28,7 @@ a dot, a sound, a voice and nothing else.
 | `owners` | where a character lives and which production casts it; a series looks in itself, then in its channel |
 | `characters` | `createCharacter` (writes what is missing, overwrites nothing), `readCharacter`, `listCharacters`, `updateCharacter` held to the contract |
 | `forms` | `releaseForm` records a folder with the hash of its tree and never the same release twice; `verifyRelease`; `checkCharacter` says everything wrong with a character as it is on disk |
-| `casting` | `castRole` pins the form's current release; `resolveCast` says of each role whether what it pins is there and is what it was; `checkAsks` holds a script's requests to what the forms can do |
+| `casting` | `findCharacter` finds the character a production names (itself, then what is above it, or `owner/id`); `castRole` pins the form's current release; `resolveCast` says of each role whether what it pins is there and is what it was; `checkAsks` holds a script's requests to what the forms can do |
 
 ## What a role's state means
 

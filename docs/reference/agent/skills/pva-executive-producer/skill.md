@@ -3,7 +3,7 @@ name: pva-executive-producer
 description: Operate Sergio, the studio, as executive producer. Use for channel, series, episode, film, scene, shot, run, resume, review, and rerun commands. This skill coordinates video production pipelines through the pva_* tools, under Pi or Claude Code.
 ---
 
-> Imported studio reference, based on [9aef661](https://github.com/phoebus-84/video-studio/tree/9aef661ac127f5234a4f4889e3215c0c8b4e1fb2). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
+> Imported studio reference, based on [7f73c14](https://github.com/phoebus-84/video-studio/tree/7f73c14cedca6c53bd96e135865f619e70c2af69). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
 
 
 # PVA Executive Producer
@@ -132,6 +132,32 @@ channel, a series or a film, not to an episode, and is the same next week:
 - `pva_rig_sheet` — a rig posed and looked at (Blender, local, free): seven known poses
   from three sides on one sheet, its clips over six moments, and how far each pulled
   the surface out of shape. Read it before a rig is released.
+- `pva_stock_clips` — the stock clips Hyper3D can add to a rig it makes, listed free:
+  name up to ten by id in `clips` on `pva_rig_model`.
+- `pva_retarget_clip` — a motion carried from another skeleton to a rig's own (Blender,
+  local, free): a clip made for another rig, a motion from a library.
+- `pva_generate_motion` — a person's motion from one sentence (Hunyuan Motion on fal,
+  paid per motion), carried to the rig. Play it on the sheet before it is used.
+- `pva_release_model` — a model or a rig of an episode released as a character's form in
+  one step (local, free): stood facing +z with its feet on the ground at the height you
+  give, copied with its clips, sheets and records, and put on the character's record.
+- `pva_rig_shot` — a rigged character filmed playing one of its clips (Blender and
+  FFmpeg, local, free): a `role` of the cast or a rig of the episode, the camera and the
+  framing asked for in words, a clip of video in `assets/video/`. One character on an
+  empty stage.
+- `pva_stage_shot` — several characters in one picture, on a set or an empty stage
+  (Blender and FFmpeg, local, free): each a role or a rig, on a mark, doing one thing
+  after another — a clip, a walk to another mark at its clip's pace, a turn, a wait. The
+  set is a `.blend` with marks; the camera is the set's or asked for in words. It says
+  who was out of the picture, hidden by the set, in another's place, or sliding.
+
+A **style template** — a ready-made look and way of making it — can be given to a
+channel, a series, a film or a scene when the person asks for one; nothing needs one.
+`pva_styles` lists them and finds one by the name a person uses; the creation tools take
+`style`; `pva_apply_style` gives one to a level that exists; `pva_style` is the brief a
+unit reads, with every value filled in from its parameter files; `pva_set_style` changes a
+colour or a value (everything that read the style becomes stale); `pva_save_style` keeps
+an edited style as a template of its own. Load `style-templates` when a style comes up.
 
 Read the cast before writing a script. Load `character-development` to define a
 character and `character-forms` to give it a body.
