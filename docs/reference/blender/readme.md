@@ -1,4 +1,4 @@
-> Imported studio reference, based on [7f73c14](https://github.com/phoebus-84/video-studio/tree/7f73c14cedca6c53bd96e135865f619e70c2af69). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
+> Imported studio reference, based on [19c5681](https://github.com/phoebus-84/video-studio/tree/19c568188fc4404961e923cc38de93940e6eb1b3). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
 
 # @av/blender
 
@@ -80,6 +80,16 @@ const { report, outputDir } = await rigSheet({
   bone's own axes: two rigs point their bones in different ways.
 - `clip.<name>.png`: six moments of a clip from two sides, the camera
   following the body.
+- **What passes through what.** A two-legged body's skin is cut up by the
+  bone that moves each point most — head, body, each hand (the forearm and
+  all that hangs from it), each upper arm, each leg — and each pose, and
+  each clip at 24 moments a second, is looked at for a part inside another
+  it is not joined to: a hand in the head, the body or the other hand, a leg
+  in the other. A point is inside a part when a ray out of it crosses the
+  part's surface an odd number of times, two rays of three deciding, so an
+  eye inside a head changes nothing. `through` gives how deep, in heights of
+  the body beyond how deep at rest, and in a clip from when, for how long
+  and deepest when. Less than 2% is not said.
 - `sheet.json`: the bones, each pose's turns, and for every pose and clip the
   share of the surface's edges strained (pulled to half as long again, or
   pressed to two thirds) and the number torn (pulled to three times their
@@ -165,10 +175,18 @@ const { mediaPath, report } = await stageShot({
 - **The camera** is the set's own, or made from the size of the players it
   is on and where they stand. It goes with them and keeps its framing,
   nearer as they come together; told to stay, it holds everywhere they go.
+- **Between clips a body stands.** A two-legged body that plays nothing —
+  before its first clip, between two, after its last — has its arms brought
+  down from its rig's A- or T-pose to 75° below the horizontal, or less low
+  where a hand would go into its body or a leg (`standing`). A clip comes in
+  over that and gives way to it again. Every clip's turns are written with
+  w at or above 0 before they are played, so a blend between two takes the
+  short way round instead of spinning a limb.
 - **The report** says, for each player, what it did and when, the pace and
   the speed of each way, the share of the shot its chest was in the picture
-  and the share the set hid it; and the pairs that came to stand in one
-  place.
+  and the share the set hid it, and the parts of it that went into each
+  other (`through`, in metres, as the rig sheet measures them); and the
+  pairs that came to stand in one place.
 
 The set's own Python is not run, and no script comes with a request. Nobody
 touches anything: there is no contact between a body and the set, or

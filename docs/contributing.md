@@ -1,4 +1,4 @@
-> Imported studio reference, based on [7f73c14](https://github.com/phoebus-84/video-studio/tree/7f73c14cedca6c53bd96e135865f619e70c2af69). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
+> Imported studio reference, based on [19c5681](https://github.com/phoebus-84/video-studio/tree/19c568188fc4404961e923cc38de93940e6eb1b3). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
 
 # Contributing
 
@@ -65,7 +65,7 @@ Use this end-to-end checklist (Blender is the scene-provider example):
    “ready” or “authorized.”
 
 This is still too many manual integration points. `studio/adapters` is the
-thin first step of the adapter registry the [harness review](https://github.com/phoebus-84/video-studio/blob/7f73c14cedca6c53bd96e135865f619e70c2af69/docs/harness-review.md)
+thin first step of the adapter registry the [harness review](https://github.com/phoebus-84/video-studio/blob/19c568188fc4404961e923cc38de93940e6eb1b3/docs/harness-review.md)
 proposes: it pairs stages with the code that performs them by declaration, but
 readiness, estimates, jobs and per-episode bindings are not in it yet, and it is
 not a plugin API.

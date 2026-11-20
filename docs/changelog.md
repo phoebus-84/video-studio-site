@@ -1,4 +1,4 @@
-> Imported studio reference, based on [7f73c14](https://github.com/phoebus-84/video-studio/tree/7f73c14cedca6c53bd96e135865f619e70c2af69). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
+> Imported studio reference, based on [19c5681](https://github.com/phoebus-84/video-studio/tree/19c568188fc4404961e923cc38de93940e6eb1b3). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
 
 # Changelog
 
@@ -92,7 +92,11 @@ cut and what its number promises: [contributing](./contributing.md#releases).
   other, each of its largest limbs swung, or poses of your own. The clips
   that came with the rig are played over six moments each. For every pose
   it says how much of the surface was strained and how many edges were torn,
-  and marks the poses that went further than a sound rig does. It is the
+  and marks the poses that went further than a sound rig does. For a
+  two-legged body it also finds a hand that goes into the head, the body or
+  the other hand, or a leg into the other, in each pose and through each
+  clip, with how deep and when: a wave made from a sentence put the
+  lamplighter's hand 9% of his height into his head. It is the
   step between `pva_rig_model` and a release: the first rigs made all passed
   the exam at rest, and it was the poses that told them apart.
   `@av/blender/rig-sheet` is the reusable part.
@@ -154,9 +158,14 @@ cut and what its number promises: [contributing](./contributing.md#releases).
     it. An object named `mark.<name>` is a place by that name. The set
     brings its light and its world; its own camera films when asked, or a
     camera is asked for in words about the players it is on.
+  - **Between clips a character stands**, arms beside it, instead of going
+    back to its rig's A- or T-pose; lower arms would put a hand in its
+    body, and the arms stop short of that. One clip gives way to the next,
+    or to standing, the short way round: a limb no longer spins on the way.
   - It reports what one frame does not show: the share of the shot each
-    player was in the picture, the share the set hid it, and pairs that
-    came to stand in one place.
+    player was in the picture, the share the set hid it, pairs that came to
+    stand in one place, and a part of a body that went into another of it,
+    how many centimetres and when.
   - Nobody touches anything: a hand on a door, an object carried and two
     bodies in contact are still a scene built by hand.
   `@av/blender/stage-shot` is the reusable part.
