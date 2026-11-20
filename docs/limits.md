@@ -5,7 +5,7 @@ description: "What %product% does not do yet, what it does only partly, what cha
 # What does not work yet
 
 This page is the project's own review of itself, rewritten for someone
-deciding whether to install it. It is dated: **18 November 2026**, against
+deciding whether to install it. It is dated: **20 November 2026**, against
 the main branch, which is release 0.2.0 and what was merged after it. The
 [changelog](./changelog) says what moved, release by release.
 
@@ -80,12 +80,15 @@ What is missing:
 - **A way round.** A walk is a straight line from one place to the next,
   through whatever stands on it. Two characters in one place are reported,
   not prevented.
-- **Something to do while standing.** A body with no clip left to play
-  returns to the pose it was rigged in, which for a generated rig is arms
-  held away from the body. It needs a standing clip.
+- **Life while standing.** A two-legged body with no clip left to play
+  stands with its arms down, as low as its own body lets them. It is one
+  pose, the same for every body: it does not breathe, shift its weight or
+  look round. Anything more is a clip.
 - **A motion that fits the body.** A motion made for a person's proportions
-  puts the hand of a character with a large head inside its face, and
-  nothing corrects it. Fingers are not carried from one skeleton to another.
+  puts the hand of a character with a large head inside its face. That is
+  now found, on the rig's sheet and in a scene, with how deep and when;
+  nothing keeps the hand out. Fingers are not carried from one skeleton to
+  another.
 - **All that was asked.** Asked for a wave and then a bow, the motion
   service gave the wave. A generated motion is a person's motion only, and
   has to be played and looked at before it is used.
@@ -97,8 +100,9 @@ What is missing:
   describes filming the model and copying a generated video onto its
   skeleton. It is a method, not a tool.
 - **Judgement.** A rig is checked at rest and measured in seven poses. A
-  scene is measured by where each body's chest is: in the picture, behind
-  the set, in another's place. Whether a character still looks right, and
+  scene is measured by where each body's chest is (in the picture, behind
+  the set, in another's place) and by whether a hand went into a head or a
+  body. Whether a character still looks right, and
   whether a scene plays, is for a person.
 
 The browser studio has no view of a cast.

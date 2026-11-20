@@ -136,6 +136,9 @@ test('a generated 3D model is shown with the skeleton it can be given, the motio
   for (const tool of ['pva_stock_clips', 'pva_retarget_clip', 'pva_generate_motion', 'pva_rig_shot', 'pva_release_model', 'pva_stage_shot']) assert.ok(recipe.includes(tool), tool);
   // The release and the scene: what the real runs gave.
   for (const figure of ['79 milliseconds', '0.95 metres tall', '5.96 seconds here, 0.83 m/s', '89% of the shot']) assert.ok(recipe.includes(figure), figure);
+  // A player stands between clips, and a hand in a head is found, with what the real run measured.
+  for (const figure of ['A player with nothing to do stands', '10.7 cm into his head', '8.9% of his height']) assert.ok(recipe.includes(figure), figure);
+  assert.doesNotMatch(recipe, /A hand through the head, a body that sinks|They are not measured\./);
   assert.match(recipe, /<ShotFilm show="meeting" \/>/);
   assert.match(recipe, /Nobody touches anything/);
   assert.doesNotMatch(recipe, /Releasing a rig takes more than one step|It does not build a set/);
@@ -152,6 +155,8 @@ test('a generated 3D model is shown with the skeleton it can be given, the motio
   assert.doesNotMatch(limits, /barely moves|no motion from\s+words|Whether\s+a model's textures come back intact|acts alone|A release in one step/);
   assert.match(home, /#a-generated-character-has-no-face-and-touches-nothing/);
   assert.doesNotMatch(limits, /Rigging and motion are named in the design and not built/);
+  assert.doesNotMatch(limits, /returns to the pose it was rigged in|It needs a standing clip|and\s+nothing corrects it/);
+  assert.match(limits, /nothing keeps the hand out/);
   const strip = await read('docs/.vitepress/theme/components/RigStrip.vue');
   for (const [, file] of strip.matchAll(/file: '([a-z]+(?:-[a-z]+)*)'/g)) await read(`docs/public/proof/${file}.jpg`);
   for (const moment of [0, 1, 2, 3, 4, 5]) await read(`docs/public/proof/walk-${moment}.jpg`);
@@ -199,7 +204,7 @@ test('what changed lately is on the home page and in the navigation, and points 
   assert.match(await read('docs/.vitepress/config.mts'), /\{ text: "Changelog", link: "\/changelog" \}/);
   const changelog = await read('docs/changelog.md');
   for (const entry of ['Music written as code', 'A skeleton for a 3D model', 'A rig posed and looked at', 'Motion for a rig', 'A rigged character, filmed', 'released as a character\'s form in one step', 'Characters in one picture, and in a place']) assert.ok(changelog.includes(entry), entry);
-  for (const entry of ['Characters in one picture, and in a place', 'A rig released as a character’s form in one step', 'A rigged character, filmed', 'Motion for a rig, three ways']) assert.ok(home.includes(entry), entry);
+  for (const entry of ['A character that stands, and a hand found in its head', 'Characters in one picture, and in a place', 'A rig released as a character’s form in one step', 'A rigged character, filmed', 'Motion for a rig, three ways']) assert.ok(home.includes(entry), entry);
 });
 
 test('the old name is gone from every tracked file, the imported reference included, outside the GitHub addresses that have to work', async () => {
