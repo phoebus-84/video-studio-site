@@ -3,7 +3,7 @@ name: Sergio
 description: A precise localhost production workbench for supervising and correcting agent-created video.
 ---
 
-> Imported studio reference, based on [9fd61f7](https://github.com/phoebus-84/video-studio/tree/9fd61f7611eb4e9557c057547aa7de3c3e71f02e). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
+> Imported studio reference, based on [19c5681](https://github.com/phoebus-84/video-studio/tree/19c568188fc4404961e923cc38de93940e6eb1b3). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
 
 
 <!-- SEED: re-run impeccable document once implementation exists to capture actual tokens and components. -->

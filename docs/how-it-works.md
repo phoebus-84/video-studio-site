@@ -45,6 +45,8 @@ New subjects still need research and judgement. A new author may need a room pro
 
 A short explainer needs different pacing from an illustrated story. Give the agent the audience, source material, duration, aspect ratio and constraints. Ask it to propose a plan before generating anything.
 
+If you have a look in mind, name it. A ready-made style — a woodblock print, a risograph, a chalkboard explainer, or one you kept yourself — gives the film a brief whose colours and values live in files you can change with a colour picker; a change says which work it made stale. A style is a road, not a requirement: [make it in a style](./recipes/make-it-in-a-style) only when you want one.
+
 [Find a workflow that fits →](./recipes/)
 
 ### Make only the missing pieces

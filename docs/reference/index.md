@@ -1,4 +1,4 @@
-> Imported studio reference, based on [9fd61f7](https://github.com/phoebus-84/video-studio/tree/9fd61f7611eb4e9557c057547aa7de3c3e71f02e). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
+> Imported studio reference, based on [19c5681](https://github.com/phoebus-84/video-studio/tree/19c568188fc4404961e923cc38de93940e6eb1b3). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
 
 # Component reference
 
@@ -19,6 +19,7 @@
 - [episode](./episode/readme.md) — An episode on disk, produced: its edit timeline built or compiled from its spec, checked against its series' rules, rendered.
 - [film](./film/readme.md) — A film on disk, produced: its scenes and shots, its footage, its cut at each level assembled, checked and rendered.
 - [cast](./cast/readme.md) — Characters on disk: who they are, the forms they take released and hashed, and a production's cast resolved to what it pins.
+- [style](./style/readme.md) — Style templates: optional, parametric roads to a look, applied to a channel, series, film or scene and pinned by what reads them.
 - [runtime](./runtime/readme.md) — Deterministic pipeline state: snapshots, leases, staleness, journal, policy.
 - [pipelines](./pipelines/readme.md) — Built-in pipeline manifests for the shared narrated-video path.
 - [adapters](./adapters/readme.md) — Stage adapters: declarative descriptors pairing a pipeline stage's contracts and capability with the code that performs it. What the gateway dispatches to.

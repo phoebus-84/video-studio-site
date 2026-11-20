@@ -1,4 +1,4 @@
-> Imported studio reference, based on [9fd61f7](https://github.com/phoebus-84/video-studio/tree/9fd61f7611eb4e9557c057547aa7de3c3e71f02e). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
+> Imported studio reference, based on [19c5681](https://github.com/phoebus-84/video-studio/tree/19c568188fc4404961e923cc38de93940e6eb1b3). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
 
 # Running the agent
 
@@ -132,6 +132,8 @@ authority on its parameters.
 - **Characters:** `pva_characters`, `pva_create_character`,
   `pva_update_character`, `pva_cast`. See
   [Characters and casts](#characters-and-casts).
+- **Styles:** `pva_styles`, `pva_apply_style`, `pva_style`, `pva_set_style`,
+  `pva_save_style`. See [Style templates](#style-templates).
 
 `pva_synthesize_sound` makes a series' sounds at $0, locally: wind, sea, rain,
 fire, steam, birds, thunder, applause, a whoosh, a shimmer, and a music bed (a
@@ -597,6 +599,42 @@ goes at the pace read from its clip, and the tool says who was out of the
 picture, hidden by the set, in another's place, or sliding.
 Motion from a video, a face, and contact between a character and anything
 else are not built. The browser studio has no view of a cast.
+
+### Style templates
+
+A style template is an optional, ready-made road to a look (ADR-0054): ask
+for "a film in the risograph style", "this scene using 'Tide riso'", or for
+nothing — a channel, a series, a film or a scene with no style is made as
+before. The agent loads `style-templates`. What it does:
+
+- **Which there are:** `pva_styles` lists the studio's templates
+  (`studio/style/templates/`), the library's own (`library/_styles/`) and a
+  channel's or film's (`<project>/styles/`), nearest winning; with `name` it
+  finds one by the words a person uses and shows its brief and parameters.
+- **Applying one:** the creation tools take `style` (a new film also takes
+  the style's format), and `pva_apply_style` gives one to a level that
+  exists. The level gets its own copy in `style/`: `STYLE.md` (the brief),
+  `style.json`, `params/*.json` and `style.yaml` (where it came from). A
+  scene's or a series' style wins over its project's; `fromParent` copies
+  the level above's to change it.
+- **Parametric:** the brief never writes a value inline. "Print it in
+  <code v-pre>{{palette}}</code>" reads `params/palette.json`; a colour is <code v-pre>{{palette.accent}}</code>,
+  a value <code v-pre>{{print.timing}}</code>. `pva_style` gives the brief a unit reads with
+  every value filled in, and pins the style for it.
+- **Changing it:** `pva_set_style` changes a parameter file's values, or the
+  brief, checked. Every unit that read the style keeps a pin on it
+  (`source/pins/style.json`), so a change makes the stages that read it — a
+  film's `bible`, a scene's `direction`, a shot's `plan` and `media`, an
+  episode's art direction — and everything downstream stale. Through the
+  gateway the change is accepted at once (`POST /api/style/<project>/<series>/renew`
+  does the same for an edit made by hand; so does `vpr pin renew <unit> style`).
+- **Keeping one:** `pva_save_style` keeps a level's edited style as a
+  template anyone can name.
+
+In the browser studio, a channel's, a series', a film's or a scene's overview
+has a Style panel: a template to choose, colour pickers for its palette and a
+control for every value, the brief as it reads now, and how many units a
+change will make stale.
 
 ## 1b. The same agent in Claude Code
 
