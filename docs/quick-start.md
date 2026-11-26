@@ -1,6 +1,6 @@
 ---
 title: Get started
-description: Install %product%, prove the local renderer works, and connect Pi or Claude Code. Keep optional generation services separate.
+description: Install %product%, prove the local renderer works, and connect your agent — Pi, Claude Code, Codex, Gemini CLI, Cursor, VS Code, OpenCode or another. Keep optional generation services separate.
 ---
 # Your first video starts here.
 
@@ -67,6 +67,21 @@ Install and authenticate **one** agent separately. Model access is not included 
 # Then, from the root of the application's repository:
 claude
 ```
+```bash [Codex]
+# Install and sign in using Codex's official instructions (codex login).
+# Then, from the root of the application's repository:
+codex
+```
+```bash [Gemini CLI]
+# Install and sign in using Gemini CLI's official instructions.
+# Then, from the root of the application's repository:
+gemini
+```
+```bash [OpenCode]
+# Install and sign in using OpenCode's official instructions.
+# Then, from the root of the application's repository:
+opencode
+```
 ```bash [Pi]
 # Install and sign in using Pi's official instructions.
 # Then, from the root of the application's repository:
@@ -75,9 +90,14 @@ pi -e studio/agent/extensions/index.ts
 :::
 
 - [Claude Code setup](https://code.claude.com/docs/en/setup): on first launch here, review and trust the repository’s `pva` MCP server.
+- [Codex](https://github.com/openai/codex): trust the project when Codex asks; it then reads the repository’s `.codex/config.toml`.
+- [Gemini CLI](https://github.com/google-gemini/gemini-cli): trust the folder when Gemini CLI asks; it then reads `.gemini/settings.json`.
+- [OpenCode](https://github.com/sst/opencode): reads the repository’s `opencode.json`; `opencode mcp list` shows `pva` connected.
+- **Cursor** and **VS Code with GitHub Copilot**: open the repository folder; they read `.cursor/mcp.json` and `.mcp.json`.
 - [Pi setup](https://github.com/badlogic/pi-mono/tree/main/packages/coding-agent): load the studio extension with the command above.
+- **Any other MCP client** (Goose, Zed, Kiro, Windsurf, …): give it `node /path/to/the/repository/studio/agent/mcp/start.mjs`, and name the server `pva`.
 
-The same production tool registrations are exposed through both harnesses.
+Every harness gets the same production tool registrations, the same instructions (`AGENTS.md`) and the same skills. [Running the agent](./running#_1b-the-same-agent-in-claude-code-codex-gemini-cli-and-the-others) has the details for each.
 
 ::: info Pipeline tools need the gateway
 The browser UI is optional, but the agent’s stage tracking, approval-request and budget-status tools call the gateway. Before using those workflows, [start the gateway](./running#_2-agent-plus-gateway-plus-web-studio) and configure its URL/token as described there; you can leave the browser UI closed. The asset-free render above does not need it.
@@ -126,7 +146,7 @@ A collaborator installs the studio, clones the channel, restores its media and v
 - **A workspace package cannot resolve:** run `bun install` at the repository root, not inside an individual package.
 - **FFmpeg is missing:** install it and check `ffmpeg -version` and `ffprobe -version`.
 - **Chrome download fails:** check network/proxy access and available disk space; retry the render after fixing it.
-- **Pipeline or budget-status tools cannot connect:** start the gateway and check `AVG_GATEWAY_URL` and its authentication token. Launching Pi or Claude alone does not start that service.
+- **Pipeline or budget-status tools cannot connect:** start the gateway and check `AVG_GATEWAY_URL` and its authentication token. Launching an agent alone does not start that service.
 - **A generation tool is not ready:** enable that provider’s requirements. A working install does not mean every optional capability is available.
 - **The agent sees the wrong library:** start it from the repository root. For an external library, set `AVG_LIBRARY_ROOT`; runtime CLI commands should pass `--library` explicitly.
 

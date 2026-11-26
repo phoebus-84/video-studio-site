@@ -173,7 +173,7 @@ low:   note("d2").struct("~ x").s("sine").attack(.005).decay(1.8).sustain(0).rel
         <ul class="elsewhere-list">
           <li><h3>You want one clip, now.</h3><p>A hosted generator gets you there sooner. This pays off the second time you make the same kind of video.</p></li>
           <li><h3>You want every model there is.</h3><p>It works with a few providers, chosen on purpose, and with what runs on your own machine.</p></li>
-          <li><h3>You don’t want a terminal.</h3><p>You install it, and you direct an agent in Claude Code or Pi. The browser studio is a view of the work, not a replacement for either.</p></li>
+          <li><h3>You don’t want a terminal.</h3><p>You install it, and you direct an agent in the harness you already use: Claude Code, Codex, Gemini CLI, Cursor, OpenCode or Pi. The browser studio is a view of the work, not a replacement for any of them.</p></li>
           <li><h3>You want proof it beats the model on its own.</h3><p>There is none yet. Anyone can get a first take; the test for the second is written down before it is run, and it has produced no number.</p></li>
         </ul>
         <div class="elsewhere-links"><a class="text-link" :href="withBase('/compare')">{{ brand.name }} and the others <ArrowIcon /></a><a class="text-link" :href="withBase('/limits')">What does not work yet <ArrowIcon /></a><a class="text-link" :href="withBase('/retake')">Retake, the benchmark <ArrowIcon /></a></div>

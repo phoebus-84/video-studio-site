@@ -1,10 +1,10 @@
-> Imported studio reference, based on [3dee4dc](https://github.com/phoebus-84/sergio/tree/3dee4dc69199ab145af8d2c35d72328c9d70dd37). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
+> Imported studio reference, based on [1e25f11](https://github.com/phoebus-84/sergio/tree/1e25f1100ca4d1e88bae62681ef004b70c4f9b44). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
 
 # video-built-in-pipelines is the single source of truth for production skills
 
 ## Status
 
-Accepted, amended. Skills live in `skills/shared/`, `skills/studio/` and `studio/agent/skills/`; `npm run compose` writes `.pi/skills/` and `.claude/skills/` from them ([ADR-0048](./0048-tools-written-once-served-to-any-harness.md)).
+Accepted, amended. Skills live in `skills/shared/`, `skills/studio/` and `studio/agent/skills/`; `npm run compose` writes `.pi/skills/`, `.claude/skills/` and `.agents/skills/` from them ([ADR-0048](./0048-tools-written-once-served-to-any-harness.md), [ADR-0057](./0057-every-harness-and-any-acp-agent.md)).
 
 ## Decision
 

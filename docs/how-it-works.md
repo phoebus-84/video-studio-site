@@ -14,7 +14,7 @@ You can start with your own footage, a script, a poem, a code repository, or a v
 
 | Part | What it does | What you can inspect |
 |---|---|---|
-| **The agent** | Plans, writes and calls production tools in Pi or Claude Code | Conversation, prompts and tool results |
+| **The agent** | Plans, writes and calls production tools in Pi, Claude Code, Codex, Gemini CLI, Cursor, VS Code, OpenCode or another MCP client | Conversation, prompts and tool results |
 | **The tools** | Work on images, audio, graphics, Blender scenes and edit timelines | Inputs, generated files and supported provenance records |
 | **The library** | Holds channels, series, episodes and their media | Ordinary folders, scripts, settings, sources and outputs |
 | **The production runtime** | Tracks stages, dependencies, stale work and review gates | Snapshots, journals, candidates and review records |

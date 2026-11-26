@@ -1,4 +1,4 @@
-> Imported studio reference, based on [3dee4dc](https://github.com/phoebus-84/sergio/tree/3dee4dc69199ab145af8d2c35d72328c9d70dd37). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
+> Imported studio reference, based on [1e25f11](https://github.com/phoebus-84/sergio/tree/1e25f1100ca4d1e88bae62681ef004b70c4f9b44). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
 
 # pi-video-agent
 
@@ -23,9 +23,14 @@ The package uses Pi's extension and package APIs, supports TUI and RPC modes, st
 
 `mcp/` hosts this extension, unchanged, outside Pi: `mcp/host.ts` gives it the
 part of Pi's API it uses, and `mcp/server.ts` serves its tools over MCP stdio
-and its slash commands as MCP prompts (ADR-0048). The repository's `.mcp.json`
-starts it for Claude Code; `claude/` holds Claude Code's hooks and status line.
-Add a tool here once, against Pi's API — both harnesses get it.
+and its slash commands as MCP prompts (ADR-0048). The repository's project
+files start it for Claude Code (`.mcp.json`, also read by VS Code), Codex
+(`.codex/config.toml`), Gemini CLI (`.gemini/settings.json`), Cursor
+(`.cursor/mcp.json`) and OpenCode (`opencode.json`); `mcp/start.mjs` starts it
+from any directory, for every other MCP client (ADR-0057). `claude/` holds
+Claude Code's hooks and status line; other clients get what the hooks deliver
+in their tool results. Add a tool here once, against Pi's API — every harness
+gets it.
 
 ## Durable narration client
 

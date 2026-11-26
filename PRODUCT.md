@@ -16,7 +16,7 @@ Confirmed by the operator in the interactive brief: technically comfortable crea
 
 ## Positioning
 
-An agent coordinates reusable media tools while files, timelines, production state, review gates and budget records remain inspectable. Tools are written once for Pi and exposed to Claude Code through MCP.
+An agent coordinates reusable media tools while files, timelines, production state, review gates and budget records remain inspectable. Tools are written once for Pi and exposed through MCP to every other harness: Claude Code, Codex, Gemini CLI, Cursor, VS Code, OpenCode and any MCP client. The browser studio can drive Pi, Claude, or any agent that speaks the Agent Client Protocol.
 
 ## Operating Context
 

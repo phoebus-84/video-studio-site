@@ -58,7 +58,9 @@ Show me the script and the scene list before any narration.
 ```
 
 In Pi, `/video create <channel>/<series>/<episode>` creates the episode first;
-in Claude Code the same command is `/mcp__pva__video`.
+in Claude Code the same command is `/mcp__pva__video`, in Gemini CLI `/video`.
+In Codex, Cursor or VS Code, which show no MCP prompts, ask for it in words:
+“create the episode `<channel>/<series>/<episode>`”.
 
 ## 3. What the agent does, and where you look
 

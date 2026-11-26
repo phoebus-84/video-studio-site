@@ -1,10 +1,12 @@
-> Imported studio reference, based on [3dee4dc](https://github.com/phoebus-84/sergio/tree/3dee4dc69199ab145af8d2c35d72328c9d70dd37). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
+> Imported studio reference, based on [1e25f11](https://github.com/phoebus-84/sergio/tree/1e25f1100ca4d1e88bae62681ef004b70c4f9b44). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
 
 # ADR-0048: The agent's tools are written once, for Pi, and served to other harnesses over MCP
 
 ## Status
 
-Accepted. Implemented:
+Accepted, extended by [ADR-0057](./0057-every-harness-and-any-acp-agent.md): every
+harness's project file, `AGENTS.md`, `.agents/skills/`, the inbox in tool
+results, and the gateway's ACP backend. Implemented:
 - `studio/agent/mcp/`: a Pi-shaped host and an MCP stdio server around the
   unchanged extension;
 - `studio/agent/claude/`: Claude Code's hooks and status line;
@@ -52,7 +54,7 @@ copy of each tool that drifts from the first, nor a Pi that works less well.
 
 ## Consequences
 
-- A new tool is added once, in `studio/agent/src/`, and both harnesses have
+- A new tool is added once, in `studio/agent/src/`, and every harness has
   it; `tests/mcp-server.test.ts` checks the MCP side serves every tool the
   extension registers.
 - A tool that starts using more of Pi's API must have that part added to the

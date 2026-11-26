@@ -1,10 +1,10 @@
-> Imported studio reference, based on [3dee4dc](https://github.com/phoebus-84/sergio/tree/3dee4dc69199ab145af8d2c35d72328c9d70dd37). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
+> Imported studio reference, based on [1e25f11](https://github.com/phoebus-84/sergio/tree/1e25f1100ca4d1e88bae62681ef004b70c4f9b44). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
 
 # The browser connects through an Agent Gateway
 
 ## Status
 
-Accepted, amended by [ADR-0048](./0048-tools-written-once-served-to-any-harness.md): the gateway runs a Pi process or a Claude Agent SDK session (`AVG_AGENT_BACKEND`).
+Accepted, amended by [ADR-0048](./0048-tools-written-once-served-to-any-harness.md) and [ADR-0057](./0057-every-harness-and-any-acp-agent.md): the gateway runs a Pi process, a Claude Agent SDK session, or any agent that speaks ACP (`AVG_AGENT_BACKEND`).
 
 ## Decision
 

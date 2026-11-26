@@ -1,4 +1,4 @@
-> Imported studio reference, based on [3dee4dc](https://github.com/phoebus-84/sergio/tree/3dee4dc69199ab145af8d2c35d72328c9d70dd37). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
+> Imported studio reference, based on [1e25f11](https://github.com/phoebus-84/sergio/tree/1e25f1100ca4d1e88bae62681ef004b70c4f9b44). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
 
 # Install and composition
 
@@ -7,6 +7,7 @@
 | Tool | Needed for | Notes |
 |---|---|---|
 | Node ≥ 22 | everything | |
+| An agent harness | directing production | Pi, Claude Code, Codex, Gemini CLI, Cursor, VS Code with Copilot, OpenCode, or any MCP client: [running the agent](./running.md#_1b-the-same-agent-in-claude-code-codex-gemini-cli-and-the-others) |
 | Bun | dependency installation | the workspace lockfile is a `bun.lock` |
 | FFmpeg + ffprobe | `video.compose`, `media.probe`, `graphics.animate` | `brew install ffmpeg` |
 | Headless Chrome | `video.compose` (Remotion renders in it) | nothing to install: Remotion downloads `chrome-headless-shell` into `node_modules/.remotion` on the first render; `npm run doctor` says whether it is there |
@@ -85,7 +86,7 @@ Composition writes **`composed.json`**, the answer to "what is actually wired
 here?" — the active components, which capability each provides, and what is
 missing at composition time. Blender tools enforce their selected binding; older
 agent/gateway paths are not yet uniformly composition-driven (see
-[harness review](https://github.com/phoebus-84/sergio/blob/3dee4dc69199ab145af8d2c35d72328c9d70dd37/docs/harness-review.md)). `doctor` rechecks live requirements rather
+[harness review](https://github.com/phoebus-84/sergio/blob/1e25f1100ca4d1e88bae62681ef004b70c4f9b44/docs/harness-review.md)). `doctor` rechecks live requirements rather
 than trusting the stored readiness snapshot.
 
 Two rules it will not break:
@@ -132,7 +133,9 @@ narration or publishing.
 ## Skills
 
 `skills/` is the source of truth; `.pi/skills/` is **generated** by composition
-(ADR-0029). Never edit `.pi/skills/` by hand — the next compose overwrites it.
+(ADR-0029), and so are `.claude/skills/` and `.agents/skills/`, the same skills
+as `SKILL.md` directories for Claude Code, Codex, Gemini CLI and the other
+harnesses. Never edit them by hand — the next compose overwrites them.
 
 | Set | Contents |
 |---|---|

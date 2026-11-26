@@ -74,9 +74,9 @@ The product. Depends on `packages/`. All studio-specific integration lives here.
 | [cast](./studio/cast) | Characters on disk: who they are, the forms they take, and a production's cast pinned to what it wears |
 | [runtime](./studio/runtime) | Snapshots, leases, staleness, journal, policy |
 | [pipelines](./studio/pipelines) | Built-in pipeline manifests |
-| [agent](./studio/agent) | The executive-producer package: a Pi extension, served to Claude Code over MCP |
+| [agent](./studio/agent) | The executive-producer package: a Pi extension, served to every other harness over MCP |
 | [adapters](./studio/adapters) | Stage adapters: the code that performs a stage, matched by contract |
-| [gateway](./studio/gateway) | Agent sessions (Pi RPC or the Claude Agent SDK) and event streaming |
+| [gateway](./studio/gateway) | Agent sessions (Pi RPC, the Claude Agent SDK, or any ACP agent) and event streaming |
 | [web](./studio/web) | Browser studio |
 
 Each component page links to a snapshot of that component's README and `docs/`.
@@ -114,6 +114,14 @@ the current code:
 | [0047](./adr/0047-audio-edits-are-recipes) | Audio edits are recipes: cut on words, mixed, mastered, reproducible |
 | [0048](./adr/0048-tools-written-once-served-to-any-harness) | The agent's tools are written once, for Pi, and served to other harnesses over MCP |
 | [0049](./adr/0049-channel-media-use-a-content-addressed-s3-remote) | Channel media use a content-addressed S3-compatible remote |
+| [0050](./adr/0050-a-film-is-produced-at-three-levels) | A film is produced at three levels, each with its own cut and renders |
+| [0051](./adr/0051-portable-qwen-inference) | Portable Qwen inference preserves the worker boundary |
+| [0052](./adr/0052-a-character-is-a-record-and-takes-any-form) | A character is a record, and takes any form |
+| [0053](./adr/0053-music-is-code-rendered-offline) | Music is Strudel code, rendered offline by the engine the studio plays it with |
+| [0054](./adr/0054-styles-are-optional-parametric-templates) | Styles are optional, parametric templates |
+| [0055](./adr/0055-comfyui-is-a-generic-local-generation-backend) | ComfyUI is a generic local generation backend, and generated music is a source of its own |
+| [0056](./adr/0056-machines-are-declared-once) | The operator's machines are declared once, and the tools route by them |
+| [0057](./adr/0057-every-harness-and-any-acp-agent) | Every harness runs the studio, and the gateway drives any ACP agent |
 
 ADR-0022 (independent repositories per module) is superseded by 0032.
 ADR-0009 (FFmpeg compiles a typed edit timeline) is superseded by 0034.

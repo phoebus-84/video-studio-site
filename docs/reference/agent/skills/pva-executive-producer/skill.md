@@ -1,14 +1,14 @@
 ---
 name: pva-executive-producer
-description: Operate Sergio, the studio, as executive producer. Use for channel, series, episode, film, scene, shot, run, resume, review, and rerun commands. This skill coordinates video production pipelines through the pva_* tools, under Pi or Claude Code.
+description: Operate Sergio, the studio, as executive producer. Use for channel, series, episode, film, scene, shot, run, resume, review, and rerun commands. This skill coordinates video production pipelines through the pva_* tools, under Pi, Claude Code, Codex, Gemini CLI or any other harness.
 ---
 
-> Imported studio reference, based on [3dee4dc](https://github.com/phoebus-84/sergio/tree/3dee4dc69199ab145af8d2c35d72328c9d70dd37). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
+> Imported studio reference, based on [1e25f11](https://github.com/phoebus-84/sergio/tree/1e25f1100ca4d1e88bae62681ef004b70c4f9b44). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
 
 
 # PVA Executive Producer
 
-This skill makes the agent — Pi, or Claude Code through the studio's MCP server — the
+This skill makes the agent — Pi, or any other harness through the studio's MCP server — the
 executive producer for Sergio. It coordinates the full production
 lifecycle: channels, series and episodes; films, scenes and shots; pipeline runs,
 reviews, and reruns.
@@ -24,9 +24,15 @@ pi install ./path/to/pi-video-agent
 
 Runtime dependencies are installed automatically during package installation.
 
-Under Claude Code, start `claude` from the repository root: its `.mcp.json` starts the
-`pva` MCP server, which serves the same tools as `mcp__pva__pva_*`. The slash commands
-are its prompts (`/mcp__pva__video`, `/mcp__pva__render`, …).
+Under any other harness, start it from the repository root: its project file
+(`.mcp.json` for Claude Code and VS Code, `.codex/config.toml`, `.gemini/settings.json`,
+`.cursor/mcp.json`, `opencode.json`) starts the `pva` MCP server, which serves the same
+tools (Claude Code names them `mcp__pva__pva_*`). Where the harness shows MCP prompts, the
+slash commands are its prompts (`/mcp__pva__video` in Claude Code, `/video` in Gemini CLI);
+elsewhere do what the command would, with the tools. Operator review activity and stage
+updates arrive as a block headed "Studio activity since …" — before the next prompt
+under Claude Code, at the end of a pva tool result elsewhere: read the reviews with
+`pva_journal` and answer them.
 
 ## Where heavy work runs
 
@@ -87,8 +93,8 @@ commands become available through the agent.
 - `pva_synthesize_nonverbal_audio` — Generate deterministic speech-free character cues.
 - `pva_compose_multitrack_video` — Mix an animated clip with frame-addressed local audio cues into an immutable render.
 - `pva_generate_images` — Several images in **one** call, drawn concurrently (four take about as long as
-  one). Use it whenever more than one image is due: Claude Code runs the tool calls of one message one
-  after another, so four `pva_generate_image` calls side by side take four times as long.
+  one). Use it whenever more than one image is due: harnesses such as Claude Code run the tool calls of one
+  message one after another, so four `pva_generate_image` calls side by side take four times as long.
 - `pva_generate_wan_video` — Animate one episode image with Wan 2.2 A14B turbo on fal ($0.10/clip at 720p,
   $0.05 at 480p; on the spend ledger). `loop: true` ends on the same image: a closed loop. Prefer it to
   `pva_generate_minimax_h3_video` (~$0.48/clip) for loops and small moving details; keep H3 for

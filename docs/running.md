@@ -1,4 +1,4 @@
-> Imported studio reference, based on [3dee4dc](https://github.com/phoebus-84/sergio/tree/3dee4dc69199ab145af8d2c35d72328c9d70dd37). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
+> Imported studio reference, based on [1e25f11](https://github.com/phoebus-84/sergio/tree/1e25f1100ca4d1e88bae62681ef004b70c4f9b44). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
 
 # Running the agent
 
@@ -764,39 +764,75 @@ has a Style panel: a template to choose, colour pickers for its palette and a
 control for every value, the brief as it reads now, and how many units a
 change will make stale.
 
-## 1b. The same agent in Claude Code
+## 1b. The same agent in Claude Code, Codex, Gemini CLI and the others
 
 The tools above are written once, against Pi's extension API, in
-`studio/agent/`. Claude Code gets the same ones from an MCP server that hosts
-that extension unchanged (`studio/agent/mcp/server.ts`, ADR-0048). From the
-repository root:
+`studio/agent/`. Every other harness gets the same ones from an MCP server
+that hosts that extension unchanged (`studio/agent/mcp/server.ts`,
+ADR-0048): same names, descriptions and schemas. The repository carries the
+project file each harness reads, so for most of them there is nothing to set
+up. Start the harness from the repository root, as with Pi: the server
+resolves `tsx` and the library from the directory it starts in.
+
+| Harness | Start it with | It reads |
+|---|---|---|
+| Claude Code | `claude` | `.mcp.json`, `.claude/settings.json` (hooks, read-only tools allowed), `CLAUDE.md`, `.claude/skills/` |
+| Codex | `codex` | `.codex/config.toml` (once you trust the project), `AGENTS.md`, `.agents/skills/` |
+| Gemini CLI | `gemini` | `.gemini/settings.json` (once you trust the folder), `AGENTS.md` through it, `.agents/skills/` |
+| Cursor | open the folder; or `cursor-agent` | `.cursor/mcp.json`, `AGENTS.md`, `.claude/skills/` |
+| VS Code (GitHub Copilot) | open the folder | `.mcp.json`, `AGENTS.md`, `.agents/skills/` |
+| OpenCode | `opencode` | `opencode.json` (OpenCode 1 and 2), `AGENTS.md`, `.agents/skills/` and `.claude/skills/` |
+| Any other MCP client | see [below](#any-other-mcp-client) | the command `node studio/agent/mcp/start.mjs` |
+
+`bun install` writes the skills (`npm run compose` again after editing one):
+`.claude/skills/` and `.agents/skills/` hold the same `SKILL.md` directories,
+from the sets `.pi/skills/` gets, plus `pva-executive-producer`. A harness
+that reads no skills gets the same ones from the tools `pva_list_skills` and
+`pva_load_skill`. `AGENTS.md` is the instructions every harness but Claude
+Code reads; `CLAUDE.md` imports it.
+
+What Pi does through its own interface goes, in the other harnesses, to:
+
+| Under Pi | Under Claude Code | Under any other harness |
+|---|---|---|
+| tools `pva_*` | `mcp__pva__pva_*` | `pva_*`, prefixed as the harness names MCP tools |
+| `/video`, `/render`, … | the server's prompts: `/mcp__pva__video create <c>/<s>/<e>` | the same prompts where the harness shows them (Gemini CLI: `/video`; OpenCode 2: `/pva:video`); otherwise ask in words ("create the episode demo/s1/e1") |
+| skills from `.pi/skills/` | `.claude/skills/` | `.agents/skills/` or `.claude/skills/`, else `pva_load_skill` |
+| the library-visibility warning at session start | a `SessionStart` hook (`studio/agent/claude/session-start.ts`) | the first pva tool result |
+| review activity starts a turn | live with `npm run studio:claude` (below); otherwise with your next prompt (a `UserPromptSubmit` hook) | appended to the next pva tool result |
+| stage updates in the conversation | the same hook, on the next prompt | the next pva tool result |
+| the status bar | `studio/agent/claude/statusline.mjs` (opt in, below) | — |
+| `/login` for the Codex image route | Pi's login when Pi is installed; or `codex login`; or `AVG_CODEX_TOKEN` | the same |
+
+The server tells the two apart by the name the client gives when it
+connects: Claude Code has the hooks; every other client gets the studio's
+activity at the end of its next pva tool result, under "Studio activity since
+the last pva tool call". `AVG_MCP_INBOX=hook` or `AVG_MCP_INBOX=tool-result`
+overrides the choice, for a harness that has hooks of its own.
+
+`npm run studio:tool -- <pva_tool> '<json>'` (or `@params.json`) runs one tool
+from the shell, the same registration, and exits: for jobs longer than an MCP
+call should wait, such as an hour's render, started in the background with its
+output in a log. Progress (the render bar, one line every 2%) goes to stderr,
+the result to stdout. It works under every harness, since every one has a
+shell.
+
+**Long renders.** When the client asks for progress, the server reports it
+every minute, so a render is not taken for an idle call. How long a harness
+waits for one call is its own setting: Claude Code moves a call past two
+minutes to the background and gives a silent call 30 minutes
+(`CLAUDE_CODE_MCP_TOOL_IDLE_TIMEOUT`); the repository sets 30 minutes for
+Codex (`tool_timeout_sec`) and Gemini CLI (`timeout`). Past that, use
+`npm run studio:tool`.
+
+### Claude Code
 
 ```bash
 claude
 ```
 
 That is all: `.mcp.json` starts the `pva` server (Claude Code asks once to
-trust it), and `.claude/settings.json` adds the hooks below. Start it from the
-repository root, as with Pi: the server resolves `tsx` and the library from the
-directory it starts in. `npm run studio:mcp` runs the server alone, for any
-other MCP client.
-
-`npm run studio:tool -- <pva_tool> '<json>'` (or `@params.json`) runs one tool
-from the shell, the same registration, and exits: for jobs longer than an MCP
-call should wait, such as an hour's render, started in the background with its
-output in a log. Progress (the render bar, one line every 2%) goes to stderr,
-the result to stdout.
-
-| Under Pi | Under Claude Code |
-|---|---|
-| tools `pva_*` | `mcp__pva__pva_*` (same names, descriptions, schemas) |
-| `/video`, `/render`, … | the server's prompts: `/mcp__pva__video create <c>/<s>/<e>`, `/mcp__pva__render …` |
-| skills from `.pi/skills/` | `.claude/skills/<name>/SKILL.md`, written by `npm run compose` from the same sets, plus `pva-executive-producer` |
-| the library-visibility warning at session start | a `SessionStart` hook (`studio/agent/claude/session-start.ts`) |
-| review activity starts a turn | live with `npm run studio:claude` (see below); otherwise it waits for your next prompt (a `UserPromptSubmit` hook) |
-| stage updates in the conversation | the same hook, on the next prompt |
-| the status bar | `studio/agent/claude/statusline.mjs` (opt in, below) |
-| `/login` for the Codex image route | Pi's login still works when Pi is installed; or `codex login`; or `AVG_CODEX_TOKEN` |
+trust it), and `.claude/settings.json` adds the hooks above.
 
 Read-only tools (`pva_channels`, `pva_journal`, `pva_budget_status`, …) are
 allowed in `.claude/settings.json`; anything that writes or spends asks first,
@@ -821,11 +857,92 @@ In `.claude/settings.local.json`:
     "command": "node \"$CLAUDE_PROJECT_DIR\"/studio/agent/claude/statusline.mjs" } }
 ```
 
-**Long renders.** A tool call that runs past two minutes moves to the
-background in Claude Code and its result arrives when it settles. When the
-client asks for progress, the server reports it every minute, so a render is
-not taken for an idle call (Claude Code gives a silent stdio call 30 minutes;
-`CLAUDE_CODE_MCP_TOOL_IDLE_TIMEOUT` changes that).
+### Codex
+
+```bash
+codex
+```
+
+Codex asks whether to trust the project the first time; it reads
+`.codex/config.toml` only once you do. Then `/mcp` lists `pva` and its tools.
+The read-only tools run without asking, the same list as Claude Code's
+(`approval_mode = "approve"` per tool); the others ask, under Codex's own
+approval settings. Codex does not show MCP prompts, so there are no
+`/video`-style commands: ask for what you want. `codex exec` works the same
+way, non-interactively.
+
+### Gemini CLI
+
+```bash
+gemini
+```
+
+Trust the folder when Gemini CLI asks: it ignores `.gemini/settings.json` in
+an untrusted one. The settings start `pva` and make `AGENTS.md` the context
+file. `/mcp` lists the tools; the studio's commands are slash commands
+(`/video create demo/s1/e1`, `/render`). Each tool call asks for
+confirmation unless you allow it, from the prompt or with Gemini CLI's policy
+settings.
+
+### Cursor
+
+Open the repository folder. `.cursor/mcp.json` starts `pva` through
+`studio/agent/mcp/start.mjs`, which works from whatever directory Cursor
+starts it in; enable the server in *Settings › MCP* if Cursor lists it as
+disabled. The Cursor CLI (`cursor-agent`) reads the same file.
+
+### VS Code with GitHub Copilot
+
+Open the repository folder. Copilot's agent reads the workspace `.mcp.json`,
+the same file as Claude Code, and asks once to start the server. With the
+older *Local* harness, which reads only `.vscode/mcp.json`, add:
+
+```json
+{ "servers": { "pva": { "type": "stdio", "command": "node",
+    "args": ["${workspaceFolder}/studio/agent/mcp/start.mjs"], "cwd": "${workspaceFolder}" } } }
+```
+
+### OpenCode
+
+```bash
+opencode
+```
+
+`opencode.json` holds the server in both versions' forms: OpenCode 1 reads
+`mcp.pva`, OpenCode 2 `mcp.servers.pva`. `opencode mcp list` shows it
+connected.
+
+### Any other MCP client
+
+Goose, Zed, Kiro, Windsurf, Amp, Cline, Continue and the rest start a stdio
+server from a command. Give them:
+
+```bash
+node /path/to/sergio/studio/agent/mcp/start.mjs
+```
+
+An absolute path, because several of them (Zed, ACP agents) start servers in
+a directory of their own. `start.mjs` registers `tsx` from the repository it
+lives in; started where there is no `library` and with no `AVG_LIBRARY_ROOT`,
+it moves to the repository root, where your library link is. Name the server
+`pva`. For example, in Goose's `~/.config/goose/config.yaml`:
+
+```yaml
+extensions:
+  pva:
+    type: stdio
+    name: pva
+    enabled: true
+    cmd: node
+    args: ["/path/to/sergio/studio/agent/mcp/start.mjs"]
+    timeout: 1800
+```
+
+and in Zed's `.zed/settings.json`, `"context_servers": { "pva": { "command":
+"node", "args": ["/path/to/sergio/studio/agent/mcp/start.mjs"] } }`. Most of
+these read `AGENTS.md` and `.agents/skills/` as they are.
+`npm run studio:mcp` runs the server in the foreground, from the repository
+root, to try it by hand.
 
 ## 2. Agent plus gateway plus web studio
 
@@ -850,8 +967,8 @@ Two entries are *expected* not to be ready yet, and are not your setup being
 wrong:
 
 - `pi: Pi RPC not yet wired (vsg-e57.6)` — the gateway cannot yet drive Pi as a
-  subprocess. Until that lands, run the agent yourself as in section 1, or
-  let the gateway run Claude (below).
+  subprocess. Until that lands, run the agent yourself as in section 1 or 1b,
+  or let the gateway run Claude, Codex, Gemini CLI or another agent (below).
 - `adapter: degraded` — a provider whose requirement is unmet. `FAL_KEY` unset
   means `image.generate` is unavailable; nothing is substituted for it.
 
@@ -871,28 +988,66 @@ tools look for `.gateway-token` only in the agent's working directory, so set
 ### Which agent the studio drives
 
 The studio's agent bar sends intents (`POST /api/intent`) to one session per
-episode. By default that session is Pi's. With
+episode. By default that session is Pi's. `AVG_AGENT_BACKEND` names another
+agent:
 
 ```bash
-AVG_AGENT_BACKEND=claude npx tsx src/index.ts config.json
+AVG_AGENT_BACKEND=claude npx tsx src/index.ts config.json   # Claude, through the Claude Agent SDK
+AVG_AGENT_BACKEND=codex  npx tsx src/index.ts config.json   # Codex, or any agent below, over ACP
 ```
 
-it is a Claude Agent SDK session instead: the same tools (the MCP server of
-section 1b), the repository's `CLAUDE.md`, skills and hooks, the library the
-gateway serves, and the environment Pi would get (no operator key,
-`AVG_HEADLESS=1`). Intents become turns — a prompt, guidance, an answer, a
-rerun to plan, an edited artifact — cancel interrupts the turn in progress, and
-operator review activity starts one. What the agent does is published on the
-agent's event channel (`pi`): `agent_start`, `tool_execution_start`,
-`message_end`, `agent_end` (with its cost), each with `backend: "claude"`.
-`GET /` names the backend, and the agent bar says who it is talking to.
+| `AVG_AGENT_BACKEND` | Agent | What the gateway starts |
+|---|---|---|
+| `pi` (default) | Pi | a Pi RPC process |
+| `claude` | Claude | a Claude Agent SDK session |
+| `codex` | Codex | `npx -y @agentclientprotocol/codex-acp` |
+| `gemini` | Gemini CLI | `gemini --acp` |
+| `opencode` | OpenCode | `opencode acp` |
+| `goose` | Goose | `goose acp` |
+| `qwen` | Qwen Code | `qwen --acp` |
+| `copilot` | GitHub Copilot CLI | `copilot --acp` |
+| `cursor` | Cursor CLI | `cursor-agent acp` |
+| `kiro` | Kiro CLI | `kiro-cli acp` |
+| `acp` | any other | `AVG_ACP_COMMAND` |
 
-Nobody is there to approve a tool call, so the session runs in Claude Code's
-`dontAsk` mode: the studio's tools, file reading and editing, the shell and
-skills are allowed — what Pi has — and anything else is refused. Change that
-with `AVG_CLAUDE_ALLOWED_TOOLS` and `AVG_CLAUDE_PERMISSION_MODE`. It uses the
-Claude credentials of the user running the gateway (`claude` login or
-`ANTHROPIC_API_KEY`); `AVG_CLAUDE_MODEL` picks the model.
+Every agent but Pi and Claude is driven over the
+[Agent Client Protocol](https://agentclientprotocol.com) (ACP), which these
+agents speak on stdio. `AVG_ACP_COMMAND` replaces the command for any of
+them (a path to the binary, a pinned version, a flag), and is the command for
+`acp`: `AVG_AGENT_BACKEND=acp AVG_ACP_COMMAND="my-agent --acp"`, with
+`AVG_ACP_LABEL` for the name the agent bar shows. The agent must be installed
+and logged in as the user running the gateway (`codex login`, Gemini CLI's
+login or `GEMINI_API_KEY`, …): it uses that user's account or key. When the session cannot start, the intent fails with the agent's own reason
+(not installed, not logged in) and the command it ran.
+
+Whichever the agent, the session has the same tools (the MCP server of
+section 1b, handed to the agent when the session starts), the repository's
+instructions (`CLAUDE.md`, or `AGENTS.md`) and skills, the library the gateway
+serves, and the environment Pi would get (no operator key, `AVG_HEADLESS=1`).
+Intents become turns — a prompt, guidance, an answer, a rerun to plan, an
+edited artifact — cancel interrupts the turn in progress, and operator review
+activity starts one. What the agent does is published on the agent's event
+channel (`pi`): `agent_start`, `tool_execution_start`, `message_end`,
+`agent_end` (with its cost, where the agent reports one), each with `backend`
+naming the agent. `GET /` names the backend, and the agent bar says who it is
+talking to. An idle session is closed after 30 minutes; the next intent
+reopens the conversation where the agent can (Claude always; an ACP agent
+when it supports loading a session).
+
+Nobody is there to approve a tool call:
+
+- **Claude** runs in Claude Code's `dontAsk` mode: the studio's tools, file
+  reading and editing, the shell and skills are allowed — what Pi has — and
+  anything else is refused. Change that with `AVG_CLAUDE_ALLOWED_TOOLS` and
+  `AVG_CLAUDE_PERMISSION_MODE`. It uses the Claude credentials of the user
+  running the gateway (`claude` login or `ANTHROPIC_API_KEY`);
+  `AVG_CLAUDE_MODEL` picks the model.
+- **An ACP agent** asks the gateway when it wants permission, and the gateway
+  answers by the kind of tool: reading, editing, deleting, moving, searching,
+  the shell, thinking and the studio's tools are allowed — what Pi has — and
+  fetching from the web is refused (a `permission_denied` event says when).
+  `AVG_ACP_ALLOWED_KINDS` lists the allowed kinds (`read,edit,execute`, or `*`
+  for all). The model is the agent's own setting.
 
 ## 3. Agent as an RPC subprocess
 
@@ -1473,12 +1628,16 @@ the same absolute path for every process that needs to be the operator.
 | `AVG_TTS_WORKER_URL` | local worker | Speech synthesis endpoint |
 | `AVG_MACHINES` | `library/.render/machines.json` | The machines file ([Your other machines](#your-other-machines)); a file named here must exist |
 | `STRUDEL_CHROME_PATH` | Remotion's Chrome, else Playwright's or the machine's | The Chrome music is rendered with |
-| `AVG_AGENT_BACKEND` | `pi` | Which agent the gateway runs per episode: `pi` or `claude` |
+| `AVG_AGENT_BACKEND` | `pi` | Which agent the gateway runs per episode: `pi`, `claude`, `codex`, `gemini`, `opencode`, `goose`, `qwen`, `copilot`, `cursor`, `kiro` or `acp` |
+| `AVG_ACP_COMMAND` | the agent's preset | The command that starts an ACP agent on stdio; required for `acp` |
+| `AVG_ACP_LABEL` | the agent's name | The name the agent bar shows for an ACP agent |
+| `AVG_ACP_ALLOWED_KINDS` | `read,edit,delete,move,search,execute,think,switch_mode,other` | Tool kinds an ACP agent's permission requests are granted for (`*` for all) |
 | `AVG_CLAUDE_MODEL` | Claude Code's default | Model of the gateway's Claude sessions |
 | `AVG_CLAUDE_PERMISSION_MODE` | `dontAsk` | Permission mode of the gateway's Claude sessions |
 | `AVG_CLAUDE_ALLOWED_TOOLS` | `mcp__pva,Skill,Read,Write,Edit,Glob,Grep,Bash` | Tools those sessions use without asking |
 | `AVG_CLAUDE_CHANNEL` | unset (`npm run studio:claude` sets `1`) | The MCP server pushes review activity as channel events |
-| `AVG_CLAUDE_STATE_DIR` | `.claude/pva` | Where the MCP server leaves status and inbox for Claude Code's hooks |
+| `AVG_CLAUDE_STATE_DIR` | `.claude/pva` | Where the MCP server leaves status and inbox, for Claude Code's hooks and for other harnesses' tool results |
+| `AVG_MCP_INBOX` | chosen by client | `hook` (Claude Code: the inbox waits for the next prompt) or `tool-result` (every other client: appended to the next pva tool result) |
 | `AVG_CODEX_TOKEN` | — | OpenAI Codex token for the image route outside Pi |
 
 Secrets are environment-only (ADR-0030). Put them in your shell profile or an

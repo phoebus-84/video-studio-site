@@ -1,10 +1,10 @@
-> Imported studio reference, based on [3dee4dc](https://github.com/phoebus-84/sergio/tree/3dee4dc69199ab145af8d2c35d72328c9d70dd37). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
+> Imported studio reference, based on [1e25f11](https://github.com/phoebus-84/sergio/tree/1e25f1100ca4d1e88bae62681ef004b70c4f9b44). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
 
 # Architecture
 
 This page describes the current responsibilities and boundaries. It is not a
 promise of unattended, one-prompt production. See the
-[harness review](https://github.com/phoebus-84/sergio/blob/3dee4dc69199ab145af8d2c35d72328c9d70dd37/docs/harness-review.md) for implementation gaps and the
+[harness review](https://github.com/phoebus-84/sergio/blob/1e25f1100ca4d1e88bae62681ef004b70c4f9b44/docs/harness-review.md) for implementation gaps and the
 [running guide](./running.md) for prerequisites.
 
 ## Product boundary
@@ -25,10 +25,11 @@ series:
 
 ## Control plane
 
-The agent — Pi, or Claude Code through the studio's MCP server (ADR-0048) — is
-the **Executive Producer**. It interprets intent, performs editorial work,
+The agent — Pi, or any other harness through the studio's MCP server: Claude
+Code, Codex, Gemini CLI, Cursor, VS Code, OpenCode, … (ADR-0048) — is the
+**Executive Producer**. It interprets intent, performs editorial work,
 chooses explicit provider bindings, calls production tools, reviews results,
-and reacts to feedback. Both harnesses get the same tools, written once in
+and reacts to feedback. Every harness gets the same tools, written once in
 `studio/agent/src/`.
 
 **The execution service**, in `studio/runtime`, tracks pipeline snapshots,
@@ -36,7 +37,7 @@ leases, attempts, dependencies, staleness, reviews and the spend ledger. The CLI
 and gateway use that service. It does not write prose or silently choose a
 creative provider.
 
-The **Agent Gateway** owns the agent sessions the browser talks to: Pi RPC processes or Claude Agent SDK sessions (`AVG_AGENT_BACKEND`). Browser clients connect to the gateway, not to the agent's stdin/stdout. The gateway associates sessions with episodes, maps comments to `prompt`, `steer`, or `follow_up`, handles extension UI requests, and streams both agent and production events. It never produces an artifact (ADR-0027).
+The **Agent Gateway** owns the agent sessions the browser talks to: Pi RPC processes, Claude Agent SDK sessions, or sessions of any agent that speaks the Agent Client Protocol — Codex, Gemini CLI, OpenCode, Goose, … (`AVG_AGENT_BACKEND`, ADR-0057). Browser clients connect to the gateway, not to the agent's stdin/stdout. The gateway associates sessions with episodes, maps comments to `prompt`, `steer`, or `follow_up`, handles extension UI requests, and streams both agent and production events. It never produces an artifact (ADR-0027).
 
 ## Data plane
 
@@ -64,7 +65,7 @@ are tools rather than stage capabilities.
 
 ```text
 Terminal prompt or GUI action
-  -> the agent (Pi or Claude Code) as executive producer
+  -> the agent (Pi, Claude Code, Codex, Gemini CLI, …) as executive producer
   -> pipeline runtime opens/leases a stage
   -> the agent reads the stage skill and current artifacts
   -> the agent calls one or more capability tools
@@ -102,7 +103,7 @@ compilation is not a future placeholder.
   a universal billing or safety boundary.
 
 Review the actual film and audio. See [revision checks](./running.md#comparing-two-versions)
-and the [harness review](https://github.com/phoebus-84/sergio/blob/3dee4dc69199ab145af8d2c35d72328c9d70dd37/docs/harness-review.md) for the limits of sampled evidence,
+and the [harness review](https://github.com/phoebus-84/sergio/blob/1e25f1100ca4d1e88bae62681ef004b70c4f9b44/docs/harness-review.md) for the limits of sampled evidence,
 same-user access and execution guarantees.
 
 ## Files, history and collaboration
