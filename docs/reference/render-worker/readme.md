@@ -1,4 +1,4 @@
-> Imported studio reference, based on [19c5681](https://github.com/phoebus-84/video-studio/tree/19c568188fc4404961e923cc38de93940e6eb1b3). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
+> Imported studio reference, based on [3dee4dc](https://github.com/phoebus-84/sergio/tree/3dee4dc69199ab145af8d2c35d72328c9d70dd37). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
 
 # render-worker
 
@@ -18,7 +18,8 @@ An engine is a Linux machine that renders episodes for another one over SSH. It 
 
 Nothing about the machines is written in code.
 
-- **Discovery.** `auto` tries the hosts in `render-hosts.json`, then the tailnet's online Linux peers from `tailscale status --json`, and takes the first whose `engine.sh version` answers over SSH. The tailscale program is `AVG_TAILSCALE`, else `tailscale` on `PATH`, else where the installer puts it (`%ProgramFiles%\Tailscale\tailscale.exe` on Windows, which does not add it to `PATH`).
+- **The machines file.** The operator's machines are declared once, in `library/.render/machines.json` (`@av/machines` (`packages/machines/README.md` in the repository), ADR-0056). A machine with the `remotion` role is an engine: its `ssh` destination is used as it is, and its role's `repo`, `cache` and `speed` go over its `render-hosts.json` entry field by field. `withMachines(config, machines)` does the merge, and `hostsConfigOf` reads both files for a renderer given `machinesFile` (or `machines`) beside `configFile`. `render-hosts.json` still works on its own, as a fallback.
+- **Discovery.** `auto` tries the machines file's `remotion` machines (in `prefer.remotion`'s order, then the file's), then the other hosts in `render-hosts.json`, then the tailnet's online Linux peers from `tailscale status --json`, and takes the first whose `engine.sh version` answers over SSH. The tailscale program is `AVG_TAILSCALE`, else `tailscale` on `PATH`, else where the installer puts it (`%ProgramFiles%\Tailscale\tailscale.exe` on Windows, which does not add it to `PATH`).
 - **Settings.** `render-hosts.json` is `$AVG_RENDER_HOSTS`, else `library/.render/render-hosts.json` (a dot folder, so nothing takes it for a channel; it is the operator's machines, not code, so it stays out of git); every field is optional:
 
   ```json
@@ -26,7 +27,7 @@ Nothing about the machines is written in code.
     "hosts": { "<peer name>": { "address": "…", "user": "…", "repo": "…", "cache": "…" } } }
   ```
 
-  A host's own entry wins, then `AVG_RENDER_SSH_USER`, `AVG_RENDER_ENGINE_REPO` and `AVG_RENDER_ENGINE_CACHE`, then the file's defaults. With no user, `ssh` and its own config decide. The address is the entry's, else the peer's tailnet IPv4, else the name. `AVG_RENDER_SSH` names the ssh program. The clone defaults to `~/sergio`, and the cache root to `$XDG_CACHE_HOME/sergio/render`.
+  A machine's `remotion` role wins, then a host's own entry, then `AVG_RENDER_SSH_USER`, `AVG_RENDER_ENGINE_REPO` and `AVG_RENDER_ENGINE_CACHE`, then the file's defaults. With no user, `ssh` and its own config decide. The address is the entry's, else the peer's tailnet IPv4, else the name. `AVG_RENDER_SSH` names the ssh program. The clone defaults to `~/sergio`, and the cache root to `$XDG_CACHE_HOME/sergio/render`.
 
 A render goes like this:
 
@@ -37,6 +38,18 @@ A render goes like this:
 Each episode has its own folder on the engine, `<cache root>/<channel>/<series>/<episode>`. It holds `files/`, `index.json`, `cache/` (renderTimeline's `cacheDir`), `render.lock`, and `out.mp4`, which is written as `out.partial.mp4` until it is complete. Episodes share no folder; `diff` only copies bytes from one to another. Nothing is removed.
 
 Errors keep their codes (`no-engine`, `dirty-code`, `code-sync-failed`, `engine-busy`, `timeline-invalid`, …) and their `problems`. The engine compares its binaries with `engine.env`'s pins and warns when they differ. Those pins live only in `engine.env`.
+
+## Blender jobs on an engine
+
+The same engine runs `@av/blender`'s functions with its machine's own Blender (ADR-0056): `rigShot`, `rigSheet`, `stageShot`, and `runBlender` for a preview or an animation of a saved `.blend` (a scene is created on the controlling machine). `runBlenderRemote(kind, request, { target, key, bin, gpuLock? })` returns what the function returns, with this machine's paths, plus `machine`.
+
+1. **Code.** As for a render, but a job refuses uncommitted `packages/blender`, `packages/render-worker`, `packages/machines`, `package.json` or `bun.lock` (`BLENDER_CODE`), not the composer.
+2. **Files.** The request's files are mirrored under `files/` and sent once by content (`diff`, `receive`).
+3. **Files a `.blend` names.** `blender-paths <key>` asks the engine's Blender (`bpy.utils.blend_paths`) which of them are missing. Those under the caller's allowed folders on this machine are sent, and the engine is asked again; any other fails as `missing-file`, with its path, before Blender runs.
+4. **Run.** `blender <key>` reads a job (`{ version, kind, request, bin, gpuLock?, lockWaitSeconds?, attempt }`). It holds `flock` on `gpuLock` while Blender runs, calls the function with `blenderPath: bin` into `blender/<attempt>/out/`, and answers with the result (paths under `out/`), every file written with its size and hash, the commit and the Blender version.
+5. **Back.** `fetch-blender <key> <attempt>` streams `out/` as a bundle. Each file is checked against the answer's hash and written into the caller's `outputDir`; a file that differs fails the job (`transfer-failed`) and nothing is left.
+
+The engine loads the Blender code for these three commands only, so `version` and `sync` run on a clone whose new dependencies are not installed yet.
 
 ## Sharing a render between machines
 

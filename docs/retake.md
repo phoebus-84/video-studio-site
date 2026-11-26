@@ -90,4 +90,4 @@ Stated in advance:
 
 The specification, its tasks and its measures are in the application's
 repository, from release 0.2.0:
-[bench/retake](https://github.com/phoebus-84/video-studio/tree/main/bench/retake).
+[bench/retake](https://github.com/phoebus-84/sergio/tree/main/bench/retake).

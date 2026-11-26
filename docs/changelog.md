@@ -1,4 +1,4 @@
-> Imported studio reference, based on [19c5681](https://github.com/phoebus-84/video-studio/tree/19c568188fc4404961e923cc38de93940e6eb1b3). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
+> Imported studio reference, based on [3dee4dc](https://github.com/phoebus-84/sergio/tree/3dee4dc69199ab145af8d2c35d72328c9d70dd37). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
 
 # Changelog
 
@@ -24,6 +24,82 @@ cut and what its number promises: [contributing](./contributing.md#releases).
   - **The root package** is named `sergio`.
 
 ### Added
+
+- **Your other machines, declared once.** `library/.render/machines.json`
+  (`AVG_MACHINES` names another file) says which machines you have, how SSH
+  reaches each (an alias of your SSH config), what each is for (`remotion`,
+  `blender`, `comfyui`, `heavy-cpu`, `heavy-gpu`) and in which order to use
+  them, `"local"` included. The tools route by it, so you no longer tell the
+  agent "use that machine, connect with ssh …", and the skills tell it never
+  to ssh there by hand (ADR-0056). Nothing changes until you write the file.
+  - **ComfyUI speech** reaches a server that listens only on its machine's
+    loopback through a tunnel the tool opens on a free port when it is
+    needed. The tool checks the tunnel, reuses it and closes it when the
+    studio exits; no `ssh -N -L` by hand. It holds the machine's GPU lock
+    (`gpuLock`, taken with `flock`) around each call, and the receipt names
+    the machine. `AVG_COMFYUI_URL` still goes over the file; `comfyui.json`
+    keeps the nodes' settings and is the fallback for the address.
+  - **Renders.** A `remotion` machine is an engine by its name; its settings
+    go over `render-hosts.json`, which still works on its own; `auto` tries it
+    first. Without `host`, `pva_compose_video` renders where
+    `prefer.remotion` says (here when it says nothing), and `host: "local"`
+    renders here.
+  - **Reports.** `pva_capability_status` and `pva_config` list each machine,
+    whether it answers over SSH (and ssh's reason when it does not), its
+    system, cores and Blender version, and where each role goes.
+  - **Blender.** `pva_stage_shot`, `pva_rig_shot`, `pva_rig_sheet` and
+    `pva_blender_render` run where `prefer.blender` says: on the first
+    `blender` machine that answers with a Blender the tools take, with its
+    `bin` and its GPU lock, else here
+    ([#121](https://github.com/phoebus-84/sergio/issues/121)). The code
+    goes to the machine's engine clone by git push, the files once by content,
+    and the output comes back checked byte for byte; the tool keeps it as a
+    local result, with `machine` in its provenance, and says where Blender ran.
+    A tool's `machine` (`"local"` or a name) picks the place. Files a `.blend`
+    names go with it when they are in the channel or film, named relative to
+    it. A Blender job, like a render, runs committed code only:
+    `packages/blender` too.
+  - `@av/machines` is the new package. render-worker's SSH transport moved
+    there and render-worker re-exports it, so an engine now needs
+    `packages/machines` committed too.
+- **Any ComfyUI workflow, through the studio's tools** (ADR-0055). The
+  operator's ComfyUI server ran only speech; it now runs any graph written
+  down as a workflow — an API-format export with `{{placeholders}}`, its
+  inputs, outputs and the nodes and models it needs.
+  - `pva_comfyui_workflows` lists the built-in workflows, the operator's
+    (`library/.render/comfyui/workflows/`) and a channel's or film's own
+    (`<channel>/comfyui/workflows/`), and whether the server has each one's
+    nodes and models, read from `/object_info` without running anything.
+  - `pva_comfyui_run` runs one in an episode, a channel source or a film
+    unit: files of the workspace uploaded under their hash, what it made
+    written by kind with `<file>.comfyui.json` beside it (workflow and graph
+    by hash, values, seeds, models, server version, GPU time). $0; the GPU
+    time also goes to an episode's or film unit's journal. The server is the
+    one speech finds, a machine of `machines.json` included: the tool opens
+    the tunnel, holds the machine's GPU lock for the whole run (waiting for
+    it as long as a run may take) and names the machine in the receipt.
+  - The server is asked first, through `/object_info`, for every node, every
+    input its version requires and every model file: what is missing is
+    said before anything runs, with the files each loader has.
+  - Model files are inputs with defaults: a server that names them
+    otherwise sets its names once in `.render/comfyui.json`
+    (`workflowDefaults`), with no copy of the workflow.
+  - Built in: Z-Image Turbo (text to image), FLUX.2 [klein] 4B (image edit)
+    and Wan 2.2 TI2V 5B (video), run on a real server; ACE-Step v1 (music),
+    not yet.
+  - `pva_synthesize_speech` with `provider: "comfyui-qwen"` takes
+    `voiceDesign`: a voice made from a description, kept on the server with
+    `saveVoiceAs` (under consent bound to that name) for every later line.
+  - `pva_capability_status` says which workflows the server can run.
+  - New package `@av/comfyui`: the ComfyUI client and templates, moved out of
+    `@av/comfyui-speech`, which depends on it unchanged.
+
+- **Generated music is a source of its own.** Music composed as Strudel code
+  stays the default, no longer the only music the studio makes: a cue may
+  be generated with a model (a music workflow, `pva_comfyui_run`) as it may
+  be licensed or supplied, with its workflow, model, seed, tags and lyrics in
+  its receipt. It goes in `music/` and on the cut's music track like any
+  cue; `pva_music` lists it. ADR-0053 is amended accordingly.
 
 - **Style templates: a ready-made look, never required.** A channel, a
   series, a film or a scene may take a style — "make it in the risograph

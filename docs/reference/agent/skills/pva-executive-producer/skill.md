@@ -3,7 +3,7 @@ name: pva-executive-producer
 description: Operate Sergio, the studio, as executive producer. Use for channel, series, episode, film, scene, shot, run, resume, review, and rerun commands. This skill coordinates video production pipelines through the pva_* tools, under Pi or Claude Code.
 ---
 
-> Imported studio reference, based on [19c5681](https://github.com/phoebus-84/video-studio/tree/19c568188fc4404961e923cc38de93940e6eb1b3). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
+> Imported studio reference, based on [3dee4dc](https://github.com/phoebus-84/sergio/tree/3dee4dc69199ab145af8d2c35d72328c9d70dd37). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
 
 
 # PVA Executive Producer
@@ -27,6 +27,35 @@ Runtime dependencies are installed automatically during package installation.
 Under Claude Code, start `claude` from the repository root: its `.mcp.json` starts the
 `pva` MCP server, which serves the same tools as `mcp__pva__pva_*`. The slash commands
 are its prompts (`/mcp__pva__video`, `/mcp__pva__render`, …).
+
+## Where heavy work runs
+
+The operator's other machines — a GPU box, a render engine, a ComfyUI server — are
+declared once, in the library's machines file (`library/.render/machines.json`,
+ADR-0056): how SSH reaches each, what each is for, and in which order to use them.
+**The tools route by that file. You do not.**
+
+- At the start of a session, read `pva_capability_status`: a `machine-<name>` line per
+  machine (whether it answers, its cores, its Blender) and a `machines` line saying
+  where each role goes (`blender → gpu-box, local`). You are never told an SSH alias,
+  and you never need one.
+- **Never ssh to a machine by hand** to do the studio's work: no copying packages there,
+  no installing them, no runner scripts, no `ssh -L` tunnels, no Python run there, no
+  fetching results back by hand. That loses the tools' checks and provenance. The tools
+  already go there when the file says so:
+  - `pva_compose_video` renders where `prefer.remotion` says when you give no `host`;
+  - `pva_synthesize_speech` / `pva_clean_voice` with provider `comfyui-qwen` reach the
+    machine's ComfyUI themselves, through a tunnel they open, holding its GPU lock.
+  - `pva_stage_shot`, `pva_rig_shot`, `pva_rig_sheet` and `pva_blender_render` run
+    Blender where `prefer.blender` says: the first machine that answers with a supported
+    Blender, its job sent with the code, the files and the GPU lock, the result brought
+    back checked; else here. Their answer says where Blender ran and which machines were
+    passed over. Pass `machine` only when the operator asks for a place.
+- A remote machine runs committed code only. When a tool refuses uncommitted code, say
+  so; commit only if the operator works that way, or run with `machine: "local"`.
+- A machine that does not answer is the operator's to fix; say which and why (the
+  status line carries ssh's own reason). Do not change the machines file unless the
+  operator asks you to.
 
 ## Usage
 
@@ -79,7 +108,9 @@ commands become available through the agent.
   `pva_capability_status` says whether it answers): `voice` is a speaker or
   `saved:<name>`, or `referenceAudioPath` (+ `referenceText`, the exact words)
   clones a recording of the workspace; `cleanReference: true` first cuts it
-  and separates the voice from music and noise. Clone only a voice whose owner
+  and separates the voice from music and noise; `voiceDesign` makes a voice from
+  a description (with `saveVoiceAs`, kept on the server to say every later line as
+  `saved:<name>`, under consent bound to that name). Clone only a voice whose owner
   consented: cloned/saved voices require `voiceConsentPath`, an operator-created
   consent record bound to the reference hash or saved name. Never create or confirm
   that consent on the operator's behalf. Both Qwen paths need `pva_register_take`, then `pva_align_take`
@@ -91,6 +122,14 @@ commands become available through the agent.
 - `pva_clean_voice` — Clean only, on the same ComfyUI server: separate a recording's voice
   from music and noise (optional `start`/`duration` cut) into a new `assets/…wav`, with a
   `.clean.json` record. Nothing is cloned.
+- `pva_comfyui_workflows`, `pva_comfyui_run` — any ComfyUI workflow on the operator's
+  server, free on their GPU: built-in text to image (Z-Image Turbo), image edit
+  (FLUX.2 [klein]), video (Wan 2.2 TI2V 5B) and music (ACE-Step), the operator's own
+  in the library's `.render/comfyui/workflows/`, a channel's or film's in
+  `<channel>/comfyui/workflows/`. The listing says whether the server has each one's
+  nodes and models; a run writes each output with `<file>.comfyui.json` beside it.
+  Use it when the operator asks, or offer it; never as a fallback for a paid call.
+  Load `comfyui-workflows` first.
 
 - `pva_music_check`, `pva_music_render`, `pva_music` — music and designed sound
   written as Strudel code in `music/<name>.strudel`, rendered here at $0: a bed
@@ -98,7 +137,10 @@ commands become available through the agent.
   You write the piece with your file tools and mix it by the numbers the render
   returns; you cannot hear it. Load `strudel-music` before writing one
   (`strudel-sounds` for instruments and effects, `strudel-forms` for structure).
-  For a recording — a real piano, an orchestra, a voice — use `find-archive-media`.
+  Code is the default when nobody asked for anything else, not the only way: for what
+  it does not give — a real piano, an orchestra, a singer — offer a licensed or
+  supplied recording (`find-archive-media`) or music generated with a model
+  (`pva_comfyui_run` with a music workflow), and let the operator choose.
 
 ### Films
 

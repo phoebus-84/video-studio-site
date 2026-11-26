@@ -35,7 +35,7 @@ The fonts are Fraunces and Inter. Their licences are beside the font files in
 The software itself has two licences, split along the line of its code: the
 reusable tools in `packages/` are Apache-2.0, and the studio and everything
 else is AGPL-3.0-only.
-[LICENSING.md](https://github.com/phoebus-84/video-studio/blob/main/LICENSING.md)
+[LICENSING.md](https://github.com/phoebus-84/sergio/blob/main/LICENSING.md)
 in the application's repository says why, and what neither covers: Remotion,
 which has its own licence; vendored code; the models and services the tools
 reach; and your own library. Nothing in the software's licence licenses a

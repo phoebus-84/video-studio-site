@@ -1,10 +1,10 @@
-> Imported studio reference, based on [19c5681](https://github.com/phoebus-84/video-studio/tree/19c568188fc4404961e923cc38de93940e6eb1b3). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
+> Imported studio reference, based on [3dee4dc](https://github.com/phoebus-84/sergio/tree/3dee4dc69199ab145af8d2c35d72328c9d70dd37). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
 
 # ADR-0049: Channel media use a content-addressed S3 remote
 
 ## Status
 
-Proposed in the implementation of [issue #74](https://github.com/phoebus-84/video-studio/issues/74).
+Proposed in the implementation of [issue #74](https://github.com/phoebus-84/sergio/issues/74).
 Extends [ADR-0045](./0045-a-channel-is-its-own-repository.md); it does not replace
 its lock format, union merges, or local-only commands.
 

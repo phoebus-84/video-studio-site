@@ -29,7 +29,7 @@ The local studio is developed on macOS; JavaScript packages are also checked on 
 
 ## 2. Install the workspace
 
-<CopyCommand label="Install %product%" command="git clone https://github.com/phoebus-84/video-studio.git sergio&#10;cd sergio&#10;mise install&#10;bun install&#10;npm run compose -- --profile=studio&#10;npm run doctor" />
+<CopyCommand label="Install %product%" command="git clone https://github.com/phoebus-84/sergio.git sergio&#10;cd sergio&#10;mise install&#10;bun install&#10;npm run compose -- --profile=studio&#10;npm run doctor" />
 
 If mise asks you to trust the repository configuration, review `mise.toml` and run `mise trust`. Use the **%product% application repository** root for every command on this page—not the separate website repository.
 

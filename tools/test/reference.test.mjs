@@ -15,7 +15,7 @@ test('reference links retain local pages and move excluded plans to the pinned s
   const revision = 'a'.repeat(40);
   const result = rewriteLinks('[Run](./running#budget) [Overview](./index.md#packages) [Reference](./reference/) [Plan](superpowers/old.md)', 'docs/architecture.md', known, p=>p, revision);
   assert.equal(rewriteLinks('[Example](/resolve-handoff.example.json)', 'docs/resolve-handoff.md', new Set(['docs/public/resolve-handoff.example.json']), p=>p, revision), '[Example](/resolve-handoff.example.json)');
-  assert.equal(result, `[Run](./running.md#budget) [Overview](./guide.md#packages) [Reference](./reference/index.md) [Plan](https://github.com/phoebus-84/video-studio/blob/${revision}/docs/superpowers/old.md)`);
+  assert.equal(result, `[Run](./running.md#budget) [Overview](./guide.md#packages) [Reference](./reference/index.md) [Plan](https://github.com/phoebus-84/sergio/blob/${revision}/docs/superpowers/old.md)`);
 });
 test('internal review stays out of the published snapshot and navigation', async () => {
   await assert.rejects(readFile(new URL('../../docs/harness-review.md', import.meta.url)), {code: 'ENOENT'});
@@ -27,7 +27,7 @@ test('internal review stays out of the published snapshot and navigation', async
   const revision = 'b'.repeat(40);
   for (const target of ['./harness-review', './harness-review.md', '/harness-review.md']) {
     assert.equal(rewriteLinks(`[Review](${target}#limits)`, 'docs/architecture.md', new Set(['docs/harness-review.md']), p=>p, revision),
-      `[Review](https://github.com/phoebus-84/video-studio/blob/${revision}/docs/harness-review.md#limits)`);
+      `[Review](https://github.com/phoebus-84/sergio/blob/${revision}/docs/harness-review.md#limits)`);
   }
 });
 test('committed reference snapshot is complete and hash-verified without a studio checkout', async () => {

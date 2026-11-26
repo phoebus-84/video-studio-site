@@ -40,8 +40,10 @@ Reusable outside this project. They know nothing about episodes or pipelines.
 |---|---|
 | [remotion-composer](./packages/remotion-composer) | `video.compose`: layered episode timelines |
 | [render-worker](./packages/render-worker) | renders that timeline on other machines; optional |
+| [machines](./packages/machines) | the operator's machines, declared once: where each role runs; optional |
 | [blender](./packages/blender) | `scene.create`, `scene.render`; a rig posed and rendered on a sheet |
 | [voice](./packages/voice) | `speech.synthesize`; the worker also supports alignment |
+| [comfyui](./packages/comfyui) | a ComfyUI server's HTTP API and workflows kept as templates; optional |
 | [comfyui-speech](./packages/comfyui-speech) | speech through the Qwen3-TTS nodes of a ComfyUI server; optional |
 | [fal-media](./packages/fal-media) | `image.generate`, `image.edit`, `video.generate`, `model.generate`, `rig.create` |
 | [strudel](./packages/strudel) | music written as Strudel code, checked and rendered offline; AGPL-3.0-or-later |
