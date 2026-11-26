@@ -1,8 +1,8 @@
-> Imported studio reference, based on [19c5681](https://github.com/phoebus-84/video-studio/tree/19c568188fc4404961e923cc38de93940e6eb1b3). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
+> Imported studio reference, based on [3dee4dc](https://github.com/phoebus-84/sergio/tree/3dee4dc69199ab145af8d2c35d72328c9d70dd37). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
 
 # Workspace and policy contracts
 
-Canonical definitions are in [`schemas/v1alpha1/workspace.schema.json`](https://github.com/phoebus-84/video-studio/blob/19c568188fc4404961e923cc38de93940e6eb1b3/studio/contracts/schemas/v1alpha1/workspace.schema.json). They describe workspace metadata, not filesystem discovery, atomic writes, ownership enforcement, or state transitions. Those behaviors belong to the pipeline runtime.
+Canonical definitions are in [`schemas/v1alpha1/workspace.schema.json`](https://github.com/phoebus-84/sergio/blob/3dee4dc69199ab145af8d2c35d72328c9d70dd37/studio/contracts/schemas/v1alpha1/workspace.schema.json). They describe workspace metadata, not filesystem discovery, atomic writes, ownership enforcement, or state transitions. Those behaviors belong to the pipeline runtime.
 
 ## Resource placement
 

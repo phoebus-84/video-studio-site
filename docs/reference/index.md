@@ -1,10 +1,11 @@
-> Imported studio reference, based on [19c5681](https://github.com/phoebus-84/video-studio/tree/19c568188fc4404961e923cc38de93940e6eb1b3). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
+> Imported studio reference, based on [3dee4dc](https://github.com/phoebus-84/sergio/tree/3dee4dc69199ab145af8d2c35d72328c9d70dd37). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
 
 # Component reference
 
 - [blender](./blender/readme.md) — Editable 3D scenes, keyframes and Geometry Nodes; background Eevee/Cycles previews and animations. Poly Haven asset acquisition with provenance.
 - [voice](./voice/readme.md) — Local Qwen speech synthesis and consented voice cloning with MLX or PyTorch (CPU, CUDA, ROCm). Usable on its own; knows nothing about episodes or pipelines.
 - [fal-media](./fal-media/readme.md) — Tracked image, video, 3D model, rigging and motion jobs against fal.ai, with provenance and cost. Video is MiniMax H3; 3D models are Tripo H3.1; rigs are Hyper3D and Meshy; motion from words is Hunyuan Motion.
+- [comfyui](./comfyui/readme.md) — A ComfyUI server's HTTP API (queue, wait, upload, download) and workflows kept as API-format templates with named placeholders. Optional at run time: without a server address nothing uses it.
 - [comfyui-speech](./comfyui-speech/readme.md) — Speech from the Qwen3-TTS nodes of a ComfyUI server: preset speakers, cloned and saved voices, and cleaning a reference before cloning it. Optional at run time: without a server address, speech stays with the other providers.
 - [codex-image](./codex-image/readme.md) — Image generation and editing through an OpenAI ChatGPT/Codex subscription, or the Images API. A second provider for image.generate, billed against a plan rather than per image.
 - [graphics](./graphics/readme.md) — Deterministic SVG/PNG rendering of code frames, diagrams, callouts and titles.
@@ -12,6 +13,7 @@
 - [infographics](./infographics/readme.md) — Frame-accurate animated infographics rendered through Remotion.
 - [video-composer](./video-composer/readme.md) — Compiles a typed edit timeline into an FFmpeg filter graph; probes and QAs the result.
 - [remotion-composer](./remotion-composer/readme.md) — Renders a layered, kit-based edit timeline (studio.video/v1alpha2) with Remotion, then normalises loudness with FFmpeg. A second provider for video.compose.
+- [machines](./machines/readme.md) — The operator's machines, declared once in a library file: how SSH reaches each, what each is for (Remotion, Blender, ComfyUI, heavy CPU or GPU work) and in which order to use them. Says where to run a role and reaches a service on a machine's loopback through a health-checked tunnel. Optional at run time: without the file, everything runs here as before.
 - [render-worker](./render-worker/readme.md) — Renders a remotion-composer edit timeline on other machines over SSH, or shares its one-second segments among several: code by git push, files by content hash, the video back, checked. Optional at run time: without a host, a render stays on this machine.
 - [strudel](./strudel/readme.md) — Music written as Strudel code, checked without a sound and rendered offline by the pinned Strudel engine in a headless Chrome: parts, stretches of cycles, tails, seamless loops, stems, and measurements of what was made. Optional at run time: without a Chrome, everything else works. AGPL-3.0-or-later, as Strudel is.
 - [contracts](./contracts/readme.md) — Canonical schemas, vocabulary and bindings. Every other studio piece depends on it.

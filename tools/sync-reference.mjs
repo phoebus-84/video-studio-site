@@ -8,7 +8,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const receiptPath = join(root, 'data/studio-reference.json');
-const repository = 'https://github.com/phoebus-84/video-studio';
+const repository = 'https://github.com/phoebus-84/sergio';
 export const pages = ['architecture', 'context', 'contributing', 'install', 'pipelines', 'repository-layout', 'resolve-handoff', 'running', 'workspace'];
 // Imported from outside the studio's docs/: published path -> path in the studio repository.
 // Their links are written from the repository's root and are rebased onto docs/.

@@ -1,10 +1,10 @@
-> Imported studio reference, based on [19c5681](https://github.com/phoebus-84/video-studio/tree/19c568188fc4404961e923cc38de93940e6eb1b3). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
+> Imported studio reference, based on [3dee4dc](https://github.com/phoebus-84/sergio/tree/3dee4dc69199ab145af8d2c35d72328c9d70dd37). This is a versioned snapshot, not a live dependency. [Update policy](/site-maintenance#technical-reference-snapshot).
 
 # ADR-0051: Portable Qwen inference preserves the worker boundary
 
 ## Status
 
-Proposed in [PR #95](https://github.com/phoebus-84/video-studio/pull/95).
+Proposed in [PR #95](https://github.com/phoebus-84/sergio/pull/95).
 Extends [ADR-0018](./0018-typescript-is-the-control-plane-python-isolated-to-mlx.md)
 to portable local inference while preserving the TypeScript control plane
 and the deliberate Python worker/API boundary.

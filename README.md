@@ -1,6 +1,6 @@
 # Sergio website
 
-The English-language product website of Sergio, a video production studio your agent can run ([the application's repository](https://github.com/phoebus-84/video-studio)): a cinematic first page, six films with their receipts, recipes, limits, an honest comparison, the benchmark's specification and the technical reference.
+The English-language product website of Sergio, a video production studio your agent can run ([the application's repository](https://github.com/phoebus-84/sergio)): a cinematic first page, six films with their receipts, recipes, limits, an honest comparison, the benchmark's specification and the technical reference.
 
 **This is an independent Git project, not a studio workspace.** It needs Node 22+ and npm. Building it does not require the studio, a production library, FFmpeg, an agent, provider credentials or a sibling directory.
 

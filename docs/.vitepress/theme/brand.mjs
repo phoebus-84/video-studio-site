@@ -11,7 +11,7 @@ export const brand = {
   domain: 'sergiostud.io',
   /** The folder a clone is made into, so that no command needs the repository's present name. */
   directory: 'sergio',
-  repository: 'https://github.com/phoebus-84/video-studio',
+  repository: 'https://github.com/phoebus-84/sergio',
   siteRepository: 'https://github.com/phoebus-84/video-studio-site',
   purpose: 'makes agent-made video repeatable and correctable: episode twenty as good as episode one, and a fix at second 47 that leaves everything else alone.',
 };
